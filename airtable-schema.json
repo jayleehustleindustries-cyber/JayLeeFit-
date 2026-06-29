@@ -1,0 +1,85 @@
+{
+  "base": {
+    "name": "JayLeeFit Client Hub",
+    "id": "appN8QFsoWJ1fJhxC",
+    "workspaceId": "wspHcQC3zsHRt6uRg"
+  },
+  "note": "Reference of Airtable IDs for the Telegram bot / app integration. Field values are written via the Airtable REST API using these IDs.",
+  "tables": {
+    "Clients": {
+      "id": "tbl9fkgO75F5FDfiw",
+      "primaryField": "fldkdf544NQNdSMHh",
+      "fields": {
+        "Client Name": "fldkdf544NQNdSMHh",
+        "Email": "fld322lnCOzCk47rB",
+        "Phone Number": "fldqF9YfItSvU0uwd",
+        "Program Start Date": "fldPYzB1MKh9ON67l",
+        "Goals": "fldOLuwWr8LJLxZQs",
+        "Current Status": "fldj6TSNdNJ3e61br",
+        "Preferred Reminder Method": "fldTVHseczTvSHx2W",
+        "Primary Coach": "fld3aixxsZZJsIbSn"
+      }
+    },
+    "Workouts": {
+      "id": "tbldkjKySQlM9rMen",
+      "fields": {
+        "Workout Name": "fldPv1xoYXsIx24Xo",
+        "Client": "fldx8rAqzuz6Pi2iX",
+        "Date": "fldDKPZP16fZYMvlv",
+        "Exercises": "fldIDjb71jBzVyYC5",
+        "Sets": "fldK2238Tnt3K7l6g",
+        "Reps": "fldLBNwa6I7i1Hh1n",
+        "Session Type": "fldnHYzCoa8mzG0NL"
+      }
+    },
+    "Nutrition Plans": {
+      "id": "tblMsgOYFR4791NmE",
+      "fields": {
+        "Meal Plan Name": "fldNnVtRFvAaBHtdd",
+        "Client": "fldtDRWFTEJCJ8Uo4",
+        "Macros": "fldPEvykEKaLv87XB",
+        "Protein (g)": "fldn6gii4hR4vCpuD",
+        "Carbs (g)": "fldRQ7d2n8VmnJVEl",
+        "Fat (g)": "fldwNLo9ZHWwwjuzz",
+        "Total Calories": "fldoFXzSV00ma2Gmw",
+        "Protein %": "fldMjf59CIM0xi8yl",
+        "Carbs %": "fldEUJh2a2jeJ7AZj",
+        "Fat %": "fldEy9CSI3j6l96Gu"
+      },
+      "macroEngine": {
+        "inputs": ["Protein (g)", "Carbs (g)", "Fat (g)"],
+        "formulas": {
+          "Total Calories": "P*4 + C*4 + F*9",
+          "Protein %": "P*4 / Total Calories",
+          "Carbs %": "C*4 / Total Calories",
+          "Fat %": "F*9 / Total Calories"
+        },
+        "calorieFactors": { "protein": 4, "carbs": 4, "fat": 9 }
+      }
+    },
+    "Progress Tracking": {
+      "id": "tblQgrbbeCtbz1TU2",
+      "fields": {
+        "Progress Entry Name": "fldrPCo0Jjs2iAAwX",
+        "Client": "fldIZGvqYEXgPmh1y",
+        "Date": "fld55FdxxobUK1DEV",
+        "Weight (kg)": "fldaEFDSABcWhVFIL",
+        "Body Measurements": "fldZOg52ZSZGVU53f",
+        "Mood": "fldC0deQJ8NxbLgxT",
+        "Energy Level": "flduHGPSwT04fhGpz"
+      }
+    },
+    "Check-ins": {
+      "id": "tblDfVBvRDjEhiaaY",
+      "fields": {
+        "Check-in Name": "fldZpgWQWICYVJG6f",
+        "Client": "fld2DeO5RY1uzBzIk",
+        "Scheduled Date": "flds7eKgljgVFyiBJ",
+        "Status": "fldm31byEwAtnndD3",
+        "Check-in Notes": "fldoESc8p7lmZpT2B",
+        "Reminder Sent": "fldbO0s0kNesAjJys",
+        "Client Self-Reported Updates": "fldee3cuk3eDnlPUm"
+      }
+    }
+  }
+}
