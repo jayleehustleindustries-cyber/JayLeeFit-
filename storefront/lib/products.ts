@@ -120,3 +120,17 @@ export function formatPrice(value: number): string {
     maximumFractionDigits: 0,
   }).format(value);
 }
+
+export type ConditionPhase = "full" | "gibbous" | "half" | "crescent";
+
+const PHASE_THRESHOLDS: { max: number; phase: ConditionPhase; label: string }[] = [
+  { max: 4, phase: "crescent", label: "Old Light" },
+  { max: 6, phase: "half", label: "Half-Light" },
+  { max: 8, phase: "gibbous", label: "Waxing" },
+  { max: Infinity, phase: "full", label: "Full Illumination" },
+];
+
+/** Condition score (1-10) -> moon phase, shared by the UI and the asset pipeline. */
+export function phaseForScore(score: number) {
+  return PHASE_THRESHOLDS.find((p) => score <= p.max) ?? PHASE_THRESHOLDS[PHASE_THRESHOLDS.length - 1];
+}

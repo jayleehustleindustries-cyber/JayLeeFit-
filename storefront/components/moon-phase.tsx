@@ -1,15 +1,4 @@
-type Phase = "full" | "gibbous" | "half" | "crescent";
-
-const PHASES: { max: number; phase: Phase; label: string }[] = [
-  { max: 4, phase: "crescent", label: "Old Light" },
-  { max: 6, phase: "half", label: "Half-Light" },
-  { max: 8, phase: "gibbous", label: "Waxing" },
-  { max: Infinity, phase: "full", label: "Full Illumination" },
-];
-
-function phaseFor(score: number) {
-  return PHASES.find((p) => score <= p.max) ?? PHASES[PHASES.length - 1];
-}
+import { phaseForScore } from "@/lib/products";
 
 /**
  * Condition grading, reframed as moon phases — how much of a piece's first
@@ -24,7 +13,7 @@ export default function MoonPhase({
   score: number;
   condition?: string;
 }) {
-  const { phase, label } = phaseFor(score);
+  const { phase, label } = phaseForScore(score);
 
   return (
     <span className="inline-flex items-center gap-1.5" title={condition}>
