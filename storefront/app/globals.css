@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0d0d0d;
+  --foreground: #f2f0ea;
+
+  /* RE:UP brand tokens */
+  --color-ink: #0d0d0d;
+  --color-paper: #f2f0ea;
+  --color-acid: #d4ff3f;
+  --color-warning: #ff3b30;
+  --color-concrete: #1a1a1a;
+  --color-line: #2c2c2c;
+  --color-mute: #8a8a82;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-acid: var(--color-acid);
+  --color-warning: var(--color-warning);
+  --color-concrete: var(--color-concrete);
+  --color-line: var(--color-line);
+  --color-mute: var(--color-mute);
+
+  --font-display: var(--font-anton);
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-jetbrains);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer utilities {
+  .text-stroke {
+    -webkit-text-stroke: 1px var(--color-paper);
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  .halftone {
+    background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+    background-size: 6px 6px;
+  }
+
+  .marquee-track {
+    animation: marquee 22s linear infinite;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
