@@ -1,13 +1,17 @@
 # This repo, in brief
 
-Two businesses live in this account. This repo (`JayLeeFit-`) started as the
-JayLeeFit fitness-coaching data layer (see `README.md`, `airtable-schema.json`,
-`docs/`) but the active work this session has been a second business: **EHC**,
-a men's/women's secondhand apparel resale operation (Poshmark/eBay).
+**Three distinct projects live in this account — do not let them blend.**
+This repo (`JayLeeFit-`) started as the JayLeeFit fitness-coaching data
+layer (see `README.md`, `airtable-schema.json`, `docs/`), grew a second,
+unrelated business in `storefront/` — **EHC**, a men's/women's secondhand
+apparel resale operation (Poshmark/eBay) — and now has a third: a social
+content pipeline for the JayLeeFit personal brand itself, in
+`content-engine/` (see that folder's `README.md` first, then
+`ARCHITECTURE.md`).
 
-Don't assume everything here is fitness-related — check which business a
-request belongs to before acting, especially since the user sometimes
-dictates requests that blend language from both.
+Check which of the three a request belongs to before acting — the user
+sometimes dictates requests that blend language from more than one at
+once, and confusing them is worse than asking.
 
 ## EHC — the real business, the real data
 
