@@ -70,6 +70,29 @@
         "Energy Level": "flduHGPSwT04fhGpz"
       }
     },
+    "Resale Inventory": {
+      "id": "tblXKLsg4eXLGDfpn",
+      "note": "Magicdeals resale SSOT. Net Profit / ROI % / Days to Sell are auto-formulas.",
+      "fields": {
+        "Item Name": "fldGYrWS5MBmdegzu",
+        "SKU": "fldRvhwh2yiIfMhph",
+        "Purchase Price": "fldLUoEwjHZO35SbU",
+        "Sale Price": "fldSJvGLoeAvth1r1",
+        "Platform Fees": "fldwG6nMlLfsf13U9",
+        "Marketplace": "fldjY0EcKGvnjWXs0",
+        "Status": "fldgdIzMbeiCA7dto",
+        "Category": "fld5P8kmfD6V3M1oj",
+        "Source Location": "fldeLCVqFTF4eqjyw",
+        "Date Sourced": "fldToZUmJ5eZQs3If",
+        "Date Sold": "fld07Hzug8bksarTj",
+        "Photos": "fldxOCVa0k9Qwp0Yu",
+        "Cloud Folder Link": "fldHp6adgnI3OfBcH",
+        "Notes": "fldOoqDcxCd0uKDfl",
+        "Net Profit": "fldhAkZKs3DraKNXx",
+        "ROI %": "fldE6pSNiKfw9esFI",
+        "Days to Sell": "fldtLfhjndMihoC3z"
+      }
+    },
     "System Architecture": {
       "id": "tblyv8sVMCRlTIL6q",
       "note": "Live registry of every agent/tool/data-flow in the agentic operation.",

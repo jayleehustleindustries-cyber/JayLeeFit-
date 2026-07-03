@@ -1,0 +1,175 @@
+<style>
+  :root{
+    --bg:#070B18; --panel:#0C1326; --panel-2:#111a31;
+    --ink:#E9EDF9; --muted:#8b97b6; --faint:#5f6b8c;
+    --line:rgba(120,140,190,.16); --line-2:rgba(120,140,190,.30);
+    --amber:#F5B33C; --cyan:#4ED0E6; --violet:#8B7BF0; --green:#43D17F;
+    --spine:rgba(78,208,230,.35);
+    --display:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  :root[data-theme="light"]{
+    --bg:#EEF1F8; --panel:#FFFFFF; --panel-2:#F4F7FD;
+    --ink:#121a2c; --muted:#586080; --faint:#8a93ad;
+    --line:rgba(20,30,55,.12); --line-2:rgba(20,30,55,.22);
+    --amber:#B4610A; --cyan:#0E7C92; --violet:#6B54D8; --green:#0F9D58;
+    --spine:rgba(14,124,146,.30);
+  }
+  @media (prefers-color-scheme:light){
+    :root{
+      --bg:#EEF1F8; --panel:#FFFFFF; --panel-2:#F4F7FD;
+      --ink:#121a2c; --muted:#586080; --faint:#8a93ad;
+      --line:rgba(20,30,55,.12); --line-2:rgba(20,30,55,.22);
+      --amber:#B4610A; --cyan:#0E7C92; --violet:#6B54D8; --green:#0F9D58;
+      --spine:rgba(14,124,146,.30);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#070B18; --panel:#0C1326; --panel-2:#111a31;
+    --ink:#E9EDF9; --muted:#8b97b6; --faint:#5f6b8c;
+    --line:rgba(120,140,190,.16); --line-2:rgba(120,140,190,.30);
+    --amber:#F5B33C; --cyan:#4ED0E6; --violet:#8B7BF0; --green:#43D17F;
+    --spine:rgba(78,208,230,.35);
+  }
+  *{box-sizing:border-box}
+  .w{background:var(--bg);color:var(--ink);font-family:var(--display);
+    padding:clamp(22px,5vw,56px) clamp(16px,4vw,40px);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+  .head{max-width:900px;margin:0 auto 34px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+  h1{margin:.35em 0 0;font-size:clamp(26px,4.4vw,42px);letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+  .sub{color:var(--muted);margin:.5em 0 0;max-width:60ch}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:18px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+  .chart{max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:0}
+  .tier{width:100%;display:flex;flex-direction:column;align-items:center}
+  .tierlab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .rowcards{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:100%}
+  .spine{width:2px;height:26px;background:linear-gradient(var(--spine),transparent);position:relative;overflow:hidden}
+  .spine::after{content:"";position:absolute;left:-1px;width:4px;height:8px;border-radius:2px;background:var(--cyan);
+    animation:flow 2.4s linear infinite}
+  @keyframes flow{0%{top:-8px;opacity:0}20%{opacity:1}100%{top:26px;opacity:0}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 17px;
+    min-width:190px;max-width:260px;position:relative;transition:transform .16s ease,box-shadow .2s ease,border-color .16s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 16px 34px -20px var(--accentc,var(--cyan));border-color:color-mix(in srgb,var(--accentc,var(--cyan)) 50%,var(--line))}
+  .card::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--accentc,var(--cyan))}
+  .role{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accentc,var(--cyan))}
+  .card h3{margin:7px 0 3px;font-size:15.5px;letter-spacing:-.01em}
+  .card p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .card .tool{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:7px}
+
+  .k-human{--accentc:var(--green)}
+  .k-ceo{--accentc:var(--amber)}
+  .k-orch{--accentc:var(--violet)}
+  .k-mgmt{--accentc:var(--cyan)}
+  .k-crew{--accentc:var(--faint)}
+  .k-gate{--accentc:var(--amber)}
+
+  .ceo{min-width:280px;background:linear-gradient(180deg,color-mix(in srgb,var(--amber) 12%,var(--panel)),var(--panel))}
+  .gatewrap{width:100%;background:color-mix(in srgb,var(--amber) 7%,var(--panel));border:1px dashed var(--line-2);
+    border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .gatechain{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:10px}
+  .arrow{align-self:center;color:var(--faint);font-family:var(--mono);font-size:16px}
+  .out{background:var(--green);color:#04140b;font-weight:800;border:none}
+  .out .role{color:rgba(4,20,11,.7)}
+  .out p{color:rgba(4,20,11,.75)}
+  :root[data-theme="light"] .out{color:#04140b}
+
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  .foot{max-width:900px;margin:30px auto 0;font-family:var(--mono);font-size:11.5px;color:var(--faint);text-align:center}
+  @media (prefers-reduced-motion:reduce){.spine::after{animation:none}.reveal{opacity:1;transform:none}}
+  @media (max-width:560px){.card{min-width:100%}.arrow{transform:rotate(90deg)}}
+</style>
+
+<div class="w">
+  <header class="head">
+    <span class="eyebrow">JayLeeFit · Agent Operating Chain</span>
+    <h1>One CEO agent. A crew that runs the work. A gate that guards the brand.</h1>
+    <p class="sub">A social-media production org where a CEO agent sets direction, an orchestrator dispatches the crew, and nothing ships until QA, Analytics, and a human sign off.</p>
+    <div class="legend">
+      <span><i style="background:var(--amber)"></i> Command</span>
+      <span><i style="background:var(--violet)"></i> Orchestration</span>
+      <span><i style="background:var(--cyan)"></i> Management</span>
+      <span><i style="background:var(--faint)"></i> Crew worker</span>
+      <span><i style="background:var(--green)"></i> Human / output</span>
+    </div>
+  </header>
+
+  <div class="chart">
+    <!-- Human oversight -->
+    <div class="tier reveal">
+      <div class="tierlab">Oversight</div>
+      <div class="rowcards">
+        <div class="card k-human"><span class="role">Human in the loop</span><h3>You (Jay)</h3><p>Set the mission, approve the plan, and hold the final sign-off before anything publishes.</p></div>
+      </div>
+    </div>
+    <div class="spine"></div>
+
+    <!-- CEO -->
+    <div class="tier reveal">
+      <div class="tierlab">Command</div>
+      <div class="rowcards">
+        <div class="card k-ceo ceo"><span class="role">CEO Action Agent</span><h3>Strategy &amp; priorities</h3><p>Turns your goals into the week's objective and ROI targets, then hands off to the orchestrator.</p></div>
+      </div>
+    </div>
+    <div class="spine"></div>
+
+    <!-- Orchestrator -->
+    <div class="tier reveal">
+      <div class="tierlab">Orchestration</div>
+      <div class="rowcards">
+        <div class="card k-orch"><span class="role">Main Orchestration Agent</span><h3>Dispatch &amp; routing</h3><p>Runs the schedule, assigns each job to the right crew agent, and enforces the gate.</p><div class="tool">n8n / Make</div></div>
+      </div>
+    </div>
+    <div class="spine"></div>
+
+    <!-- Management -->
+    <div class="tier reveal">
+      <div class="tierlab">Management agents</div>
+      <div class="rowcards">
+        <div class="card k-mgmt"><span class="role">Analytics</span><h3>Plans the work</h3><p>Reads performance, ranks winners, writes the content plan.</p><div class="tool">Metricool · Airtable</div></div>
+        <div class="card k-mgmt"><span class="role">Research</span><h3>Briefs the work</h3><p>Turns the plan into hooks, formats, and references.</p><div class="tool">Web</div></div>
+      </div>
+    </div>
+    <div class="spine"></div>
+
+    <!-- Crew -->
+    <div class="tier reveal">
+      <div class="tierlab">Crew workers</div>
+      <div class="rowcards">
+        <div class="card k-crew"><span class="role">Media Engine</span><h3>Generates assets</h3><p>Cinematic 9:16 stills &amp; video from briefs.</p><div class="tool">AI Studio · Higgsfield</div></div>
+        <div class="card k-crew"><span class="role">Editing / Clipping</span><h3>Cuts &amp; captions</h3><p>Clips long footage, adds hooks and captions.</p><div class="tool">Descript</div></div>
+        <div class="card k-crew"><span class="role">Publishing</span><h3>Schedules</h3><p>Queues approved posts at peak windows.</p><div class="tool">Metricool</div></div>
+      </div>
+    </div>
+    <div class="spine"></div>
+
+    <!-- Gate -->
+    <div class="tier reveal">
+      <div class="tierlab">End-of-workflow gate</div>
+      <div class="gatewrap">
+        <div class="gatechain">
+          <div class="card k-gate"><span class="role">QA Agent</span><h3>Brand + hook check</h3><p>Rejects weak hooks, baked AI text, off-brand grade.</p></div>
+          <span class="arrow">→</span>
+          <div class="card k-mgmt"><span class="role">Analytical Agent</span><h3>Predicts &amp; scores</h3><p>Virality score and fit against what's worked.</p></div>
+          <span class="arrow">→</span>
+          <div class="card k-human"><span class="role">Human review</span><h3>Final sign-off</h3><p>You approve. On call for anything ambiguous.</p></div>
+          <span class="arrow">→</span>
+          <div class="card out"><span class="role">Output</span><h3>Published</h3><p>Live at Wed–Fri 10:00 / 18:00 PT.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">SOURCE OF TRUTH · AIRTABLE · RESULTS LOOP BACK TO ANALYTICS FOR NEXT WEEK</p>
+</div>
+
+<script>
+  (function(){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{threshold:.15});
+    document.querySelectorAll(".reveal").forEach(function(e){io.observe(e);});
+  })();
+</script>
