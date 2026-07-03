@@ -3,7 +3,7 @@
  * Imgur, a phone upload host, whatever the seller used) — a plain <img> is
  * used instead of next/image so we don't need to pre-register every
  * possible photo host in next.config. Falls back to a stylized placeholder
- * "no photo yet" tag until a real image URL is added to the sheet row.
+ * until a real image URL is added to the sheet row.
  */
 export default function ProductImage({
   src,
@@ -21,9 +21,11 @@ export default function ProductImage({
 
   return (
     <div
-      className={`halftone flex h-full w-full flex-col items-center justify-center gap-2 bg-concrete text-mute ${className}`}
+      className={`halftone flex h-full w-full flex-col items-center justify-center gap-2 bg-panel text-ash ${className}`}
     >
-      <span className="font-display text-3xl tracking-wide text-line">RE:UP</span>
+      <span className="font-display text-2xl font-semibold tracking-wide text-ash/40">
+        OLD LIGHT
+      </span>
       <span className="font-mono text-[10px] uppercase tracking-widest">
         Photo coming soon
       </span>

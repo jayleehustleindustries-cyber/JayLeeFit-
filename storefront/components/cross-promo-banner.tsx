@@ -17,10 +17,10 @@ export default function CrossPromoBanner() {
   return (
     <a
       href={url}
-      className="group flex items-center justify-center gap-2 border-t border-line bg-concrete px-4 py-3 text-center font-mono text-[11px] tracking-widest text-mute uppercase transition-colors hover:text-acid"
+      className="group flex items-center justify-center gap-2 border-t border-line bg-panel px-4 py-3 text-center font-mono text-[11px] tracking-widest text-ash uppercase transition-colors hover:text-gold"
     >
       Also part of the JayLeeFit family
-      <span className="text-paper transition-colors group-hover:text-acid">
+      <span className="text-chalk transition-colors group-hover:text-gold">
         — {label} →
       </span>
     </a>

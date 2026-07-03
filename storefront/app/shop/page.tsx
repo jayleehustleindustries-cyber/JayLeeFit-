@@ -34,10 +34,10 @@ export default async function ShopPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="font-display text-4xl tracking-wide">SHOP</h1>
-      <p className="mt-2 font-mono text-xs uppercase tracking-widest text-mute">
+      <h1 className="font-display text-4xl font-semibold tracking-wide">SHOP</h1>
+      <p className="mt-2 font-mono text-xs uppercase tracking-widest text-ash">
         {filtered.length} piece{filtered.length !== 1 ? "s" : ""}
-        {saleOnly ? " · steals only" : ""}
+        {saleOnly ? " · eclipse pieces only" : ""}
       </p>
 
       <form
@@ -49,10 +49,10 @@ export default async function ShopPage({
           <select
             name="category"
             defaultValue={category}
-            className="border border-line bg-transparent px-3 py-2 text-paper"
+            className="border border-line bg-transparent px-3 py-2 text-chalk"
           >
             {["All", "Men", "Women", "Unisex"].map((c) => (
-              <option key={c} value={c} className="bg-ink">
+              <option key={c} value={c} className="bg-void">
                 {c}
               </option>
             ))}
@@ -64,13 +64,13 @@ export default async function ShopPage({
           <select
             name="size"
             defaultValue={size}
-            className="border border-line bg-transparent px-3 py-2 text-paper"
+            className="border border-line bg-transparent px-3 py-2 text-chalk"
           >
-            <option value="All" className="bg-ink">
+            <option value="All" className="bg-void">
               All
             </option>
             {sizes.map((s) => (
-              <option key={s} value={s} className="bg-ink">
+              <option key={s} value={s} className="bg-void">
                 {s}
               </option>
             ))}
@@ -82,28 +82,28 @@ export default async function ShopPage({
           <select
             name="sort"
             defaultValue={sort}
-            className="border border-line bg-transparent px-3 py-2 text-paper"
+            className="border border-line bg-transparent px-3 py-2 text-chalk"
           >
-            <option value="newest" className="bg-ink">Newest</option>
-            <option value="price-asc" className="bg-ink">Price: Low to High</option>
-            <option value="price-desc" className="bg-ink">Price: High to Low</option>
-            <option value="discount" className="bg-ink">Biggest Discount</option>
+            <option value="newest" className="bg-void">Newest</option>
+            <option value="price-asc" className="bg-void">Price: Low to High</option>
+            <option value="price-desc" className="bg-void">Price: High to Low</option>
+            <option value="discount" className="bg-void">Biggest Discount</option>
           </select>
         </label>
 
         <label className="flex items-center gap-2 pb-2">
           <input type="checkbox" name="sale" value="1" defaultChecked={saleOnly} />
-          Steals only (40%+ off)
+          40%+ off only
         </label>
 
-        <button type="submit" className="bg-acid px-5 py-2 font-bold text-ink">
+        <button type="submit" className="bg-gold px-5 py-2 font-bold text-void">
           Apply
         </button>
       </form>
 
       {filtered.length === 0 ? (
-        <p className="mt-16 text-center font-mono text-sm text-mute">
-          Nothing matches those filters right now — check back, new drops land weekly.
+        <p className="mt-16 text-center font-mono text-sm text-ash">
+          Nothing matches those filters right now — new light arrives weekly.
         </p>
       ) : (
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">

@@ -1,11 +1,13 @@
-# RE:UP — custom resale storefront
+# Old Light — custom resale storefront
 
 A fully custom-designed (not a Shopify theme) storefront for reselling
-pre-owned men's and women's apparel. Urban/streetwear aesthetic: jet black +
-acid yellow, condensed display type, barcode/price-tag motifs, one-off
-inventory framed as "grab it before it's gone."
+pre-owned men's and women's apparel. Celestial/night-sky aesthetic: near-black
++ warm gold, an elegant serif for names, a moon-phase condition grading
+system, and one-off inventory framed as "grab it before the light moves on."
 
-Brand: **RE:UP** — *"Deadstock deals. Pre-owned heat."*
+Brand: **Old Light** — *"Secondhand, sold under old light."* The core idea:
+starlight you see tonight already left its source years ago, arriving
+"used" but still lit — the same trick a good secondhand find pulls off.
 
 ## Stack
 

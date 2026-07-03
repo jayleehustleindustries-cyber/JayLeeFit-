@@ -3,13 +3,13 @@ import type { Product } from "@/lib/types";
 import ProductImage from "./product-image";
 import PriceTag from "./price-tag";
 import Badge from "./badge";
-import ConditionBadge from "./condition-badge";
+import MoonPhase from "./moon-phase";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/shop/${product.slug}`}
-      className="group flex flex-col border border-line bg-ink transition-colors hover:border-acid"
+      className="group flex flex-col border border-line bg-void transition-colors hover:border-gold"
     >
       <div className="relative aspect-[4/5] overflow-hidden border-b border-line">
         <ProductImage
@@ -25,17 +25,17 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-mute">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-ash">
               {product.brand}
             </p>
-            <h3 className="font-sans text-sm font-semibold leading-snug text-paper">
+            <h3 className="font-sans text-sm font-semibold leading-snug text-chalk">
               {product.name}
             </h3>
           </div>
         </div>
         <div className="flex items-center justify-between gap-2">
-          <ConditionBadge condition={product.condition} />
-          <span className="font-mono text-[10px] text-mute">{product.size}</span>
+          <MoonPhase score={product.conditionScore} condition={product.condition} />
+          <span className="font-mono text-[10px] text-ash">{product.size}</span>
         </div>
         <PriceTag price={product.price} originalPrice={product.originalPrice} />
       </div>

@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     console.log(
-      `[RE:UP] Order paid — session ${session.id}, total ${
+      `[Old Light] Order paid — session ${session.id}, total ${
         (session.amount_total ?? 0) / 100
       } ${session.currency?.toUpperCase()}. Mark the purchased SKU(s) sold in the inventory sheet.`
     );

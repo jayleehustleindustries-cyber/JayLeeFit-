@@ -25,9 +25,9 @@ export default async function CheckoutSuccessPage({
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-24 text-center sm:px-6">
       <ClearCartOnMount />
-      <p className="font-mono text-xs uppercase tracking-widest text-acid">Order confirmed</p>
-      <h1 className="mt-4 font-display text-4xl tracking-wide">SOLD. IT&apos;S YOURS.</h1>
-      <p className="mt-4 max-w-md font-sans text-sm text-mute">
+      <p className="font-mono text-xs uppercase tracking-widest text-gold">Order confirmed</p>
+      <h1 className="mt-4 font-display text-4xl font-semibold tracking-wide">SOLD. IT&apos;S YOURS.</h1>
+      <p className="mt-4 max-w-md font-sans text-sm text-ash">
         {amountTotal
           ? `We charged ${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amountTotal)}. `
           : ""}
@@ -37,7 +37,7 @@ export default async function CheckoutSuccessPage({
       </p>
       <Link
         href="/shop"
-        className="mt-8 bg-acid px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest text-ink hover:opacity-90"
+        className="mt-8 bg-gold px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest text-void hover:opacity-90"
       >
         Keep Browsing
       </Link>

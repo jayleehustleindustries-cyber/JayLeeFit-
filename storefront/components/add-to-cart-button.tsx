@@ -11,7 +11,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
     return (
       <button
         disabled
-        className="w-full border border-line bg-concrete py-3 font-mono text-xs font-bold uppercase tracking-widest text-mute"
+        className="w-full border border-line bg-panel py-3 font-mono text-xs font-bold uppercase tracking-widest text-ash"
       >
         Sold Out
       </button>
@@ -22,7 +22,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
     <button
       onClick={() => addItem(product)}
       disabled={inCart}
-      className="w-full bg-acid py-3 font-mono text-xs font-bold uppercase tracking-widest text-ink transition-opacity hover:opacity-90 disabled:opacity-60"
+      className="w-full bg-gold py-3 font-mono text-xs font-bold uppercase tracking-widest text-void transition-opacity hover:opacity-90 disabled:opacity-60"
     >
       {inCart ? "In Cart" : "Add To Cart — 1 Available"}
     </button>

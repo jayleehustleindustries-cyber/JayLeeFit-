@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getProductBySlug, getProducts } from "@/lib/products";
 import ProductImage from "@/components/product-image";
 import PriceTag from "@/components/price-tag";
-import ConditionBadge from "@/components/condition-badge";
+import MoonPhase from "@/components/moon-phase";
 import Badge from "@/components/badge";
 import AddToCartButton from "@/components/add-to-cart-button";
 import ProductCard from "@/components/product-card";
@@ -14,9 +14,9 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: "Not found — RE:UP" };
+  if (!product) return { title: "Not found — Old Light" };
   return {
-    title: `${product.name} — RE:UP`,
+    title: `${product.name} — Old Light`,
     description: product.description,
   };
 }
@@ -49,32 +49,34 @@ export default async function ProductPage({
           </div>
 
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-mute">
+            <p className="font-mono text-xs uppercase tracking-widest text-ash">
               {product.brand}
             </p>
-            <h1 className="font-display text-3xl tracking-wide sm:text-4xl">{product.name}</h1>
+            <h1 className="font-display text-3xl font-semibold tracking-wide sm:text-4xl">
+              {product.name}
+            </h1>
           </div>
 
           <PriceTag price={product.price} originalPrice={product.originalPrice} size="lg" />
 
           <div className="flex flex-wrap items-center gap-3">
-            <ConditionBadge condition={product.condition} />
-            <span className="font-mono text-xs uppercase tracking-widest text-mute">
+            <MoonPhase score={product.conditionScore} condition={product.condition} />
+            <span className="font-mono text-xs uppercase tracking-widest text-ash">
               Size {product.size}
             </span>
-            <span className="font-mono text-xs uppercase tracking-widest text-mute">
+            <span className="font-mono text-xs uppercase tracking-widest text-ash">
               SKU {product.sku}
             </span>
           </div>
 
-          <p className="font-sans text-sm leading-relaxed text-paper/90">
+          <p className="font-sans text-sm leading-relaxed text-chalk/90">
             {product.description}
           </p>
 
-          <p className="font-mono text-xs uppercase tracking-widest text-warning">
+          <p className="font-mono text-xs uppercase tracking-widest text-ember">
             {product.inStock
-              ? "Only 1 available — once it's gone, it's gone."
-              : "This one's sold — check the shop for the next drop."}
+              ? "Only 1 available — once the light moves on, it's gone."
+              : "This one's sold — check the shop for the next find."}
           </p>
 
           <AddToCartButton product={product} />
@@ -83,7 +85,9 @@ export default async function ProductPage({
 
       {related.length > 0 && (
         <div className="mt-20">
-          <h2 className="mb-6 font-display text-2xl tracking-wide">MORE {product.category.toUpperCase()}</h2>
+          <h2 className="mb-6 font-display text-2xl font-semibold tracking-wide">
+            MORE {product.category.toUpperCase()}
+          </h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.sku} product={p} />

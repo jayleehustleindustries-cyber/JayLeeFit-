@@ -36,21 +36,21 @@ export default function CartDrawer() {
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-ink/70 transition-opacity ${
+        className={`fixed inset-0 z-40 bg-void/70 transition-opacity ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={closeCart}
       />
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-line bg-ink transition-transform ${
+        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-line bg-void transition-transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between border-b border-line p-4">
-          <h2 className="font-display text-xl tracking-wide">CART</h2>
+          <h2 className="font-display text-xl font-semibold tracking-wide">CART</h2>
           <button
             onClick={closeCart}
-            className="font-mono text-xs uppercase tracking-widest text-mute hover:text-acid"
+            className="font-mono text-xs uppercase tracking-widest text-ash hover:text-gold"
           >
             Close ✕
           </button>
@@ -58,8 +58,9 @@ export default function CartDrawer() {
 
         <div className="flex-1 overflow-y-auto p-4">
           {items.length === 0 ? (
-            <p className="font-mono text-sm text-mute">
-              Empty. Every piece here is one-of-one — go grab it before someone else does.
+            <p className="font-mono text-sm text-ash">
+              Empty. Every piece here already caught its light once — go claim it before
+              it moves on.
             </p>
           ) : (
             <ul className="flex flex-col gap-4">
@@ -70,17 +71,17 @@ export default function CartDrawer() {
                   </div>
                   <div className="flex flex-1 flex-col justify-between p-2">
                     <div>
-                      <p className="font-mono text-[10px] uppercase tracking-widest text-mute">
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-ash">
                         {item.brand}
                       </p>
                       <p className="text-sm font-semibold leading-snug">{item.name}</p>
-                      <p className="font-mono text-[10px] text-mute">Size {item.size}</p>
+                      <p className="font-mono text-[10px] text-ash">Size {item.size}</p>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-sm">{formatPrice(item.price)}</span>
                       <button
                         onClick={() => removeItem(item.sku)}
-                        className="font-mono text-[10px] uppercase tracking-widest text-mute hover:text-warning"
+                        className="font-mono text-[10px] uppercase tracking-widest text-ash hover:text-ember"
                       >
                         Remove
                       </button>
@@ -94,21 +95,21 @@ export default function CartDrawer() {
 
         <div className="border-t border-line p-4">
           <div className="mb-3 flex items-center justify-between font-mono text-sm">
-            <span className="uppercase tracking-widest text-mute">Subtotal</span>
+            <span className="uppercase tracking-widest text-ash">Subtotal</span>
             <span className="font-bold">{formatPrice(subtotal)}</span>
           </div>
-          {error && <p className="mb-2 font-mono text-xs text-warning">{error}</p>}
+          {error && <p className="mb-2 font-mono text-xs text-ember">{error}</p>}
           <button
             onClick={handleCheckout}
             disabled={items.length === 0 || loading}
-            className="w-full bg-acid py-3 font-mono text-xs font-bold uppercase tracking-widest text-ink transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="w-full bg-gold py-3 font-mono text-xs font-bold uppercase tracking-widest text-void transition-opacity hover:opacity-90 disabled:opacity-40"
           >
             {loading ? "Redirecting…" : "Checkout"}
           </button>
           <Link
             href="/shop"
             onClick={closeCart}
-            className="mt-3 block text-center font-mono text-[10px] uppercase tracking-widest text-mute hover:text-acid"
+            className="mt-3 block text-center font-mono text-[10px] uppercase tracking-widest text-ash hover:text-gold"
           >
             Keep Browsing
           </Link>

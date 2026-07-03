@@ -4,10 +4,14 @@ import type { Product } from "./types";
  * Local fallback catalog. Used whenever GOOGLE_SHEET_ID is not set, or the
  * live sheet fetch fails/returns empty — keeps the storefront demoable and
  * keeps `next build` working without network access to Sheets.
+ *
+ * Tags map to Plate IV's four badge types: SHOOTING STAR (flash/last one),
+ * FIXED STAR (timeless classic), ECLIPSE (rare price drop), RETROGRADE
+ * (vintage rediscovery).
  */
 export const sampleProducts: Product[] = [
   {
-    sku: "RU-001",
+    sku: "OL-001",
     slug: "carhartt-detroit-jacket-vintage-blanket-lined",
     name: "Detroit Jacket — Blanket Lined",
     brand: "Carhartt",
@@ -21,11 +25,11 @@ export const sampleProducts: Product[] = [
     description:
       "Vintage duck canvas Detroit jacket, blanket lined for cold drops. Barely worn, no fade on the collar, snaps all intact. This is the one that outlives you.",
     images: [],
-    tags: ["STEAL", "RARE"],
+    tags: ["FIXED STAR"],
     inStock: true,
   },
   {
-    sku: "RU-002",
+    sku: "OL-002",
     slug: "nike-air-force-1-og-white",
     name: "Air Force 1 '07 — Triple White",
     brand: "Nike",
@@ -39,11 +43,11 @@ export const sampleProducts: Product[] = [
     description:
       "The uniform. Light creasing on the toe box, sole still crisp, laces swapped fresh. Cleaned and ready to ship same day.",
     images: [],
-    tags: ["STEAL"],
+    tags: ["SHOOTING STAR"],
     inStock: true,
   },
   {
-    sku: "RU-003",
+    sku: "OL-003",
     slug: "levis-501-vintage-90s-medium-wash",
     name: "501 Vintage — '90s Medium Wash",
     brand: "Levi's",
@@ -57,11 +61,11 @@ export const sampleProducts: Product[] = [
     description:
       "Actual '90s pair, not a reissue. Broken in exactly right, no rips, button fly intact. Redline selvedge peek at the cuff.",
     images: [],
-    tags: ["RARE", "LAST ONE"],
+    tags: ["RETROGRADE", "SHOOTING STAR"],
     inStock: true,
   },
   {
-    sku: "RU-004",
+    sku: "OL-004",
     slug: "the-north-face-1996-retro-nuptse",
     name: "1996 Retro Nuptse Vest",
     brand: "The North Face",
@@ -75,11 +79,11 @@ export const sampleProducts: Product[] = [
     description:
       "Down-filled, box-quilted, zero flat spots. One small mark on the interior tag, invisible when worn. Packs its own stuff sack.",
     images: [],
-    tags: ["STEAL"],
+    tags: ["ECLIPSE"],
     inStock: true,
   },
   {
-    sku: "RU-005",
+    sku: "OL-005",
     slug: "adidas-firebird-track-jacket-y2k",
     name: "Firebird Track Jacket — Y2K",
     brand: "Adidas",
@@ -93,11 +97,11 @@ export const sampleProducts: Product[] = [
     description:
       "Full zip, tricolor stripes, the exact archive cut everyone's been asking for. Light pilling under the arms, nothing structural.",
     images: [],
-    tags: [],
+    tags: ["RETROGRADE"],
     inStock: true,
   },
   {
-    sku: "RU-006",
+    sku: "OL-006",
     slug: "dickies-874-work-pant-double-knee",
     name: "874 Work Pant — Double Knee",
     brand: "Dickies",
@@ -111,11 +115,11 @@ export const sampleProducts: Product[] = [
     description:
       "Reinforced double-knee, straight leg, faded to a perfect charcoal. Hemmed once, clean stitch, no patches needed.",
     images: [],
-    tags: ["STEAL"],
+    tags: ["SHOOTING STAR"],
     inStock: true,
   },
   {
-    sku: "RU-007",
+    sku: "OL-007",
     slug: "patagonia-retro-x-fleece-vintage",
     name: "Retro-X Fleece Vest",
     brand: "Patagonia",
@@ -129,11 +133,11 @@ export const sampleProducts: Product[] = [
     description:
       "Deep pile fleece with the shell face, zero pilling. This is the one that gets stolen by a friend within a week — hide it well.",
     images: [],
-    tags: ["RARE"],
+    tags: ["FIXED STAR"],
     inStock: true,
   },
   {
-    sku: "RU-008",
+    sku: "OL-008",
     slug: "champion-reverse-weave-hoodie-vintage",
     name: "Reverse Weave Hoodie",
     brand: "Champion",
@@ -147,11 +151,11 @@ export const sampleProducts: Product[] = [
     description:
       "Heavyweight loopback fleece, side panel construction, that vintage droop in the hood. Soft as it's ever going to get.",
     images: [],
-    tags: [],
+    tags: ["ECLIPSE"],
     inStock: true,
   },
   {
-    sku: "RU-009",
+    sku: "OL-009",
     slug: "dr-martens-1460-black-smooth",
     name: "1460 Boot — Black Smooth",
     brand: "Dr. Martens",
@@ -165,11 +169,11 @@ export const sampleProducts: Product[] = [
     description:
       "Already broken in so you don't have to be. Sole units full tread, leather conditioned, laces fresh. Yellow stitch intact.",
     images: [],
-    tags: ["LAST ONE"],
+    tags: ["SHOOTING STAR"],
     inStock: true,
   },
   {
-    sku: "RU-010",
+    sku: "OL-010",
     slug: "stussy-8-ball-tee-vintage-print",
     name: "8-Ball Tee — Vintage Print",
     brand: "Stüssy",
@@ -183,7 +187,7 @@ export const sampleProducts: Product[] = [
     description:
       "Cracked print, exactly the way it should be. One small hem fray, priced for it. This is a wear-it-in-immediately piece.",
     images: [],
-    tags: ["STEAL"],
+    tags: ["SHOOTING STAR"],
     inStock: false,
   },
 ];

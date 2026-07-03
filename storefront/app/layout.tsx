@@ -1,31 +1,34 @@
 import type { Metadata } from "next";
-import { Anton, Archivo, JetBrains_Mono } from "next/font/google";
+import { Cormorant_Garamond, Libre_Franklin, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import CartDrawer from "@/components/cart-drawer";
 
-const anton = Anton({
-  variable: "--font-anton",
-  weight: "400",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  weight: ["400", "600"],
+  style: ["normal", "italic"],
   subsets: ["latin"],
 });
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const libreFranklin = Libre_Franklin({
+  variable: "--font-libre",
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
 });
 
-const jetbrains = JetBrains_Mono({
-  variable: "--font-jetbrains",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "RE:UP — Deadstock deals. Pre-owned heat.",
+  title: "OLD LIGHT — Secondhand, Sold Under Old Light",
   description:
-    "Authenticated pre-owned men's and women's streetwear at prices retail can't touch. New drops weekly.",
+    "Authenticated pre-owned men's and women's clothing, graded by the moon and priced like it already lived a life. New finds weekly.",
 };
 
 export default function RootLayout({
@@ -36,9 +39,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${archivo.variable} ${jetbrains.variable} h-full`}
+      className={`${cormorant.variable} ${libreFranklin.variable} ${spaceMono.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col bg-ink text-paper font-sans antialiased">
+      <body className="min-h-full flex flex-col bg-void text-chalk font-sans antialiased">
         <CartProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

@@ -14,11 +14,11 @@ export default function PriceTag({
 
   return (
     <div className="flex items-baseline gap-2 font-mono">
-      <span className={`${priceClass} font-bold text-paper`}>{formatPrice(price)}</span>
+      <span className={`${priceClass} font-bold text-chalk`}>{formatPrice(price)}</span>
       {originalPrice > price && (
         <>
-          <span className="text-mute line-through">{formatPrice(originalPrice)}</span>
-          <span className="text-acid">-{percentOff}%</span>
+          <span className="text-ash line-through">{formatPrice(originalPrice)}</span>
+          <span className="text-gold">-{percentOff}%</span>
         </>
       )}
     </div>

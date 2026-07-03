@@ -1,34 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0d0d0d;
-  --foreground: #f2f0ea;
+  --background: #0a0a14;
+  --foreground: #ede6d8;
 
-  /* RE:UP brand tokens */
-  --color-ink: #0d0d0d;
-  --color-paper: #f2f0ea;
-  --color-acid: #d4ff3f;
-  --color-warning: #ff3b30;
-  --color-concrete: #1a1a1a;
-  --color-line: #2c2c2c;
-  --color-mute: #8a8a82;
+  /* Old Light brand tokens */
+  --color-void: #0a0a14;
+  --color-panel: #15162c;
+  --color-gold: #c9a24e;
+  --color-goldsoft: #e0c384;
+  --color-umbra: #a894cf;
+  --color-chalk: #ede6d8;
+  --color-ash: #948fb0;
+  --color-ember: #b6633f;
+  --color-line: #2a2b45;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --color-ink: var(--color-ink);
-  --color-paper: var(--color-paper);
-  --color-acid: var(--color-acid);
-  --color-warning: var(--color-warning);
-  --color-concrete: var(--color-concrete);
+  --color-void: var(--color-void);
+  --color-panel: var(--color-panel);
+  --color-gold: var(--color-gold);
+  --color-goldsoft: var(--color-goldsoft);
+  --color-umbra: var(--color-umbra);
+  --color-chalk: var(--color-chalk);
+  --color-ash: var(--color-ash);
+  --color-ember: var(--color-ember);
   --color-line: var(--color-line);
-  --color-mute: var(--color-mute);
 
-  --font-display: var(--font-anton);
-  --font-sans: var(--font-archivo);
-  --font-mono: var(--font-jetbrains);
+  --font-display: var(--font-cormorant);
+  --font-sans: var(--font-libre);
+  --font-mono: var(--font-space-mono);
 }
 
 body {
@@ -38,7 +42,7 @@ body {
 
 @layer utilities {
   .text-stroke {
-    -webkit-text-stroke: 1px var(--color-paper);
+    -webkit-text-stroke: 1px var(--color-chalk);
   }
 
   .bg-noise {
@@ -63,4 +67,40 @@ body {
       transform: translateX(-50%);
     }
   }
+}
+
+/* Moon-phase condition icon — a stylized disc, not a realistic render.
+   The dark overlay is clipped at a fixed inset per phase rather than
+   computed, since there are only four named grades to support. */
+.moon {
+  --moon-size: 1.6em;
+  display: inline-block;
+  width: var(--moon-size);
+  height: var(--moon-size);
+  border-radius: 50%;
+  background: var(--color-chalk);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(201, 162, 78, 0.35);
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-panel);
+}
+
+.moon.phase-full::after {
+  clip-path: inset(0 100% 0 0);
+}
+.moon.phase-gibbous::after {
+  clip-path: inset(0 0 0 78%);
+}
+.moon.phase-half::after {
+  clip-path: inset(0 0 0 50%);
+}
+.moon.phase-crescent::after {
+  clip-path: inset(0 0 0 22%);
 }

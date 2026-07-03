@@ -17,16 +17,16 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 bg-ink">
+    <header className="sticky top-0 z-30 bg-void">
       <Marquee />
       <div className="flex items-center justify-between border-b border-line px-4 py-3 sm:px-6">
-        <Link href="/" className="font-display text-2xl tracking-wide text-paper">
-          RE<span className="text-acid">:</span>UP
+        <Link href="/" className="font-display text-2xl font-semibold tracking-wide text-chalk">
+          OLD <span className="text-gold">LIGHT</span>
         </Link>
 
         <nav className="hidden items-center gap-6 font-mono text-xs font-bold uppercase tracking-widest sm:flex">
           {LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-acid">
+            <Link key={link.href} href={link.href} className="hover:text-gold">
               {link.label}
             </Link>
           ))}
@@ -35,7 +35,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <button
             onClick={openCart}
-            className="font-mono text-xs font-bold uppercase tracking-widest hover:text-acid"
+            className="font-mono text-xs font-bold uppercase tracking-widest hover:text-gold"
           >
             Cart ({count})
           </button>
@@ -55,7 +55,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="py-2 hover:text-acid"
+              className="py-2 hover:text-gold"
             >
               {link.label}
             </Link>

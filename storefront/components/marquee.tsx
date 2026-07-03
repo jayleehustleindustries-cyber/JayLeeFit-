@@ -1,16 +1,16 @@
 const DEFAULT_ITEMS = [
-  "AUTHENTICATED PRE-OWNED",
-  "NEW DROPS EVERY FRIDAY",
-  "UP TO 70% OFF RETAIL",
+  "EVERY PIECE ALREADY HAS A PAST",
+  "NEW FINDS UNDER OLD LIGHT, WEEKLY",
   "MEN'S & WOMEN'S",
-  "ONE-OFF PIECES — ONCE IT'S GONE, IT'S GONE",
+  "GRADED BY THE MOON, NOT A NUMBER",
+  "ONE-OF-ONE — ONCE IT'S GONE, IT'S GONE",
 ];
 
 export default function Marquee({ items = DEFAULT_ITEMS }: { items?: string[] }) {
   const track = [...items, ...items];
 
   return (
-    <div className="overflow-hidden border-y border-line bg-acid text-ink">
+    <div className="overflow-hidden border-y border-line bg-gold text-void">
       <div className="marquee-track flex w-max whitespace-nowrap py-2">
         {track.map((item, i) => (
           <span

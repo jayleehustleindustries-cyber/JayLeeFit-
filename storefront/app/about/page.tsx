@@ -5,43 +5,45 @@ export default function AboutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-      <p className="font-mono text-xs uppercase tracking-widest text-acid">About</p>
-      <h1 className="mt-2 font-display text-4xl tracking-wide sm:text-5xl">
-        WE THRIFT SO YOU DON&apos;T HAVE TO.
+      <p className="font-mono text-xs uppercase tracking-widest text-gold">About</p>
+      <h1 className="mt-2 font-display text-4xl font-semibold tracking-wide sm:text-5xl">
+        EVERYTHING HERE IS OLD LIGHT.
       </h1>
 
-      <div className="mt-8 flex flex-col gap-6 font-sans text-base leading-relaxed text-paper/90">
+      <div className="mt-8 flex flex-col gap-6 font-sans text-base leading-relaxed text-chalk/90">
         <p>
-          RE:UP started as one closet, one thrift run at a time. No warehouse, no
-          liquidation pallets, no bots sniping every good drop before you see it —
-          just real pieces, picked by hand, sold at what they&apos;re actually
-          worth.
+          Look up on a clear night and nothing you&apos;re looking at is really there
+          anymore — it&apos;s light that left years, centuries, sometimes longer ago,
+          only now arriving. Astronomers call it old light. It&apos;s the same trick a
+          good secondhand find pulls off: someone else already spent the years
+          breaking it in, softening the cotton, giving it a crease that only comes
+          from being worn and loved — and it still arrives at you as if freshly lit.
         </p>
         <p>
-          Every item gets graded honestly on a 1–10 condition scale, photographed
-          as-is, and priced below what you&apos;d pay chasing the same piece on a
-          resale app auction. One price. No bidding wars. No &quot;best offer&quot;
-          games.
+          We didn&apos;t make anything new here. One closet, one thrift run at a time —
+          no warehouse, no liquidation pallets, no bots sniping every good find before
+          you see it. Every item gets graded honestly, photographed as-is, and priced
+          below what you&apos;d pay chasing the same piece through a resale app&apos;s
+          bidding war. One price. No games.
         </p>
         <p>
-          Buying pre-owned isn&apos;t a compromise — it&apos;s the smarter move.
-          Better fabric than most of what&apos;s on shelves today, already broken
-          in, and one less garment in a landfill.
+          Old Light doesn&apos;t sell new. It sells things that already caught the
+          light once, and are ready to travel again.
         </p>
       </div>
 
       {showCrossPromo && (
         <div className="mt-12 border border-line p-6">
-          <p className="font-mono text-xs uppercase tracking-widest text-mute">
+          <p className="font-mono text-xs uppercase tracking-widest text-ash">
             From the same corner as
           </p>
           <a
             href={jayLeeFitUrl}
-            className="mt-2 inline-block font-display text-2xl tracking-wide text-paper hover:text-acid"
+            className="mt-2 inline-block font-display text-2xl font-semibold tracking-wide text-chalk hover:text-gold"
           >
             {jayLeeFitLabel} →
           </a>
-          <p className="mt-2 max-w-md font-sans text-sm text-mute">
+          <p className="mt-2 max-w-md font-sans text-sm text-ash">
             If you&apos;re here for the fits, you might also be into the fitness
             coaching side of the house.
           </p>
