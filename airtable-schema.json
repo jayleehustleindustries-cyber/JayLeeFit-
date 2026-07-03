@@ -70,6 +70,20 @@
         "Energy Level": "flduHGPSwT04fhGpz"
       }
     },
+    "System Architecture": {
+      "id": "tblyv8sVMCRlTIL6q",
+      "note": "Live registry of every agent/tool/data-flow in the agentic operation.",
+      "fields": {
+        "Component": "fldrf52d6oxc1jZ3S",
+        "Layer": "fldY9XPdxf5mPHQ22",
+        "Connected Tool": "fldT9eFiDeEAx7cDn",
+        "Role": "fldgFzmpYwnPCKTYT",
+        "Inputs": "fldikZ0nGRYQrevpu",
+        "Outputs": "fldvgnFm0J8Xv1UQz",
+        "Status": "fldJtlZRNtn9WcdsM",
+        "Phase": "fld1PyLFi2AGe4dmL"
+      }
+    },
     "Check-ins": {
       "id": "tblDfVBvRDjEhiaaY",
       "fields": {
