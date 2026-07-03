@@ -42,6 +42,7 @@ decisions with real money or brand risk unsupervised — see §6.
 | **Crew: Prompting/VO** | Higgsfield `generate_audio` for voiceover, driven by the script from the writer step. Not yet tested this session — needs a pilot the same way the image step got one. |
 | **Crew: Clip/Editing** | **Descript** (already connected: `import_media`, `prompt_project_agent`). Real capability, not hypothetical — it can trim, caption, and assemble from natural-language instructions today. |
 | **Crew: Video generation** | **Open item, not yet connected — see §4.** You asked for this to route through Veo 3.1 via Google Vertex AI rather than Higgsfield's video models. That's a real, sensible choice (Veo is a strong model) but it needs its own setup before it can be part of an automated loop. |
+| **QA Agent** | A Claude turn that reviews the assembled piece (script + visuals + edit) against the four brand pillars (§3) and basic technical quality — before a queue item is eligible to move to `Scheduled`. Named explicitly in the workflow diagram; added here to keep the doc and diagram in sync. |
 | **Analytics agents** | Metricool (`getAnalyticsDataByMetrics`) — **confirmed live**, real brand `jay_legacy_fit` connected across Instagram/TikTok/YouTube. Polled at 24h/72h/1wk after a post goes live, via three scheduled Routines per published asset. |
 | **Reviewing agents / "the meeting"** | A retro turn (fired by a Routine once the 1-week window closes) that reads the Performance rows for everything published that week, writes a synthesis to `AgentLog`, and proposes 1-3 next `Content Queue` ideas — flagged `Needs CEO Review`, not auto-launched. |
 
@@ -66,7 +67,7 @@ One row per content idea, from conception to published.
 |---|---|---|
 | Idea | single line text | primary field |
 | Pillar | single select | Fitness/Training, Motivation/Mindset, Personal Brand/Hustle, Evidence-Based Performance (see §3) |
-| Status | single select | Idea → Scripting → Assets In Progress → Ready To Publish → Scheduled → Published → Reviewed |
+| Status | single select | Idea → Scripting → Assets In Progress → QA Review → Scheduled → Published → Reviewed |
 | Script | long text | writer output |
 | Platform(s) | multiple select | Instagram, TikTok, YouTube |
 | Scheduled Date | date | |
