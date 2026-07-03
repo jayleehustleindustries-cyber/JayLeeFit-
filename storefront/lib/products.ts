@@ -25,11 +25,29 @@ function toBool(value: string): boolean {
   return v === "y" || v === "yes" || v === "true" || v === "1" || v === "in stock";
 }
 
+/** "$12.00" -> 12. parseFloat alone chokes on the leading currency symbol. */
+function toNumber(value: string): number {
+  const n = parseFloat(value.replace(/[^0-9.-]/g, ""));
+  return Number.isNaN(n) ? 0 : n;
+}
+
 function toCategory(value: string): Category {
   const v = value.trim().toLowerCase();
   if (v.startsWith("m")) return "Men";
   if (v.startsWith("w")) return "Women";
   return "Unisex";
+}
+
+/**
+ * The EHC Inventory Log doesn't have an "In Stock" column — availability has
+ * to be read off Inventory Status / Condition instead. Anything not
+ * explicitly gone (donated, liquidated, passed on, pulled from inventory)
+ * counts as available, since most rows are simply "not graded/listed yet."
+ */
+function isAvailable(inventoryStatus: string, condition: string): boolean {
+  const text = `${inventoryStatus} ${condition}`.toLowerCase();
+  const gone = ["donated", "liquidated", "passed / not purchased", "removed from inventory", "not for sale", "sold"];
+  return !gone.some((phrase) => text.includes(phrase));
 }
 
 function toConditionScore(condition: string, explicit?: string): number {
@@ -48,33 +66,50 @@ function splitMulti(value: string): string[] {
     .filter(Boolean);
 }
 
-function rowsToProducts(rows: Record<string, string>[]): Product[] {
+export function rowsToProducts(rows: Record<string, string>[]): Product[] {
   return rows
     .map((row): Product | null => {
-      const name = row["Name"] || row["Item"] || "";
+      const name =
+        row["SEO Listing Title"] || row["Name"] || row["Item Name"] || row["Item"] || "";
       if (!name) return null;
 
-      const sku = row["SKU"] || slugify(name).slice(0, 12).toUpperCase();
+      const sku = row["SKU"] || row["Permanent SKU"] || slugify(name).slice(0, 12).toUpperCase();
       const condition = row["Condition"] || "7/10 — Great";
-      const originalPrice = parseFloat(row["Original Price"] || row["Retail Price"] || "0") || 0;
-      const price = parseFloat(row["Price"] || row["Resale Price"] || "0") || 0;
+      const originalPrice = toNumber(row["Original Price"] || row["Retail Price"] || "0");
+      const price = toNumber(
+        row["Price"] || row["Resale Price"] || row["Realistic Sold Value"] || "0"
+      );
+
+      // EHC's sheet splits gender/department (Department) from garment type
+      // (Category) the opposite way this project's own documented spec does
+      // (Category = gender, Type = garment). Department present means we're
+      // reading the real sheet; fall back to the documented layout otherwise.
+      const hasDepartment = Boolean(row["Department"]);
+      const categorySource = hasDepartment ? row["Department"] : row["Category"] || "Unisex";
+      const typeSource = hasDepartment ? row["Category"] || row["Type"] || "" : row["Type"] || "";
+
+      const tags = row["Tags"]
+        ? splitMulti(row["Tags"])
+        : [row["Style Tag 1"], row["Style Tag 2"], row["Style Tag 3"]].filter(Boolean);
 
       return {
         sku,
         slug: row["Slug"] ? slugify(row["Slug"]) : slugify(`${name}-${sku}`),
         name,
         brand: row["Brand"] || "",
-        category: toCategory(row["Category"] || "Unisex"),
-        type: row["Type"] || "",
+        category: toCategory(categorySource),
+        type: typeSource,
         size: row["Size"] || "",
         condition,
         conditionScore: toConditionScore(condition, row["Condition Score"]),
         originalPrice,
         price,
-        description: row["Description"] || "",
+        description: row["SEO Listing Description"] || row["Description"] || "",
         images: splitMulti(row["Images"] || row["Image"] || ""),
-        tags: splitMulti(row["Tags"] || ""),
-        inStock: row["In Stock"] ? toBool(row["In Stock"]) : true,
+        tags,
+        inStock: row["In Stock"]
+          ? toBool(row["In Stock"])
+          : isAvailable(row["Inventory Status"] || "", condition),
       };
     })
     .filter((p): p is Product => p !== null);

@@ -54,6 +54,22 @@ immediately.
    | `SKU` | | optional; auto-generated if left blank |
    | `Slug` | | optional; auto-generated from the name if left blank |
 
+   **Already running an "EHC Inventory Log"-style sheet?** The mapping also
+   recognizes that layout directly, no renaming needed: `Permanent SKU`,
+   `Item Name`/`SEO Listing Title` (title wins when present), `Department`
+   (used as gender/category, with `Category` then read as garment type —
+   the reverse of the layout above), `Realistic Sold Value` (used as price,
+   `$`-formatted values parse fine), `SEO Listing Description`, `Style Tag
+   1/2/3` (used as tags when there's no `Tags` column). There's no `In
+   Stock` column in that layout — availability is inferred from
+   `Inventory Status`/`Condition` instead (anything not explicitly
+   donated/liquidated/passed-on/removed counts as available). Verified
+   against a real 71-row export — see `lib/verify-ehc-mapping.ts`.
+
+   That sheet has no photo column yet, so every item renders the "Photo
+   coming soon" placeholder until `Images` (or per-item Drive folders) get
+   wired up — a real next step, not done here.
+
 2. Share the sheet: **Share → Anyone with the link → Viewer**.
 3. Copy the ID out of the sheet's URL (`.../d/THIS-PART/edit`) into
    `GOOGLE_SHEET_ID`, and set `GOOGLE_SHEET_NAME` to the tab name.
