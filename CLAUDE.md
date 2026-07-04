@@ -82,6 +82,16 @@ streetwear direction; don't resurrect RE:UP branding.
   `recraft_v4_1` utility mode) — always preview cost with `get_cost:true`
   and get explicit go-ahead before spending, don't batch-generate blind.
 
+## EHC listing operations — read `ehc-listing-pipeline/SOP.md` first
+
+The listing process (intake → research → pricing → publish) was rebuilt
+2026-07-04 as model-agnostic infrastructure in `ehc-listing-pipeline/`
+(SOP, checklists, `tools/gate.py` verification gate, loop, examples).
+Any model or agent (including Codex) touching EHC inventory data must load
+that SOP first — it defines the single source of truth, the SKU rule, the
+banned-phrase law, and the LISTABLE gate. Do not re-derive process from
+the sheets' old hedged rows; they are the documented failure mode.
+
 ## Open threads (pick up here)
 
 1. Match real EHC Reference Frames photos to real inventory SKUs.
