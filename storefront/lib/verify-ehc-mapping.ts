@@ -20,10 +20,13 @@ console.log(`In stock: ${inStockCount} / ${products.length}`);
 const zeroPrice = products.filter((p) => p.price === 0);
 console.log(`Zero-price rows (should be 0): ${zeroPrice.length}`);
 
+const withAge = products.filter((p) => p.daysInInventory !== null);
+console.log(`Timestamp parsed (days-in-inventory known): ${withAge.length} / ${products.length}`);
+
 console.log("\nFirst 5:");
 for (const p of products.slice(0, 5)) {
   console.log(
-    `${p.sku} | ${p.name} | ${p.category} | ${p.type} | $${p.price} | ${p.inStock ? "available" : "SOLD"}`
+    `${p.sku} | ${p.name} | ${p.category} | ${p.type} | $${p.price} | ${p.inStock ? "available" : "SOLD"} | ${p.daysInInventory ?? "?"}d in inventory`
   );
 }
 

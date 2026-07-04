@@ -66,6 +66,16 @@ function splitMulti(value: string): string[] {
     .filter(Boolean);
 }
 
+/** "2026-06-22" (the sheet's Timestamp column, when the row was logged) -> days since then. */
+function toDaysInInventory(value: string): number | null {
+  if (!value.trim()) return null;
+  const logged = new Date(value.trim());
+  if (Number.isNaN(logged.getTime())) return null;
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const days = Math.floor((Date.now() - logged.getTime()) / msPerDay);
+  return days >= 0 ? days : null;
+}
+
 export function rowsToProducts(rows: Record<string, string>[]): Product[] {
   return rows
     .map((row): Product | null => {
@@ -110,6 +120,7 @@ export function rowsToProducts(rows: Record<string, string>[]): Product[] {
         inStock: row["In Stock"]
           ? toBool(row["In Stock"])
           : isAvailable(row["Inventory Status"] || "", condition),
+        daysInInventory: toDaysInInventory(row["Timestamp"] || row["Date Added"] || ""),
       };
     })
     .filter((p): p is Product => p !== null);

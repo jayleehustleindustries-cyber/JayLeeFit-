@@ -16,4 +16,6 @@ export type Product = {
   images: string[];
   tags: string[];
   inStock: boolean;
+  /** Days since the inventory row was logged (from the sheet's Timestamp column). Null if unknown. */
+  daysInInventory: number | null;
 };

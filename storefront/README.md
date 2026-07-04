@@ -53,6 +53,7 @@ immediately.
    | `In Stock` | | `Y`/`N` — flip to `N` once something sells |
    | `SKU` | | optional; auto-generated if left blank |
    | `Slug` | | optional; auto-generated from the name if left blank |
+   | `Timestamp` / `Date Added` | | when the row was logged — used to compute `daysInInventory` (age tracking, not shown on the site UI yet) |
 
    **Already running an "EHC Inventory Log"-style sheet?** The mapping also
    recognizes that layout directly, no renaming needed: `Permanent SKU`,
@@ -63,8 +64,10 @@ immediately.
    1/2/3` (used as tags when there's no `Tags` column). There's no `In
    Stock` column in that layout — availability is inferred from
    `Inventory Status`/`Condition` instead (anything not explicitly
-   donated/liquidated/passed-on/removed counts as available). Verified
-   against a real 71-row export — see `lib/verify-ehc-mapping.ts`.
+   donated/liquidated/passed-on/removed counts as available). That layout's
+   own `Timestamp` column (when the row was logged) is read directly for
+   `daysInInventory` — no extra setup needed. Verified against a real
+   71-row export — see `lib/verify-ehc-mapping.ts`.
 
    That sheet has no photo column yet, so every item renders the "Photo
    coming soon" placeholder until `Images` (or per-item Drive folders) get

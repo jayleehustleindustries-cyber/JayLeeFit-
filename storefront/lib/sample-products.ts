@@ -27,6 +27,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["FIXED STAR"],
     inStock: true,
+    daysInInventory: 12,
   },
   {
     sku: "OL-002",
@@ -45,6 +46,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["SHOOTING STAR"],
     inStock: true,
+    daysInInventory: 5,
   },
   {
     sku: "OL-003",
@@ -63,6 +65,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["RETROGRADE", "SHOOTING STAR"],
     inStock: true,
+    daysInInventory: 41,
   },
   {
     sku: "OL-004",
@@ -81,6 +84,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["ECLIPSE"],
     inStock: true,
+    daysInInventory: 3,
   },
   {
     sku: "OL-005",
@@ -99,6 +103,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["RETROGRADE"],
     inStock: true,
+    daysInInventory: 67,
   },
   {
     sku: "OL-006",
@@ -117,6 +122,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["SHOOTING STAR"],
     inStock: true,
+    daysInInventory: 22,
   },
   {
     sku: "OL-007",
@@ -135,6 +141,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["FIXED STAR"],
     inStock: true,
+    daysInInventory: 9,
   },
   {
     sku: "OL-008",
@@ -153,6 +160,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["ECLIPSE"],
     inStock: true,
+    daysInInventory: 18,
   },
   {
     sku: "OL-009",
@@ -171,6 +179,7 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["SHOOTING STAR"],
     inStock: true,
+    daysInInventory: 30,
   },
   {
     sku: "OL-010",
@@ -189,5 +198,6 @@ export const sampleProducts: Product[] = [
     images: [],
     tags: ["SHOOTING STAR"],
     inStock: false,
+    daysInInventory: 88,
   },
 ];
