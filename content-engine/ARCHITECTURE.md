@@ -46,6 +46,91 @@ decisions with real money or brand risk unsupervised — see §6.
 | **Analytics agents** | Metricool (`getAnalyticsDataByMetrics`) — **confirmed live**, real brand `jay_legacy_fit` connected across Instagram/TikTok/YouTube. Polled at 24h/72h/1wk after a post goes live, via three scheduled Routines per published asset. |
 | **Reviewing agents / "the meeting"** | A retro turn (fired by a Routine once the 1-week window closes) that reads the Performance rows for everything published that week, writes a synthesis to `AgentLog`, and proposes 1-3 next `Content Queue` ideas — flagged `Needs CEO Review`, not auto-launched. |
 
+### 1a. Full operational briefs (so no role runs on inference)
+
+The table above says *what* each role is. This says what each one must
+actually read, decide, write, and never do — written so a less capable
+model can execute a role correctly by following the brief, not by
+guessing what a smarter model would have done. The authority model does
+**not** change here — every brief below still terminates at §6's gates
+(no autonomous spend, no autonomous publish). What changes is that the
+orchestrator tier gets a complete map of the crew's inputs/outputs
+instead of just its own slice, so it can dispatch and reconcile correctly.
+
+**Master Orchestrating Agent**
+- Reads: every `Content Queue` row (all statuses), not just ones already
+  in progress — it's the only role that sees the whole board each run.
+- Decides: for each row, whether its current `Status` can advance, using
+  the fixed state machine `Idea → Scripting → Assets In Progress →
+  QA Review → Scheduled → Published → Reviewed`. Never skips a state.
+- Acts: either performs the next step itself (e.g. the writer step is
+  just a Claude turn) or dispatches to Chief of Crew when a row needs
+  more than one crew role.
+- Writes: `Status` field updates, links new `Assets` rows to the
+  `Content Queue` row they belong to.
+- Never: spends Higgsfield/other credits, calls `createScheduledPost`,
+  or moves anything to `Scheduled` without a human approval already
+  recorded — see §6.
+
+**Chief of Crew** (same turn, one level down — not a separate process)
+- Needs the input/output contract for every crew role below so it can
+  fan out correctly and reconcile one coherent update instead of
+  partial, conflicting writes:
+
+  | Crew role | Needs as input | Produces as output |
+  |---|---|---|
+  | Script/Writer | Idea text, Pillar | Hook, script, caption (writes to `Content Queue.Script`) |
+  | Reference-Image-Gen | Script/idea, shot-angle preset | Image URL(s) → new `Assets` row, `Type=Reference Image` |
+  | Prompting/VO | Finished script | Audio URL → new `Assets` row, `Type=VO Audio` |
+  | Video Generation | Script + hook format (see `lib/video/`) | Video job/URL → new `Assets` row, `Type=Video Clip` |
+  | Clip/Editing | All prior Assets for the row | Final cut URL → new `Assets` row, `Type=Final Edit` |
+
+- Runs independent crew roles (e.g. images and VO) in parallel via the
+  Agent tool; only serializes steps that genuinely depend on each other
+  (editing needs the other assets to exist first).
+- Reconciles: one `Content Queue` row update per cycle, not one write
+  per crew role — avoids half-applied states if a crew step fails.
+
+**QA Agent**
+- Reads: the assembled row's Script, and every linked `Assets` row.
+- Checklist (pass/fail, not vibes): (1) script explicitly reflects one
+  of the four pillars in §3, not generic fitness-influencer copy; (2)
+  hook lands in the first line/first 2 seconds of the script; (3) every
+  `Assets` row for this item has `Status=Approved`, not `Rejected` or
+  still `Generated`; (4) no placeholder/lorem text anywhere in Script.
+- Writes: advances `Status` to `Scheduled` only if all four pass;
+  otherwise sends it back to `Assets In Progress` with the specific
+  failing item noted in `Notes`.
+- Never: approves on partial completion — a missing crew asset is a
+  QA failure, not a warning.
+
+**Analytical Agent**
+- Fires per published item at 24h/72h/1wk (three separate Routines),
+  calling `getAnalyticsDataByMetrics` with the field IDs already listed
+  in §5. Writes one `Performance` row per window per platform.
+- Never infers metrics it can't fetch — an unavailable metric is a
+  blank cell, not a guess.
+
+**Reviewing Agent / "the meeting" (retro)**
+- Fires once a `Content Queue` item's 1wk `Performance` window closes.
+- Reads: every `Performance` row for everything published that week.
+- Writes: one `AgentLog` row — `Summary` synthesizes what worked/didn't
+  (cite the actual numbers, don't editorialize without them), and
+  `Proposed Next Ideas` links 1-3 new `Content Queue` rows created with
+  `Origin=Retro Suggestion`, `Status=Idea`.
+- Never: checks its own `Reviewed By CEO` box — that field only gets
+  set by you. A proposed idea with that box unchecked is inert; nothing
+  downstream acts on it.
+
+**CEO tier (you)**
+- The only thing every other brief above ultimately defers to. In
+  practice this means: approving/rejecting `AgentLog` proposals,
+  authorizing any step that spends credits or calls a real
+  publish/schedule tool, and being the tiebreaker when QA sends
+  something back more than once. Nothing above is designed to route
+  around this — if a future session ever proposes skipping it, that's
+  a bug against this doc, not a feature.
+
 ## 2. Master data — Airtable (backend) + Sheets (view)
 
 Per your call: Airtable is the thing agents actually read/write (I have
