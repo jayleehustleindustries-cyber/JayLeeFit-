@@ -91,6 +91,29 @@ instead of just its own slice, so it can dispatch and reconcile correctly.
 - Reconciles: one `Content Queue` row update per cycle, not one write
   per crew role — avoids half-applied states if a crew step fails.
 
+**Batch dispatch, concretely** — this is the actual mechanism behind
+"spinning up batches of agents": Chief of Crew groups the crew-role
+table above into numbered batches by dependency, not by role count or
+any arbitrary limit.
+1. **Batch 1** — every crew role whose "Needs as input" column is
+   satisfied by the `Content Queue` row alone: Script/Writer,
+   Reference-Image-Gen, Prompting/VO. These have no dependency on each
+   other, so they're dispatched as one Agent tool call each, all in the
+   *same* message — true parallelism, not a loop of sequential calls.
+2. **Batch 2** — every role whose input is another role's output:
+   Video Generation (needs the finished script) and Clip/Editing (needs
+   every other `Assets` row for this item). These wait for Batch 1 to
+   return, then dispatch together the same way.
+3. The batch numbers are the orchestrator's own reasoning scratch space
+   for sequencing — they are **not** a field anywhere in Airtable. The
+   real dependency graph already lives in the input/output contract
+   table above; a batch number is just "how many of these can start
+   right now," recomputed each cycle, not a fixed schedule.
+4. A batch never spans multiple `Content Queue` rows unless those rows
+   are independently at the same stage — one call per crew role *per
+   row*, so a QA failure or crew error on one idea never blocks another
+   idea's batch.
+
 **QA Agent**
 - Reads: the assembled row's Script, and every linked `Assets` row.
 - Checklist (pass/fail, not vibes): (1) script explicitly reflects one
