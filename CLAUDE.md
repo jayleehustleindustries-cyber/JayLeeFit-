@@ -9,6 +9,14 @@ content pipeline for the JayLeeFit personal brand itself, in
 `content-engine/` (see that folder's `README.md` first, then
 `ARCHITECTURE.md`).
 
+Within the content lane, one system is BUILT and operational:
+`content-engine/calendar/` — the weekly EHC content-calendar creation
+(the "EHC Calendar Creation" project; AG-010 in the user's Drive
+datasheet). Requests about "the content schedule", "this week's
+calendar", or weekly hooks go there; run it via the `ehc-calendar`
+skill or `content-engine/calendar/SOP.md`. It is deliberately written
+to run on any model — follow its files, don't freestyle the brand voice.
+
 Check which of the three a request belongs to before acting — the user
 sometimes dictates requests that blend language from more than one at
 once, and confusing them is worse than asking.

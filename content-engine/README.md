@@ -12,9 +12,10 @@ pipeline never gets mixed into either of those, per explicit instruction.
   (idea → script → visuals/VO → edit → publish → 24h/72h/1wk performance
   review → retro → next idea), translating a "CEO agent / orchestrator /
   crew" org-chart concept into real, buildable primitives.
-- **Status:** design only. See `ARCHITECTURE.md`. Nothing is built/running
-  yet — no Airtable base created, no schedules armed, no generation wired.
-  That's intentional: the design was requested first, build comes after
-  it's reviewed.
+- **Status:** the pipeline design is design-only (see `ARCHITECTURE.md`) —
+  no Airtable base created, no schedules armed, no generation wired.
+  **Exception:** `calendar/` is BUILT and runnable — the weekly EHC
+  content-calendar system (AG-010), rebuilt 2026-07-04 to run on any
+  model post-Fable. Start at `calendar/README.md`.
 
 Read `ARCHITECTURE.md` for everything else.
