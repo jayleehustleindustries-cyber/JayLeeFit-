@@ -30,7 +30,10 @@ agent explicitly calls the generation tool with the built request.
 - `generate.ts` — `buildKlingRequest()`, a pure function producing the
   exact `{ model, params }` shape to hand to Higgsfield's `generate_video`
   MCP tool. Doesn't call it — there's no API key wired into this codebase
-  for that; only an agent conversation can reach it.
+  for that; only an agent conversation can reach it. Also
+  `buildVeoRequest()`, the same idea for Veo 3.1 — backend-agnostic on
+  purpose, since which real service accepts this shape is still
+  unconfirmed (see below).
 
 ## What's not built yet
 
@@ -44,9 +47,15 @@ agent explicitly calls the generation tool with the built request.
 - No Airtable `Content Queue`/`Assets` tables exist yet (see
   `content-engine/ARCHITECTURE.md` §2) — ideas here are hardcoded samples
   in `demo-queue.ts`, not read from a real queue.
-- The Vertex AI / Veo 3.1 path is designed (see `ARCHITECTURE.md`'s
-  appendix) but deliberately deprioritized behind this Kling 3.0 path per
-  the user's explicit choice.
+- The Vertex AI / Veo 3.1 path is designed (see `ARCHITECTURE.md` §4) but
+  deliberately deprioritized behind this Kling 3.0 path per the user's
+  explicit choice. A claimed alternate route — calling Veo 3.1 through a
+  Vercel-hosted model/extension — came up in conversation but is **not
+  verified**: no documented Vercel capability for this has been confirmed,
+  and the Vercel MCP connector was disconnected when this was raised.
+  `buildVeoRequest()` exists so the prompt-design work isn't blocked on
+  resolving that, but don't wire it to a real network call — via Vertex
+  or otherwise — until a real, confirmed path exists.
 
 ## Next step
 

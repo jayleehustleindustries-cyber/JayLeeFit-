@@ -22,3 +22,25 @@ export function buildKlingRequest(job: VideoPromptJob) {
     },
   };
 }
+
+/**
+ * Same idea as buildKlingRequest, for Veo 3.1 — still just a request shape,
+ * not a call. Which backend actually accepts this shape is unconfirmed:
+ * ARCHITECTURE.md §4 documents the Vertex AI path (needs a GCP project,
+ * Veo access, a service account, and a GCS bucket for reference images —
+ * none of that is set up), and a claimed Vercel-hosted route to Veo hasn't
+ * been verified either. Don't wire this to a real network call until one
+ * of those paths is confirmed; referenceImageUri is optional because a
+ * GCS bucket for it doesn't exist yet.
+ */
+export function buildVeoRequest(job: VideoPromptJob, referenceImageUri?: string) {
+  return {
+    model: "veo-3.1",
+    params: {
+      prompt: job.prompt,
+      aspectRatio: job.aspectRatio,
+      durationSeconds: job.durationSeconds,
+      ...(referenceImageUri ? { referenceImageUri } : {}),
+    },
+  };
+}
