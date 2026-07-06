@@ -51,8 +51,9 @@ Options:
   --model      backend-specific model override
   --duration   seconds (default 8, or the hook format's duration)
   --aspect     9:16 | 16:9 | 1:1 (default 9:16, or the hook format's ratio)
-  --out        output mp4 path (default out/<timestamp>.mp4)
-  --dry-run    print the exact HTTP request, make no network call
+  --out          output mp4 path (default out/<timestamp>.mp4)
+  --start-image  local image path -> image-to-video (magichour backend only)
+  --dry-run      print the exact HTTP request, make no network call
 
 Hook formats: ${HOOK_FORMATS.map((f) => f.id).join(", ")}`);
   process.exit(0);
@@ -99,6 +100,7 @@ const result = await backend
     durationSeconds,
     aspectRatio,
     model: args.get("model"),
+    startImagePath: args.get("start-image"),
     outPath,
     dryRun,
   })

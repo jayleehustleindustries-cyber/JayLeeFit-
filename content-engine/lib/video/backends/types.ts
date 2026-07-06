@@ -23,6 +23,13 @@ export type GenerateOptions = {
   aspectRatio: AspectRatio;
   /** Backend-specific model override (e.g. "ltx-2", "ray-flash-2"). */
   model?: string;
+  /**
+   * Local path to a start frame → image-to-video instead of text-to-video.
+   * Only the magichour backend supports this today (it has a native file
+   * upload API); pollinations/luma need an already-hosted image URL, so
+   * they reject this option rather than half-support it.
+   */
+  startImagePath?: string;
   /** Where to write the resulting mp4. */
   outPath: string;
   /** Print the exact HTTP call that would be made, then stop. No network. */

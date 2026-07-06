@@ -34,6 +34,9 @@ export const luma: VideoBackend = {
 
   async generate(opts: GenerateOptions): Promise<GenerateResult> {
     const model = opts.model ?? DEFAULT_MODEL;
+    if (opts.startImagePath) {
+      return { backend: "luma", model, status: "failed", error: "start-image needs an already-hosted image URL (Luma keyframes) — use magichour for local frames" };
+    }
     const body = {
       prompt: opts.prompt,
       model,

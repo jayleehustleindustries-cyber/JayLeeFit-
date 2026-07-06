@@ -6,15 +6,22 @@ import { saveVideo, sleep, type GenerateOptions, type GenerateResult, type Video
  * web app, and credits are only charged for frames that actually render.
  * Get a key from the Developer dashboard and set MAGIC_HOUR_API_KEY.
  *
- * Flow: POST /v1/text-to-video queues a render and returns { id,
- * estimated_frame_cost }; poll GET /v1/video-projects/{id} until status is
- * "complete" (downloads[].url appears) or "error".
+ * Two modes:
+ * - text-to-video: POST /v1/text-to-video with style.prompt
+ * - image-to-video (opts.startImagePath): first POST /v1/files/upload-urls
+ *   → PUT the frame bytes to the presigned URL → POST /v1/image-to-video
+ *   with assets.image_file_path. The video inherits the frame's aspect
+ *   ratio, which is exactly what the reselling storyboard wants.
+ *
+ * Either way the job lands in GET /v1/video-projects/{id}; poll until
+ * status is "complete" (downloads[].url) or "error".
  */
 const BASE = "https://api.magichour.ai";
 const POLL_INTERVAL_MS = 10_000;
 const POLL_TIMEOUT_MS = 15 * 60 * 1000;
 
 type CreateResponse = { id: string; estimated_frame_cost?: number; credits_charged?: number };
+type UploadUrlsResponse = { items: { upload_url: string; file_path: string; expires_at?: string }[] };
 type ProjectResponse = {
   status: "draft" | "queued" | "rendering" | "complete" | "error" | "canceled";
   credits_charged?: number;
@@ -22,24 +29,49 @@ type ProjectResponse = {
   error?: { code?: string; message?: string } | null;
 };
 
+/** Upload a local image via the presigned-URL flow; returns the api-assets file_path. */
+async function uploadImage(localPath: string, headers: Record<string, string>): Promise<string> {
+  const { readFile } = await import("node:fs/promises");
+  const { extname } = await import("node:path");
+  const extension = extname(localPath).slice(1).toLowerCase() || "png";
+
+  const urlRes = await fetch(`${BASE}/v1/files/upload-urls`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ items: [{ type: "image", extension }] }),
+  });
+  if (!urlRes.ok) throw new Error(`upload-urls HTTP ${urlRes.status}: ${(await urlRes.text()).slice(0, 300)}`);
+  const { items } = (await urlRes.json()) as UploadUrlsResponse;
+  const item = items?.[0];
+  if (!item?.upload_url || !item.file_path) throw new Error("upload-urls response missing upload_url/file_path");
+
+  const bytes = await readFile(localPath);
+  const putRes = await fetch(item.upload_url, { method: "PUT", body: bytes });
+  if (!putRes.ok) throw new Error(`frame upload PUT HTTP ${putRes.status}`);
+  return item.file_path;
+}
+
 export const magichour: VideoBackend = {
   name: "magichour",
   freeTier: "400 free credits on signup + 100/day claimable in the web app; charged only for rendered frames.",
 
   async generate(opts: GenerateOptions): Promise<GenerateResult> {
     const model = opts.model ?? "default";
-    const body = {
-      name: `content-engine ${new Date().toISOString()}`,
-      end_seconds: opts.durationSeconds,
-      aspect_ratio: opts.aspectRatio,
-      style: { prompt: opts.prompt },
-      ...(opts.model ? { model: opts.model } : {}),
-    };
+    const name = `content-engine ${new Date().toISOString()}`;
+    const imageToVideo = Boolean(opts.startImagePath);
+    const createPath = imageToVideo ? "/v1/image-to-video" : "/v1/text-to-video";
 
     if (opts.dryRun) {
-      console.log(`[magichour dry-run] POST ${BASE}/v1/text-to-video`);
+      if (imageToVideo) {
+        console.log(`[magichour dry-run] POST ${BASE}/v1/files/upload-urls  {items:[{type:"image",extension:"png"}]}`);
+        console.log(`[magichour dry-run] PUT <presigned upload_url>  (bytes of ${opts.startImagePath})`);
+      }
+      const previewBody = imageToVideo
+        ? { name, end_seconds: opts.durationSeconds, assets: { image_file_path: "<file_path from upload>" }, style: { prompt: opts.prompt }, ...(opts.model ? { model: opts.model } : {}) }
+        : { name, end_seconds: opts.durationSeconds, aspect_ratio: opts.aspectRatio, style: { prompt: opts.prompt }, ...(opts.model ? { model: opts.model } : {}) };
+      console.log(`[magichour dry-run] POST ${BASE}${createPath}`);
       console.log(`[magichour dry-run] Authorization: Bearer <MAGIC_HOUR_API_KEY>`);
-      console.log(`[magichour dry-run] body: ${JSON.stringify(body, null, 2)}`);
+      console.log(`[magichour dry-run] body: ${JSON.stringify(previewBody, null, 2)}`);
       console.log(`[magichour dry-run] then poll GET ${BASE}/v1/video-projects/{id} until complete`);
       return { backend: "magichour", model, status: "dry-run" };
     }
@@ -50,11 +82,27 @@ export const magichour: VideoBackend = {
     }
     const headers = { Authorization: `Bearer ${key}`, "Content-Type": "application/json" };
 
-    const createRes = await fetch(`${BASE}/v1/text-to-video`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    });
+    let body: Record<string, unknown>;
+    if (imageToVideo) {
+      const filePath = await uploadImage(opts.startImagePath!, headers);
+      body = {
+        name,
+        end_seconds: opts.durationSeconds,
+        assets: { image_file_path: filePath },
+        style: { prompt: opts.prompt },
+        ...(opts.model ? { model: opts.model } : {}),
+      };
+    } else {
+      body = {
+        name,
+        end_seconds: opts.durationSeconds,
+        aspect_ratio: opts.aspectRatio,
+        style: { prompt: opts.prompt },
+        ...(opts.model ? { model: opts.model } : {}),
+      };
+    }
+
+    const createRes = await fetch(`${BASE}${createPath}`, { method: "POST", headers, body: JSON.stringify(body) });
     if (!createRes.ok) {
       return { backend: "magichour", model, status: "failed", error: `create HTTP ${createRes.status}: ${(await createRes.text()).slice(0, 500)}` };
     }

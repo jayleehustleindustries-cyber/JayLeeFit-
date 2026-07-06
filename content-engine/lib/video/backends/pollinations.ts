@@ -36,6 +36,9 @@ export const pollinations: VideoBackend = {
 
   async generate(opts: GenerateOptions): Promise<GenerateResult> {
     const model = opts.model ?? DEFAULT_MODEL;
+    if (opts.startImagePath) {
+      return { backend: "pollinations", model, status: "failed", error: "start-image needs an already-hosted image URL on this backend — use magichour for local frames" };
+    }
     const url = buildUrl(opts);
     const key = process.env.POLLINATIONS_API_KEY ?? process.env.POLLINATIONS_KEY;
 

@@ -60,6 +60,23 @@ Cost reality at last check: one 5s `kling3_0_turbo` clip = 7.5 Higgsfield
 credits vs a 9.9 balance, so the four-clip run needs Magic Hour's free
 daily credits (or a Higgsfield top-up) to complete.
 
+**Magic Hour was chosen as the production backend.** The whole clip run
+is one command once `MAGIC_HOUR_API_KEY` exists:
+
+```
+npm run produce:reselling -- --dry-run   # full plan, zero network
+npm run produce:reselling                # all four clips → out/reselling/
+npm run produce:reselling -- --clip dashboard   # one clip only
+```
+
+Each clip runs image-to-video (frame uploaded via /v1/files/upload-urls,
+then /v1/image-to-video — the video inherits the frame's 9:16), saves to
+`out/reselling/clip-N-<id>.mp4`, appends `out/reselling/ledger.jsonl`,
+and the run stops at the first failure so credits don't drain on a
+misconfiguration. `generate:video` also gained `--start-image <path>` for
+one-off image-to-video runs (magichour backend only — pollinations/luma
+would need an already-hosted image URL).
+
 ---
 
 # Original Stage-1 design — Kling 3.0 (via Higgsfield MCP)
