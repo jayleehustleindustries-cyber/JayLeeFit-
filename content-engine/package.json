@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "demo:video": "tsx lib/video/demo-queue.ts",
+    "demo:storyboard": "tsx lib/video/demo-storyboard.ts",
     "generate:video": "tsx lib/video/cli.ts"
   },
   "devDependencies": {

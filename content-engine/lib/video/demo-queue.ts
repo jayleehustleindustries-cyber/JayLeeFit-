@@ -11,6 +11,7 @@ const SAMPLE_IDEAS: Record<string, Idea> = {
   "cold-open-confrontation": { id: "idea-02", text: "Calling out the 'I'll start Monday' excuse", pillar: "Motivation/Mindset" },
   "myth-vs-science": { id: "idea-03", text: "Myth: you need to lift slow to burn more fat", pillar: "Evidence-Based Performance" },
   "consistent-character-montage": { id: "idea-04", text: "Gym-to-rooftop brand reel for Everyday Hustle Co", pillar: "Personal Brand/Hustle" },
+  "reseller-operator-montage": { id: "idea-05", text: "EHC reselling operation — sourced by AI, shipped daily", pillar: "Personal Brand/Hustle" },
 };
 
 for (const format of HOOK_FORMATS) {

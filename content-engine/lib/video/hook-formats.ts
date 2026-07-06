@@ -63,6 +63,18 @@ export const HOOK_FORMATS: HookFormat[] = [
     durationSeconds: 10,
     requiresConsistentCharacter: true,
   },
+  {
+    id: "reseller-operator-montage",
+    label: "AI-backed reseller operator montage",
+    pillar: "Personal Brand/Hustle",
+    why:
+      "Reverse-engineered from a competitor's reselling marketing video and re-cloned with this brand's visuals (four story frames provided by the user, committed at content-engine/assets/reselling-story/). The structure sells competence, not product: the operator moves through research → pack → label → ship in one dark, red-lit HQ, and the 'AI-backed' beat (a live resale-comps dashboard) is the differentiator competitors lead with. The same persona and the same room across every beat is what makes it read as a real operation instead of stock footage — see reselling-storyboard.ts for the per-frame image-to-video breakdown.",
+    prompt:
+      "Vertical 9:16, ~20 seconds total, four quick scenes in one location — a dark industrial reseller HQ: black steel shelving stocked with sneakers and inventory bins, a garment rack of hanging clothes, red neon tube accent lights, a single warm pendant lamp, concrete walls, moody desaturated grade with red rim light. Same operator in every scene: muscular man, backwards cream cap, plain black t-shirt, chain necklace, black wristwatch. (1) Over-the-shoulder: he studies an AI resale dashboard on a laptop — price charts, sneaker listings, profit stats glowing in the dark room. (2) At the pack table: stacks of folded dark garments and silver poly mailers, he seals an item into a mailer next to a thermal label printer. (3) He smooths a shipping label onto the packed mailer. (4) Close-up: hands flip through a fresh stack of printed FedEx/UPS shipping labels — the volume shot. Subtle slow push-in per scene, no dialogue, sound-off readable.",
+    aspectRatio: "9:16",
+    durationSeconds: 20,
+    requiresConsistentCharacter: true,
+  },
 ];
 
 export function getHookFormat(id: string): HookFormat | undefined {

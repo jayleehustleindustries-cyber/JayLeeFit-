@@ -48,6 +48,18 @@ URLs or upload, and `prompt_project_agent` handles trimming, arranging,
 captions. So: this module produces the clips + ledger; Descript is the
 edit bay.
 
+**The EHC reselling video is fully storyboarded** — see
+`reselling-storyboard.ts` (+ `npm run demo:storyboard`). Four user-provided
+brand frames (committed at `../../assets/reselling-story/`, 768x1344 9:16,
+reverse-engineered from a competitor's video and re-cloned with this
+brand's visuals) double as image-to-video start frames: dashboard →
+pack station → label → shipping-label stack, 5s each, with per-clip motion
+prompts and ready-to-hand Higgsfield request shapes. The matching
+text-to-video fallback is the `reseller-operator-montage` hook format.
+Cost reality at last check: one 5s `kling3_0_turbo` clip = 7.5 Higgsfield
+credits vs a 9.9 balance, so the four-clip run needs Magic Hour's free
+daily credits (or a Higgsfield top-up) to complete.
+
 ---
 
 # Original Stage-1 design — Kling 3.0 (via Higgsfield MCP)
