@@ -48,6 +48,41 @@ export type VideoPromptJob = {
 };
 
 /**
+ * One clip of a produced, scripted video. Storyboards (reselling-storyboard,
+ * fitness-sunday-storyboard) are arrays of these; lib/video/produce.ts runs
+ * them. A clip with a `frame` is generated image-to-video from that start
+ * frame (exact brand visuals held); a clip without one is text-to-video
+ * from motionPrompt alone. voiceover/onScreenText aren't consumed by
+ * generation — they're the edit layer, applied in Descript after the
+ * clips exist.
+ */
+export type StoryboardClip = {
+  order: number;
+  id: string;
+  /** Optional start frame, relative to the content-engine root. */
+  frame?: string;
+  /**
+   * Already-produced footage for this beat (relative to the content-engine
+   * root). When set, produce.ts uses this file instead of generating —
+   * zero credits spent.
+   */
+  existingVideo?: string;
+  /** What this beat does for the story. */
+  beat: string;
+  /**
+   * With a frame: motion-only prompt (the frame already is the scene).
+   * Without one: a full text-to-video scene prompt.
+   */
+  motionPrompt: string;
+  durationSeconds: number;
+  aspectRatio: AspectRatio;
+  /** Spoken line for this beat — recorded or TTS'd, laid in during the edit. */
+  voiceover?: string;
+  /** Caption/text overlay for this beat — added in the edit. */
+  onScreenText?: string;
+};
+
+/**
  * Stage 2 record — the ledger row a real generation run produces. Mirrors
  * storefront/lib/asset-pipeline's AssetJob shape: resumable, auditable,
  * meant to become one row in the (not-yet-created) Airtable `Assets` table

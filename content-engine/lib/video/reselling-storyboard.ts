@@ -18,20 +18,9 @@
  * Run `npm run demo:storyboard` to print the full plan, including the
  * ready-to-hand Higgsfield request shape per clip — zero network, zero cost.
  */
-import type { AspectRatio } from "./types";
+import type { StoryboardClip } from "./types";
 
-export type StoryboardClip = {
-  order: number;
-  id: string;
-  /** Start frame, relative to the content-engine root. */
-  frame: string;
-  /** What this beat does for the story. */
-  beat: string;
-  /** Image-to-video motion prompt — describes movement, not the scene (the frame already is the scene). */
-  motionPrompt: string;
-  durationSeconds: number;
-  aspectRatio: AspectRatio;
-};
+export type { StoryboardClip } from "./types";
 
 export const RESELLING_STORYBOARD: StoryboardClip[] = [
   {
