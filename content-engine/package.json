@@ -4,9 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "demo:video": "tsx lib/video/demo-queue.ts"
+    "demo:video": "tsx lib/video/demo-queue.ts",
+    "generate:video": "tsx lib/video/cli.ts"
   },
   "devDependencies": {
+    "@types/node": "^26.1.0",
     "tsx": "^4.19.0",
     "typescript": "^5"
   }

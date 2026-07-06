@@ -1,4 +1,56 @@
-# Video generation — Kling 3.0 (primary path)
+# Video generation — free API backends + Kling 3.0 (via MCP)
+
+## Runnable backends (`backends/` + `cli.ts`) — NEW
+
+This module can now generate real videos itself over plain HTTP — no MCP
+required — via `npm run generate:video`. Three backends behind one
+interface, cheapest-first (see `.env.example` at the content-engine root
+for keys):
+
+| Backend | Free? | Key |
+|---|---|---|
+| `pollinations` (default) | Keyless free tier for free models; premium video models (ltx-2, wan, seedance, veo) bill Pollen credits against an optional key | optional `POLLINATIONS_API_KEY` |
+| `magichour` | **400 free credits on signup + 100/day claimable** in the web app — the sustainable free API path | `MAGIC_HOUR_API_KEY` |
+| `luma` | **No free API tier — paid per generation.** Wired by explicit request as the quality fallback (Ray models) | `LUMAAI_API_KEY` |
+
+Runway was evaluated as another fallback and skipped for now: its API is
+image-to-video-centric (`gen4_turbo` requires a `promptImage`) and has no
+recurring free tier, only one-time trial credits.
+
+```
+# preview the exact HTTP call, zero network, zero cost:
+npm run generate:video -- --format consistent-character-montage \
+  --idea "Gym-to-rooftop brand reel" --backend magichour --dry-run
+
+# real run (writes out/<ts>.mp4 + appends out/video-ledger.jsonl):
+npm run generate:video -- --prompt "..." --duration 8 --aspect 9:16
+```
+
+`--dry-run` is the same "preview before spending" rule this repo applies
+to Higgsfield credits. Every real run appends a ledger line
+(`out/video-ledger.jsonl`) — the `VideoAssetJob` row, until the Airtable
+Assets table exists.
+
+**Verified vs not:** the CLI, prompt plumbing, and dry-run output are
+tested locally. The live HTTP calls could **not** be exercised from the
+cloud session that wrote this (its network policy blocks non-allowlisted
+domains — `gen.pollinations.ai` etc. get a proxy 403); endpoint shapes
+were taken from each provider's official docs/SDKs. First real run should
+be one cheap clip per backend to confirm.
+
+## Clips → edit pipeline
+
+The intended production flow for multi-clip videos (e.g. the EHC reselling
+asset): generate each scene as its own short clip via `generate:video`
+(or Higgsfield MCP), then assemble/edit in **Descript** — its MCP
+connector (already connected to this account) can `import_media` from
+URLs or upload, and `prompt_project_agent` handles trimming, arranging,
+captions. So: this module produces the clips + ledger; Descript is the
+edit bay.
+
+---
+
+# Original Stage-1 design — Kling 3.0 (via Higgsfield MCP)
 
 Stage 1 of the content-engine video pipeline: turns a content idea into a
 finished, portable generation prompt. Same pure-logic/network-call split as
