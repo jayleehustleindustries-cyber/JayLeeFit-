@@ -8,9 +8,19 @@ Reads a CSV export of the `EHC Inventory Log` Google Sheet and writes:
   output/report.md                 per-SKU category assignment + review flags
 
 Usage:
-  python3 generate.py [path/to/inventory.csv]
+  python3 generate.py [path/to/inventory.csv] [--update-ledger]
 
 Defaults to the checked-in snapshot next to this script. Stdlib only.
+
+`exported-skus.txt` is the ledger of items already delivered in a draft
+upload file. When it exists, a third output appears:
+
+  output/ebay-draft-listings-delta.csv   only items NOT yet in the ledger
+
+so a recurring sync only ever hands over the new rows. Pass
+--update-ledger after delivering a file to mark everything current as
+exported. Ledger matching is by SKU, falling back to title for rows the
+sheet hasn't SKU'd yet.
 
 eBay upload path: Seller Hub -> Reports -> Upload -> "Create listings" with
 the drafts template. Drafts tolerate missing fields (price, photos, even
@@ -26,6 +36,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_INPUT = os.path.join(HERE, "inventory-snapshot-2026-07-10.csv")
 OUT_DIR = os.path.join(HERE, "output")
+LEDGER = os.path.join(HERE, "exported-skus.txt")
 
 # Rows in these states are gone from inventory — no draft.
 EXCLUDED_STATUS = ("donated", "liquidated", "passed / not purchased", "sold")
@@ -127,8 +138,38 @@ def load_rows(path):
         return list(csv.DictReader(f))
 
 
+def ledger_keys(draft):
+    """A draft is 'already exported' if either key is in the ledger: the
+    sheet may assign a real SKU to a row we exported under a placeholder,
+    so the title is the stable fallback identity."""
+    keys = {draft["title"].strip().lower()}
+    if not draft["sku"].startswith("EHC-TMP-"):
+        keys.add(draft["sku"])
+    return keys
+
+
+def load_ledger():
+    if not os.path.exists(LEDGER):
+        return None
+    with open(LEDGER, encoding="utf-8") as f:
+        return {line.strip() for line in f if line.strip() and not line.startswith("#")}
+
+
+def write_ebay_csv(path, drafts):
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        for line in EBAY_HEADER_INFO:
+            w.writerow(line)
+        w.writerow(EBAY_COLUMNS)
+        for d in drafts:
+            w.writerow(["Draft", d["sku"], d["cat"], d["title"], "", d["price"],
+                        "1", "", d["condition"], d["description"], "FixedPrice"])
+
+
 def main():
-    src = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_INPUT
+    args = [a for a in sys.argv[1:] if a != "--update-ledger"]
+    update_ledger = "--update-ledger" in sys.argv
+    src = args[0] if args else DEFAULT_INPUT
     rows = load_rows(src)
     os.makedirs(OUT_DIR, exist_ok=True)
 
@@ -170,14 +211,28 @@ def main():
         })
 
     ebay_path = os.path.join(OUT_DIR, "ebay-draft-listings.csv")
-    with open(ebay_path, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        for line in EBAY_HEADER_INFO:
-            w.writerow(line)
-        w.writerow(EBAY_COLUMNS)
-        for d in drafts:
-            w.writerow(["Draft", d["sku"], d["cat"], d["title"], "", d["price"],
-                        "1", "", d["condition"], d["description"], "FixedPrice"])
+    write_ebay_csv(ebay_path, drafts)
+
+    ledger = load_ledger()
+    delta_path = os.path.join(OUT_DIR, "ebay-draft-listings-delta.csv")
+    if ledger is not None:
+        new_drafts = [d for d in drafts if not (ledger_keys(d) & ledger)]
+        if new_drafts:
+            write_ebay_csv(delta_path, new_drafts)
+            print(f"{len(new_drafts)} NEW drafts not yet exported -> {delta_path}")
+        else:
+            if os.path.exists(delta_path):
+                os.remove(delta_path)
+            print("in sync: every sellable sheet row is already in the export ledger")
+
+    if update_ledger:
+        with open(LEDGER, "w", encoding="utf-8") as f:
+            f.write("# Items already delivered in an eBay draft upload file.\n")
+            f.write("# One key per line: SKU, plus lowercased title as fallback identity.\n")
+            for d in drafts:
+                for key in sorted(ledger_keys(d)):
+                    f.write(key + "\n")
+        print(f"ledger updated: {len(drafts)} items -> {LEDGER}")
 
     vendoo_path = os.path.join(OUT_DIR, "vendoo-import.csv")
     with open(vendoo_path, "w", newline="", encoding="utf-8") as f:

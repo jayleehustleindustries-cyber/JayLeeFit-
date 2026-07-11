@@ -56,3 +56,19 @@ map columns in their import wizard.
 
 To refresh after the sheet changes: export the sheet as CSV (File →
 Download → CSV), then `python3 generate.py path/to/export.csv`.
+
+## Recurring sync (sheet → eBay drafts)
+
+`exported-skus.txt` is the ledger of every item already delivered in an
+upload file (keyed by SKU + title fallback, so rows that later gain a
+real SKU aren't re-exported). When the ledger exists, `generate.py`
+also emits `output/ebay-draft-listings-delta.csv` containing **only
+items not yet exported** — or prints "in sync" and emits nothing when
+the sheet is fully covered. After delivering a delta file, rerun with
+`--update-ledger` to absorb it.
+
+A scheduled agent Routine re-pulls the sheet on this cycle and pushes /
+delivers the delta whenever the sheet has grown; it stays silent when
+in sync. The ledger tracks *exported to a draft file*, not *live on
+eBay* — publishing the drafts (photos, final check) stays a human step,
+and nothing here can read the eBay account to confirm it.
