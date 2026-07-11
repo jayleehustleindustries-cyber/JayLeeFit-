@@ -50,9 +50,13 @@ map columns in their import wizard.
   split by `Department` gender; unconfirmed gender defaults to Men's
   and is flagged in the report.
 - **Skipped**: Donated/Liquidated and Passed/Not Purchased rows.
-- Photos: intentionally blank — Reference Frames photos aren't matched
-  to SKUs yet (open thread #1 in the repo CLAUDE.md). Drafts don't
-  need them to upload.
+- Photos: `photo-map.csv` (sku,file_id,file_title,confidence,notes)
+  maps Drive photos in `EHC-Background-Edited-Images` to SKUs; the
+  generator turns each file id into a `drive.google.com/uc?export=
+  download` URL in the eBay/Vendoo photo column (hero first, max 12,
+  low-confidence rows excluded). eBay can only fetch those URLs if the
+  Drive folder is shared "Anyone with the link → Viewer" — otherwise
+  add photos in the drafts UI instead.
 
 To refresh after the sheet changes: export the sheet as CSV (File →
 Download → CSV), then `python3 generate.py path/to/export.csv`.

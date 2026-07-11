@@ -37,6 +37,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_INPUT = os.path.join(HERE, "inventory-snapshot-2026-07-10.csv")
 OUT_DIR = os.path.join(HERE, "output")
 LEDGER = os.path.join(HERE, "exported-skus.txt")
+PHOTO_MAP = os.path.join(HERE, "photo-map.csv")
+MAX_PHOTOS_PER_LISTING = 12  # eBay's bulk-upload cap per row
 
 # Rows in these states are gone from inventory — no draft.
 EXCLUDED_STATUS = ("donated", "liquidated", "passed / not purchased", "sold")
@@ -155,15 +157,42 @@ def load_ledger():
         return {line.strip() for line in f if line.strip() and not line.startswith("#")}
 
 
-def write_ebay_csv(path, drafts):
+def load_photo_map():
+    """photo-map.csv (sku,file_id,file_title,confidence,notes) -> {sku: [urls]}.
+    Preserves file order (hero shot first), skips UNMATCHED and low-confidence
+    rows, dedupes repeated uploads of the same image, and converts Drive file
+    ids to direct-download URLs eBay can fetch — which only works once the
+    Drive folder is shared "Anyone with the link → Viewer"."""
+    if not os.path.exists(PHOTO_MAP):
+        return {}
+    photos = {}
+    seen = set()
+    with open(PHOTO_MAP, newline="", encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            sku = (row.get("sku") or "").strip()
+            fid = (row.get("file_id") or "").strip()
+            conf = (row.get("confidence") or "").strip().lower()
+            if not sku or not fid or sku == "UNMATCHED" or conf == "low":
+                continue
+            if (sku, fid) in seen:
+                continue
+            seen.add((sku, fid))
+            urls = photos.setdefault(sku, [])
+            if len(urls) < MAX_PHOTOS_PER_LISTING:
+                urls.append(f"https://drive.google.com/uc?export=download&id={fid}")
+    return photos
+
+
+def write_ebay_csv(path, drafts, photos):
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         for line in EBAY_HEADER_INFO:
             w.writerow(line)
         w.writerow(EBAY_COLUMNS)
         for d in drafts:
+            photo_urls = "|".join(photos.get(d["sku"], []))
             w.writerow(["Draft", d["sku"], d["cat"], d["title"], "", d["price"],
-                        "1", "", d["condition"], d["description"], "FixedPrice"])
+                        "1", photo_urls, d["condition"], d["description"], "FixedPrice"])
 
 
 def main():
@@ -210,15 +239,20 @@ def main():
             "row": row, "gender": g or "Men (assumed)",
         })
 
+    photos = load_photo_map()
+    with_photos = sum(1 for d in drafts if photos.get(d["sku"]))
+    if photos:
+        print(f"photo map: {with_photos}/{len(drafts)} drafts have at least one photo URL")
+
     ebay_path = os.path.join(OUT_DIR, "ebay-draft-listings.csv")
-    write_ebay_csv(ebay_path, drafts)
+    write_ebay_csv(ebay_path, drafts, photos)
 
     ledger = load_ledger()
     delta_path = os.path.join(OUT_DIR, "ebay-draft-listings-delta.csv")
     if ledger is not None:
         new_drafts = [d for d in drafts if not (ledger_keys(d) & ledger)]
         if new_drafts:
-            write_ebay_csv(delta_path, new_drafts)
+            write_ebay_csv(delta_path, new_drafts, photos)
             print(f"{len(new_drafts)} NEW drafts not yet exported -> {delta_path}")
         else:
             if os.path.exists(delta_path):
@@ -243,7 +277,8 @@ def main():
             r = d["row"]
             w.writerow([d["sku"], d["title"], d["description"], r["Brand"],
                         r["Category"], d["gender"], r["Size"], r["Color"],
-                        r["Condition"], d["price"], "1", ""])
+                        r["Condition"], d["price"], "1",
+                        "|".join(photos.get(d["sku"], []))])
 
     report_path = os.path.join(OUT_DIR, "report.md")
     with open(report_path, "w", encoding="utf-8") as f:
