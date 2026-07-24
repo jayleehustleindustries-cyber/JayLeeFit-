@@ -50,11 +50,15 @@ export function parseCsv(text: string): string[][] {
   return rows.filter((r) => r.some((cell) => cell.trim().length > 0));
 }
 
-export function csvToObjects(text: string): Record<string, string>[] {
+export function csvToObjects(
+  text: string,
+  repairRow?: (row: string[], headers: string[]) => string[]
+): Record<string, string>[] {
   const rows = parseCsv(text);
   if (rows.length === 0) return [];
   const headers = rows[0].map((h) => h.trim());
-  return rows.slice(1).map((row) => {
+  return rows.slice(1).map((rawRow) => {
+    const row = repairRow ? repairRow(rawRow, headers) : rawRow;
     const obj: Record<string, string> = {};
     headers.forEach((header, i) => {
       obj[header] = (row[i] ?? "").trim();

@@ -1,5 +1,7 @@
 import { csvToObjects } from "./csv";
+import { imagesForSku } from "./photo-map";
 import { sampleProducts } from "./sample-products";
+import { snapshotToProducts } from "./snapshot";
 import type { Category, Product } from "./types";
 
 /**
@@ -10,9 +12,20 @@ import type { Category, Product } from "./types";
  * column headers expected.
  */
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
-const SHEET_NAME = process.env.GOOGLE_SHEET_NAME || "Inventory";
+const SHEET_NAME = process.env.GOOGLE_SHEET_NAME;
 
-function slugify(input: string): string {
+/**
+ * gviz CSV export URL. When no tab name is configured the `sheet` param is
+ * omitted and Google exports the first visible tab — right for a single-tab
+ * hub sheet, and avoids guessing tab names. Shared with the verify CLI so
+ * the script and the app can't drift apart.
+ */
+export function sheetCsvUrl(sheetId: string, sheetName?: string): string {
+  const sheetParam = sheetName ? `&sheet=${encodeURIComponent(sheetName)}` : "";
+  return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv${sheetParam}`;
+}
+
+export function slugify(input: string): string {
   return input
     .toLowerCase()
     .trim()
@@ -26,12 +39,12 @@ function toBool(value: string): boolean {
 }
 
 /** "$12.00" -> 12. parseFloat alone chokes on the leading currency symbol. */
-function toNumber(value: string): number {
+export function toNumber(value: string): number {
   const n = parseFloat(value.replace(/[^0-9.-]/g, ""));
   return Number.isNaN(n) ? 0 : n;
 }
 
-function toCategory(value: string): Category {
+export function toCategory(value: string): Category {
   const v = value.trim().toLowerCase();
   if (v.startsWith("m")) return "Men";
   if (v.startsWith("w")) return "Women";
@@ -44,13 +57,13 @@ function toCategory(value: string): Category {
  * explicitly gone (donated, liquidated, passed on, pulled from inventory)
  * counts as available, since most rows are simply "not graded/listed yet."
  */
-function isAvailable(inventoryStatus: string, condition: string): boolean {
+export function isAvailable(inventoryStatus: string, condition: string): boolean {
   const text = `${inventoryStatus} ${condition}`.toLowerCase();
   const gone = ["donated", "liquidated", "passed / not purchased", "removed from inventory", "not for sale", "sold"];
   return !gone.some((phrase) => text.includes(phrase));
 }
 
-function toConditionScore(condition: string, explicit?: string): number {
+export function toConditionScore(condition: string, explicit?: string): number {
   if (explicit) {
     const n = parseInt(explicit, 10);
     if (!Number.isNaN(n)) return n;
@@ -67,13 +80,48 @@ function splitMulti(value: string): string[] {
 }
 
 /** "2026-06-22" (the sheet's Timestamp column, when the row was logged) -> days since then. */
-function toDaysInInventory(value: string): number | null {
+export function toDaysInInventory(value: string): number | null {
   if (!value.trim()) return null;
   const logged = new Date(value.trim());
   if (Number.isNaN(logged.getTime())) return null;
   const msPerDay = 1000 * 60 * 60 * 24;
   const days = Math.floor((Date.now() - logged.getTime()) / msPerDay);
   return days >= 0 ? days : null;
+}
+
+/**
+ * A handful of rows in the live EHC Inventory Log V2 were written with
+ * unquoted commas inside the Color cell, shifting Price/Status/Department
+ * one or more cells right. Repair anchors on "Realistic Sold Value": if that
+ * cell isn't empty or price-like, probe up to 3 cells right and merge the
+ * overflow back into Color. Aligned rows (including the one legitimately
+ * price-less row) short-circuit, so this becomes a no-op once the sheet is
+ * fixed upstream. Over-long rows need no handling — csvToObjects keys
+ * strictly off the header row.
+ */
+export function repairEhcDrift(row: string[], headers: string[]): string[] {
+  const colorIdx = headers.indexOf("Color");
+  const priceIdx = headers.indexOf("Realistic Sold Value");
+  if (colorIdx === -1 || priceIdx === -1) return row;
+
+  const looksLikePrice = (s: string | undefined) =>
+    s !== undefined && /^\s*\$?\d+(\.\d+)?\s*$/.test(s);
+  const cell = (row[priceIdx] ?? "").trim();
+  if (cell === "" || looksLikePrice(cell)) return row;
+
+  for (let k = 1; k <= 3; k++) {
+    if (looksLikePrice(row[priceIdx + k])) {
+      const merged = row
+        .slice(colorIdx, colorIdx + k + 1)
+        .map((c) => (c ?? "").trim())
+        .filter(Boolean)
+        .join(", ");
+      const repaired = [...row];
+      repaired.splice(colorIdx, k + 1, merged);
+      return repaired;
+    }
+  }
+  return row;
 }
 
 export function rowsToProducts(rows: Record<string, string>[]): Product[] {
@@ -115,7 +163,14 @@ export function rowsToProducts(rows: Record<string, string>[]): Product[] {
         originalPrice,
         price,
         description: row["SEO Listing Description"] || row["Description"] || "",
-        images: splitMulti(row["Images"] || row["Image"] || ""),
+        // The sheet is the hub: any populated image column (including the V2
+        // sheet's "Image Url Address") beats the repo-side photo map.
+        images: (() => {
+          const sheetImages = splitMulti(
+            row["Images"] || row["Image"] || row["Image Url Address"] || ""
+          );
+          return sheetImages.length > 0 ? sheetImages : imagesForSku(sku);
+        })(),
         tags,
         inStock: row["In Stock"]
           ? toBool(row["In Stock"])
@@ -129,15 +184,13 @@ export function rowsToProducts(rows: Record<string, string>[]): Product[] {
 async function fetchFromGoogleSheet(): Promise<Product[] | null> {
   if (!SHEET_ID) return null;
 
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(
-    SHEET_NAME
-  )}`;
-
   try {
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(sheetCsvUrl(SHEET_ID, SHEET_NAME), {
+      next: { revalidate: 60 },
+    });
     if (!res.ok) return null;
     const csv = await res.text();
-    const products = rowsToProducts(csvToObjects(csv));
+    const products = rowsToProducts(csvToObjects(csv, repairEhcDrift));
     return products.length > 0 ? products : null;
   } catch {
     return null;
@@ -146,7 +199,9 @@ async function fetchFromGoogleSheet(): Promise<Product[] | null> {
 
 export async function getProducts(): Promise<Product[]> {
   const sheetProducts = await fetchFromGoogleSheet();
-  return sheetProducts ?? sampleProducts;
+  // Fallback order: live sheet -> committed inventory snapshot -> samples.
+  const snapshot = snapshotToProducts();
+  return sheetProducts ?? (snapshot.length > 0 ? snapshot : sampleProducts);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
