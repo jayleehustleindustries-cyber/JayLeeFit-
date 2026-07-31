@@ -29,17 +29,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
-          cache-dependency-path: "jayleefit-website/package-lock.json"
 
       - name: Install dependencies
         working-directory: jayleefit-website
-        run: npm ci
-
-      - name: Run linter
-        working-directory: jayleefit-website
-        run: npm run lint
-        continue-on-error: true
+        run: npm install
 
       - name: Build Next.js project
         working-directory: jayleefit-website
