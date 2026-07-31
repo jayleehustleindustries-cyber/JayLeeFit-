@@ -66,3 +66,22 @@ export async function setActiveSync(active: boolean) {
   state.activeSync = active;
   await updateSyncState(state);
 }
+
+export async function recordSync(log: SyncLog) {
+  await setActiveSync(true);
+  try {
+    await logSync(log);
+  } finally {
+    await setActiveSync(false);
+  }
+}
+
+export async function isActiveSync(): Promise<boolean> {
+  const state = await getSyncState();
+  return state.activeSync;
+}
+
+export async function getLastSync(source: string): Promise<string | null> {
+  const state = await getSyncState();
+  return state.lastSync[source] || null;
+}

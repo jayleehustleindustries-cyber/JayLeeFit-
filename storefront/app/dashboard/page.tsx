@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [state, setState] = useState<SyncState | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [driveSyncing, setDriveSyncing] = useState(false);
 
   useEffect(() => {
     fetchState();
@@ -52,6 +53,26 @@ export default function Dashboard() {
       alert(`Sync failed: ${error}`);
     } finally {
       setSyncing(false);
+    }
+  }
+
+  async function triggerDriveSync() {
+    setDriveSyncing(true);
+    try {
+      const res = await fetch('/api/data/drive-sync', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        await fetchState();
+        alert(
+          `Image sync completed: ${data.stats.mappedItems} items with ${data.stats.totalImages} images`
+        );
+      } else {
+        alert(`Image sync failed: ${data.error}`);
+      }
+    } catch (error) {
+      alert(`Image sync failed: ${error}`);
+    } finally {
+      setDriveSyncing(false);
     }
   }
 
@@ -111,6 +132,17 @@ export default function Dashboard() {
 
         <div style={{ backgroundColor: '#1a1a1a', padding: '1.5rem', borderRadius: '0.5rem' }}>
           <p style={{ color: '#999', fontSize: '0.875rem', marginBottom: '0.5rem' }}>
+            Last Drive Sync (Images)
+          </p>
+          <p style={{ fontSize: '1.125rem', fontWeight: '600' }}>
+            {state?.lastSync?.drive
+              ? new Date(state.lastSync.drive).toLocaleString()
+              : 'Never'}
+          </p>
+        </div>
+
+        <div style={{ backgroundColor: '#1a1a1a', padding: '1.5rem', borderRadius: '0.5rem' }}>
+          <p style={{ color: '#999', fontSize: '0.875rem', marginBottom: '0.5rem' }}>
             Total Syncs
           </p>
           <p style={{ fontSize: '1.125rem', fontWeight: '600' }}>
@@ -119,8 +151,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Sync Button */}
-      <div style={{ marginBottom: '2rem' }}>
+      {/* Sync Buttons */}
+      <div style={{ marginBottom: '2rem', display: 'flex', gap: '1rem' }}>
         <button
           onClick={triggerSync}
           disabled={syncing || state?.activeSync}
@@ -135,7 +167,23 @@ export default function Dashboard() {
             opacity: syncing || state?.activeSync ? 0.6 : 1,
           }}
         >
-          {syncing ? 'Syncing...' : 'Trigger Sync Now'}
+          {syncing ? 'Syncing Inventory...' : 'Sync Inventory (Sheets)'}
+        </button>
+        <button
+          onClick={triggerDriveSync}
+          disabled={driveSyncing || state?.activeSync}
+          style={{
+            backgroundColor: '#10b981',
+            color: '#ffffff',
+            padding: '0.75rem 1.5rem',
+            border: 'none',
+            borderRadius: '0.5rem',
+            fontWeight: '600',
+            cursor: driveSyncing || state?.activeSync ? 'not-allowed' : 'pointer',
+            opacity: driveSyncing || state?.activeSync ? 0.6 : 1,
+          }}
+        >
+          {driveSyncing ? 'Syncing Images...' : 'Sync Images (Drive)'}
         </button>
       </div>
 
