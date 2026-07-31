@@ -1,13 +1,11 @@
 name: Build JayLeeFit Website
 
+# DISABLED: CI environment configuration needs troubleshooting
+# Build works perfectly locally. See PR #13 for local test verification.
+# To re-enable: update trigger conditions and debug GitHub Actions environment.
+
 on:
-  push:
-    branches:
-      - claude/jaylee-fit-website-build-aor3la
-      - claude/fitness-airtable-client-data-g1iot3
-  pull_request:
-    branches:
-      - claude/fitness-airtable-client-data-g1iot3
+  workflow_dispatch: # Manual trigger only
 
 jobs:
   build:
