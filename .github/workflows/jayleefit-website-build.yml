@@ -5,36 +5,44 @@ on:
     branches:
       - claude/jaylee-fit-website-build-aor3la
       - claude/fitness-airtable-client-data-g1iot3
-    paths:
-      - "jayleefit-website/**"
-      - ".github/workflows/jayleefit-website-build.yml"
   pull_request:
     branches:
       - claude/fitness-airtable-client-data-g1iot3
-    paths:
-      - "jayleefit-website/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
+    defaults:
+      run:
+        shell: bash
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "18"
 
       - name: Install dependencies
-        run: cd jayleefit-website && npm install
+        run: |
+          cd "$GITHUB_WORKSPACE/jayleefit-website"
+          npm install
 
       - name: Build Next.js project
-        run: cd jayleefit-website && npm run build
+        run: |
+          cd "$GITHUB_WORKSPACE/jayleefit-website"
+          npm run build
 
-      - name: Check build output
-        run: cd jayleefit-website && test -d .next && echo "✓ Build successful"
+      - name: Verify build output
+        run: |
+          cd "$GITHUB_WORKSPACE/jayleefit-website"
+          if [ -d ".next" ]; then
+            echo "✓ Build successful - .next directory exists"
+            exit 0
+          else
+            echo "✗ Build failed - .next directory not found"
+            exit 1
+          fi
