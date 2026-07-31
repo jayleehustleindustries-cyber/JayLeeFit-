@@ -74,30 +74,39 @@ npm run dev
 ---
 
 ### 2. Old Light Storefront (EHC)
-**Use this to:** Resell pre-owned apparel with real-time inventory from Google Sheets.
+**Use this to:** Control all inventory from one place, sync to eBay/Facebook/Vendoo with your own API keys.
 
 ```bash
 cd storefront
 npm install
 cp .env.example .env.local
-# Edit .env.local with your Google Sheet ID and Stripe keys
+# Edit .env.local with your Google Sheets API key and Stripe keys
 npm run dev
 ```
 
 📖 **Full instructions:** [storefront/README.md](./storefront/README.md)
 
 **What's included:**
-- Product catalog + filtering
-- Google Sheets inventory integration
+- Product catalog + filtering (reads from EHC Inventory Log)
+- Integrated data sync from Google Sheets (on-demand or manual)
+- Sync monitoring dashboard at `/dashboard`
+- Data export API (`/api/data/export`) for Vendoo/marketplace syncs
 - Stripe checkout
 - Celestial/night-sky branding (moon phases)
 - Real inventory tracking
 
 **Environment variables needed:**
-- `GOOGLE_SHEET_ID` — Your inventory sheet ID
-- `GOOGLE_SHEET_NAME` — Tab name in the sheet
+- `EHC_SHEET_ID` — EHC Inventory Log sheet ID (comes pre-filled)
+- `GOOGLE_SHEETS_API_KEY` — Google API key for public sheet access
 - `STRIPE_SECRET_KEY` — Stripe API key
-- `STRIPE_WEBHOOK_SECRET` — For local testing
+- `STRIPE_WEBHOOK_SECRET` — For local webhook testing
+
+**Multi-marketplace workflow:**
+1. Edit inventory in EHC Inventory Log (Google Sheet)
+2. Hit `/api/data/sync` or visit `/dashboard` → "Trigger Sync Now"
+3. Storefront updates automatically
+4. Export to Vendoo via `/api/data/export` (your Vendoo account syncs to eBay, Facebook, etc.)
+5. You control all API keys — nothing goes through our system
 
 ---
 

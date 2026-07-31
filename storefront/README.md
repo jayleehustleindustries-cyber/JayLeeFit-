@@ -125,9 +125,10 @@ curl http://localhost:3000/api/data/sync
 curl -X POST http://localhost:3000/api/data/sync
 ```
 
-**POST /api/data/ebay** — Sync inventory to eBay listings (requires `EBAY_TOKEN`, `EBAY_ACCOUNT_ID`)
+**GET /api/data/export** — Export inventory for external tools (Vendoo, etc.)
 ```bash
-curl -X POST http://localhost:3000/api/data/ebay
+curl http://localhost:3000/api/data/export?format=json
+# Supports: ?format=json (default), ?format=csv (coming soon)
 ```
 
 ### Sync Dashboard
@@ -139,31 +140,59 @@ http://localhost:3000/dashboard
 
 Shows:
 - Current sync status (Idle / Syncing)
-- Last sync times for each source (Sheets, eBay, Drive)
+- Last sync times
 - Recent sync logs with records processed, errors, duration
 - Manual trigger button for on-demand syncs
+
+### Data Flow Architecture
+
+```
+EHC Inventory Log (Google Sheets)
+    ↓
+Data API (Storefront)
+    ├→ Product Catalog (displayed to customers)
+    │
+    └→ /api/data/export → Vendoo, Facebook Marketplace, etc.
+         (your API keys control external syncs)
+```
+
+**Key point:** Storefront is your single source of truth. All marketplace syncs (eBay, Facebook, etc.) pull from Storefront via `/api/data/export`, using your own Vendoo account or API integrations. No direct marketplace API calls needed.
 
 ### Configuration
 
 Data API environment variables (add to `.env.local`):
 
 ```
-# Google Sheets Integration
+# Google Sheets Integration (required)
 EHC_SHEET_ID=1-UcTy4Cr_NPK622SPRXob7LfpHFEw5874mv9y5E90Ys
 GOOGLE_SHEETS_API_KEY=your_google_api_key_here
 
-# eBay Sync (Optional)
-EBAY_TOKEN=your_ebay_auth_token_here
-EBAY_ACCOUNT_ID=your_ebay_account_id_here
-
-# Google Drive Image Sync (Future)
+# Google Drive Image Sync (Optional, future)
 GOOGLE_DRIVE_FOLDER_ID=your_ehc_import_folder_id_here
 
-# Blob Storage (Future)
+# Blob Storage (Optional, future)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 ```
 
 All sync state is logged to `public/logs/sync-state.json` (retained: last 100 syncs).
+
+### Syncing to External Marketplaces
+
+Instead of direct API integrations, use one of these approaches:
+
+**Option 1: Vendoo (Recommended)**
+- Vendoo app pulls from `/api/data/export?format=json`
+- Manages syncs to eBay, Facebook Marketplace, Poshmark
+- You control your Vendoo API key, not ours
+
+**Option 2: Custom Export + Your Tools**
+- Export inventory JSON from `/api/data/export`
+- Feed into your own integration (automation, scripts, etc.)
+- Full control over data transformation
+
+**Option 3: Future CSV Export**
+- Coming soon: `/api/data/export?format=csv`
+- For bulk upload tools or manual marketplace updates
 
 ## Cross-marketing with JayLeeFit (coaching)
 
