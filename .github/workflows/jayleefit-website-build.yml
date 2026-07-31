@@ -1,0 +1,50 @@
+name: Build JayLeeFit Website
+
+on:
+  push:
+    branches:
+      - claude/jaylee-fit-website-build-aor3la
+      - claude/fitness-airtable-client-data-g1iot3
+    paths:
+      - "jayleefit-website/**"
+      - ".github/workflows/jayleefit-website-build.yml"
+  pull_request:
+    branches:
+      - claude/fitness-airtable-client-data-g1iot3
+    paths:
+      - "jayleefit-website/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "jayleefit-website/package-lock.json"
+
+      - name: Install dependencies
+        working-directory: jayleefit-website
+        run: npm ci
+
+      - name: Run linter
+        working-directory: jayleefit-website
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Build Next.js project
+        working-directory: jayleefit-website
+        run: npm run build
+
+      - name: Check build output
+        working-directory: jayleefit-website
+        run: test -d .next && echo "✓ Build successful"
