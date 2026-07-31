@@ -102,6 +102,69 @@ sheet is the entire "adding inventory" workflow — no redeploys needed.
 Checkout is real money once live keys are in place — test with Stripe test
 keys (`sk_test_...`) first.
 
+## Data API — Centralized Inventory Sync
+
+The storefront now has built-in data sync endpoints that connect to EHC Inventory Log (Google Sheets) and eBay:
+
+### Endpoints
+
+**GET /api/data/inventory** — Fetch current inventory from Google Sheets
+```bash
+curl http://localhost:3000/api/data/inventory
+curl http://localhost:3000/api/data/inventory?status=In%20Stock
+curl http://localhost:3000/api/data/inventory?gender=Women
+```
+
+**GET /api/data/sync** — Get sync state and logs
+```bash
+curl http://localhost:3000/api/data/sync
+```
+
+**POST /api/data/sync** — Trigger manual sync from Google Sheets
+```bash
+curl -X POST http://localhost:3000/api/data/sync
+```
+
+**POST /api/data/ebay** — Sync inventory to eBay listings (requires `EBAY_TOKEN`, `EBAY_ACCOUNT_ID`)
+```bash
+curl -X POST http://localhost:3000/api/data/ebay
+```
+
+### Sync Dashboard
+
+Monitor all data transfers in real-time:
+```
+http://localhost:3000/dashboard
+```
+
+Shows:
+- Current sync status (Idle / Syncing)
+- Last sync times for each source (Sheets, eBay, Drive)
+- Recent sync logs with records processed, errors, duration
+- Manual trigger button for on-demand syncs
+
+### Configuration
+
+Data API environment variables (add to `.env.local`):
+
+```
+# Google Sheets Integration
+EHC_SHEET_ID=1-UcTy4Cr_NPK622SPRXob7LfpHFEw5874mv9y5E90Ys
+GOOGLE_SHEETS_API_KEY=your_google_api_key_here
+
+# eBay Sync (Optional)
+EBAY_TOKEN=your_ebay_auth_token_here
+EBAY_ACCOUNT_ID=your_ebay_account_id_here
+
+# Google Drive Image Sync (Future)
+GOOGLE_DRIVE_FOLDER_ID=your_ehc_import_folder_id_here
+
+# Blob Storage (Future)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+```
+
+All sync state is logged to `public/logs/sync-state.json` (retained: last 100 syncs).
+
 ## Cross-marketing with JayLeeFit (coaching)
 
 A footer strip and an About-page block link out to the JayLeeFit coaching
