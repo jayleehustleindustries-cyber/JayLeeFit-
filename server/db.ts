@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, applications, aiPlans, paymentReports } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -17,6 +17,8 @@ export async function getDb() {
   }
   return _db;
 }
+
+// ── Users ────────────────────────────────────────────────────────────────────
 
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
@@ -87,6 +89,74 @@ export async function getUserByOpenId(openId: string) {
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
 
   return result.length > 0 ? result[0] : undefined;
+}
+
+// ── Applications ────────────────────────────────────────────────────────────
+
+export async function upsertApplication(email: string, patch: Partial<{
+  fullName: string;
+  phase1Json: string;
+  phase2Json: string;
+  phase3Json: string;
+  phase4Json: string;
+  completedAt: Date;
+}>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const existing = await db.select().from(applications).where(eq(applications.email, email)).limit(1);
+  if (existing.length > 0) {
+    await db.update(applications).set(patch).where(eq(applications.email, email));
+    const updated = await db.select().from(applications).where(eq(applications.email, email)).limit(1);
+    return updated[0];
+  } else {
+    await db.insert(applications).values({ email, ...patch });
+    const inserted = await db.select().from(applications).where(eq(applications.email, email)).limit(1);
+    return inserted[0];
+  }
+}
+
+export async function getApplicationByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db.select().from(applications).where(eq(applications.email, email)).limit(1);
+  return rows[0] ?? null;
+}
+
+// ── AI Plans ────────────────────────────────────────────────────────────────
+
+export async function createAiPlan(data: {
+  name?: string;
+  goals: string;
+  fitnessLevel: string;
+  availability: string;
+  focusArea?: string;
+  limitations?: string;
+  planOutput?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(aiPlans).values(data);
+  const all = await db.select().from(aiPlans);
+  return all[all.length - 1];
+}
+
+// ── Payment Reports ──────────────────────────────────────────────────────────
+
+export async function createPaymentReport(data: {
+  name: string;
+  email: string;
+  method?: string;
+  amount: string;
+  orderId: string;
+  transactionId: string;
+  note?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(paymentReports).values(data);
+  const all = await db.select().from(paymentReports);
+  return all[all.length - 1];
 }
 
 // TODO: add feature queries here as your schema grows.
