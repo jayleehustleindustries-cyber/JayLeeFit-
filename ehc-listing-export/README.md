@@ -9,7 +9,12 @@ credentials handed to an agent.
 
 - An agent in this environment has no eBay/Vendoo session and can't get
   past login + 2FA + bot detection, so "headless Chromium into my
-  account" isn't a real path. eBay's own bulk-upload pipe is.
+  account" isn't a real path by default. eBay's own bulk-upload pipe is.
+  **If a real session/browser automation is ever turned on for this
+  workflow, agents must follow `BROWSER-AUTOMATION-SOP.md` in this
+  folder** — it covers the guardrails (draft-first, hard stops on
+  2FA/CAPTCHA, no guessed prices/photos, batch caps) this default path
+  doesn't need.
 - Drafts tolerate missing data (photos, a few prices, unconfirmed
   sizes). Every sellable item gets a draft now; you finish each one in
   Seller Hub's bulk editor when photos are matched.
