@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0812;
+  --foreground: #f2ecdf;
+
+  /* MagicDeals 007 brand tokens — dark velvet stage, gold foil, one drop
+     of magician's-silk red. */
+  --color-noir: #0b0812;
+  --color-velvet: #171025;
+  --color-velvet-deep: #100b1b;
+  --color-gold: #d9b45b;
+  --color-goldbright: #f0d489;
+  --color-silk: #c04a55;
+  --color-bone: #f2ecdf;
+  --color-fog: #9b93ae;
+  --color-line: #2c2340;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-noir: var(--color-noir);
+  --color-velvet: var(--color-velvet);
+  --color-velvet-deep: var(--color-velvet-deep);
+  --color-gold: var(--color-gold);
+  --color-goldbright: var(--color-goldbright);
+  --color-silk: var(--color-silk);
+  --color-bone: var(--color-bone);
+  --color-fog: var(--color-fog);
+  --color-line: var(--color-line);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-libre);
+  --font-mono: var(--font-space-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer utilities {
+  /* Gold-foil text — the wordmark treatment. */
+  .text-foil {
+    background: linear-gradient(
+      100deg,
+      #a5813a 0%,
+      #f0d489 30%,
+      #d9b45b 50%,
+      #f7e7b0 68%,
+      #a5813a 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  /* Velvet curtain gradient for the hero stage. */
+  .bg-stage {
+    background:
+      radial-gradient(
+        ellipse 80% 55% at 50% 0%,
+        rgba(217, 180, 91, 0.14),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 45% at 50% 105%,
+        rgba(192, 74, 85, 0.1),
+        transparent 65%
+      ),
+      var(--color-noir);
+  }
+
+  .marquee-track {
+    animation: marquee 26s linear infinite;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Slow shimmer used sparingly on the hero rule + wordmark. */
+  .shimmer {
+    background-size: 200% auto;
+    animation: shimmer 6s linear infinite;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
+  }
+}
+
+/* Card-rank condition chip — a tiny playing card. */
+.rank-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55em;
+  height: 2.1em;
+  border-radius: 0.22em;
+  border: 1px solid var(--color-gold);
+  background: var(--color-bone);
+  color: #201830;
+  font-weight: 700;
+  font-size: 0.8em;
+  line-height: 1;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(217, 180, 91, 0.28);
+}
