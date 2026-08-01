@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ehc-inventory": {
+      "command": "node",
+      "args": ["./ehc-inventory-mcp-server/dist/index.js"],
+      "env": {
+        "SUPABASE_SERVICE_ROLE_KEY": ""
+      }
+    }
+  }
+}
