@@ -1,0 +1,127 @@
+# Items already delivered in an eBay draft upload file.
+# One key per line: SKU, plus lowercased title as fallback identity.
+A1-MD-0001
+nike athletic shorts performance activewear
+A1-MD-0002
+adidas womens black capri leggings large logo athletic activewear
+A1-MD-0003
+columbia willapa river men's outdoor fishing shorts
+A1-MD-0004
+patagonia baggies men's outdoor shorts
+A1-MD-0005
+vintage america blues women's boyfriend jeans relaxed fit
+A1-MD-0006
+forenza leather jacket vintage outerwear
+A1-MD-0007
+new balance navy running shorts athletic activewear
+A1-MD-0008
+lauren ralph lauren women's ribbed lace-up 3/4 sleeve top m peach
+A1-MD-0009
+under armour heatgear men's loose performance golf polo m teal
+A1-MD-0010
+marvel captain america men's button-up shirt m all over print as is
+A1-MD-0011
+dockers men's short sleeve button-down shirt m navy 100% cotton
+A1-MD-0012
+stitch beachwear men's hawaiian shirt l tropical tiki monstera cotton
+A1-MD-0013
+callaway golf men's polo shirt l white cotton logo stained as is
+A1-MD-0014
+under armour heatgear u golf men's polo xl white gray striped
+A1-MD-0015
+abercrombie & fitch men's super slim floral shirt s stretch short sleeve
+A1-MD-0016
+wrangler authentic series 75 men's plaid short sleeve shirt
+A1-MD-0017
+mercedes by carol men's black tonal stripe polo shirt l vintage style
+A1-MD-0018
+van heusen wrinkle free men's plaid short sleeve button-down shirt
+A1-MD-0019
+nautica men's nautical signal flag graphic t-shirt xxl blue front back
+A1-MD-0020
+daniel cremieux signature men's polo shirt l coral 100% cotton
+A1-MD-0021
+american eagle women's ahh-mazingly soft plaid flannel shirt s green
+A1-MD-0022
+paper crane women's ribbed cropped cardigan tank set m rust orange
+A1-MD-0023
+izod men's new england oxford striped short sleeve shirt 18.5 large
+A1-MD-0024
+tommy hilfiger men's custom fit plaid shirt l 16.5-17 navy long sleeve
+A1-MD-0025
+under armour men's xl coldgear loose quarter zip pullover heather teal
+A1-MD-0026
+j.crew men's l red blue gingham cotton long sleeve button down shirt
+A1-MD-0027
+under armour women's white orange mesh racerback athletic tank top
+A1-MD-0028
+ariat women's m coral desert agave graphic t-shirt western ranchwear
+A1-MD-0029
+under armour superman men's m heatgear loose navy graphic t-shirt
+A1-MD-0030
+st john's bay women's l purple embroidered cotton peasant blouse boho
+A1-MD-0032
+adidas men's m aeroready gray 3-stripes short sleeve athletic shirt
+A2-MD-0033
+judy blue womens 9/29 light wash distressed ripped skinny jeans raw hem
+A2-MD-0034
+royal blue short sleeve polo shirt solid casual golf performance style
+A2-MD-0035
+lands end mens 42 black elastic waist casual pants straight leg
+A2-MD-0036
+st johns bay mens s yellow interlock polo shirt navy stripe cotton
+A2-MD-0037
+brooks brothers 346 mens 40x30 olive green cotton chino pants
+A2-MD-0039
+spacex size l lavender organic cotton full zip hoodie embroidered logo
+A2-MD-0040
+american eagle womens white stretch jeans approx 31x28 straight leg
+A2-MD-0042
+mondetta womens m black stretch straight leg pull on pants performance luxury
+A2-MD-0043
+nike sphere mens m gray mesh v neck performance athletic shirt
+A2-MD-0044
+levis womens black denim trucker jacket faded wash cropped 18x19
+A2-MD-0045
+lauren ralph lauren womens 20w navy double breasted blazer gold buttons
+A2-MD-0046
+brooks brothers mens s orange cotton quarter zip pullover logo
+A2-MD-0047
+kut from the kloth catherine boyfriend pants womens 14 dark green velvet
+A2-MD-0048
+nautica mens xl white sailing windbreaker jacket black stripe logo
+A2-MD-0049
+columbia mens xxl red plaid stretch shirt button up new with tags
+A2-MD-0050
+fabletics mens l black utility cargo jogger pants turquoise drawstring
+wrangler western shirts mens m teal navy plaid button up shirt
+woolrich mens xl burgundy cotton button up shirt made in usa
+field & stream 1871 plaid lined shirt jacket approx 24 in chest
+brooks brothers 346 slim fit non iron cotton plaid shirt
+dkny mens m gray blue geometric button up shirt
+eddie bauer mens l orange plaid button up shirt
+dc comics superman mens m navy distressed shield graphic t shirt
+roundtree & yorke mens s striped non iron button down shirt
+under armour womens gray short sleeve athletic blouse top
+nike athletics mens xl red short sleeve graphic t shirt
+greys anatomy by barco womens m royal blue snap front scrub jacket
+nike cream sherpa fleece jacket label unverified
+gap black utility tech jacket multi pocket outerwear
+7 for all mankind gray denim jogger pants
+columbia black sherpa fleece jacket size large
+rockport tan leather plain toe derby shoes
+abercrombie kids pink high rise wide leg jeans 13 14
+lee jeans new with tags size and fit unconfirmed
+adidas amplifier graphic t shirt size 5x
+disney parks red mickey embroidered polo shirt us xxl
+american eagle brown utility cargo pants
+lucky brand ankle jeans size 8 29
+spyder large logo blue graphic t shirt size s p
+stafford personal collection mens 16 white grid dress shirt
+ralph lauren womens l cream cropped utility jacket button front
+levis mens 33x30 light wash slim fit denim jeans
+dkny stanton mens 32x30 dark blue stretch slim fit jeans
+van heusen mens m navy suede style button up shirt
+banana republic mens gray plaid slim fit long sleeve button down shirt
+london fog womens m petite beige hooded raincoat lightweight coat
+quinn womens s taupe brown lined blazer jacket
