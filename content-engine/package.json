@@ -1,0 +1,19 @@
+{
+  "name": "content-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo:video": "tsx lib/video/demo-queue.ts",
+    "demo:storyboard": "tsx lib/video/demo-storyboard.ts",
+    "generate:video": "tsx lib/video/cli.ts",
+    "produce:reselling": "tsx lib/video/produce.ts reselling",
+    "produce": "tsx lib/video/produce.ts",
+    "produce:fitness": "tsx lib/video/produce.ts fitness-sunday"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5"
+  }
+}
