@@ -18,3 +18,13 @@ pipeline never gets mixed into either of those, per explicit instruction.
   it's reviewed.
 
 Read `ARCHITECTURE.md` for everything else.
+
+## `assets/`
+
+Not part of the (still design-only) content pipeline above — this holds
+finished deliverables for the brand. Currently: `jayleefit-program-builder-pack.docx`,
+the free lead-magnet sent by the Instagram-comment → landing-page →
+email automation (see `storefront/app/program-pack/` and the Make.com
+scenarios built for it). A copy-paste AI system prompt that turns any LLM
+into a program-building interview, adapted from an existing "Everyday
+Hustle" AI context pack found in the account's Google Drive.

@@ -135,6 +135,21 @@ sheet is the entire "adding inventory" workflow — no redeploys needed.
 Checkout is real money once live keys are in place — test with Stripe test
 keys (`sk_test_...`) first.
 
+## Program-pack lead magnet (`/program-pack`)
+
+A landing page collects an email (and optional US state) and hands off to
+a Make.com scenario for delivery — the storefront itself never sends mail
+or touches a CRM directly, it just posts to a webhook:
+
+```
+MAKE_PROGRAM_PACK_WEBHOOK_URL=https://hook.us2.make.com/xxxxxxxxxxxx
+```
+
+This must stay server-only (no `NEXT_PUBLIC_` prefix) — `api/program-pack/
+route.ts` is the only thing that reads it, so the webhook URL is never sent
+to the browser. The Make scenario on the other end writes the lead to
+Airtable and emails the value pack.
+
 ## Cross-marketing with JayLeeFit (coaching)
 
 A footer strip and an About-page block link out to the JayLeeFit coaching
@@ -158,7 +173,9 @@ app/
   checkout/success|cancel   post-Stripe redirect pages
   api/checkout/route.ts     creates the Stripe Checkout Session (server-priced)
   api/checkout/webhook/     verifies + logs completed orders
-components/                 Navbar, Footer, ProductCard, CartDrawer, etc.
+  program-pack/page.tsx     lead-magnet landing page (email + state capture)
+  api/program-pack/route.ts forwards captured lead to the Make.com webhook
+components/                 Navbar, Footer, ProductCard, CartDrawer, ProgramPackForm, etc.
 lib/
   products.ts               Google Sheet fetch + CSV parse + fallback
   sample-products.ts        local fallback catalog
