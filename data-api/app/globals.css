@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0f0f0f;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: #d4af37;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.status-badge.success {
+  background-color: #10b981;
+  color: #f0fdf4;
+}
+
+.status-badge.pending {
+  background-color: #f59e0b;
+  color: #fef3c7;
+}
+
+.status-badge.error {
+  background-color: #ef4444;
+  color: #fee2e2;
+}
+
+.sync-log {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.sync-log .success {
+  color: #10b981;
+}
+
+.sync-log .error {
+  color: #ef4444;
+}
+
+.sync-log .info {
+  color: #3b82f6;
+}
