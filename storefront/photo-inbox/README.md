@@ -14,6 +14,20 @@ is. That match is a human call.
 This folder is deliberately **outside `public/`**, so nothing here is
 served or bundled until it's been assigned to a SKU.
 
+## Matching photos to items, visually
+
+Rather than reading filenames and guessing, generate the matcher:
+
+```bash
+python3 tools/build-photo-matcher.py    # needs: pip install Pillow
+```
+
+That writes `tools/photo-matcher.html` — a self-contained page (no
+server, no network) showing each photo beside the searchable inventory.
+Click the item a photo belongs to and it records the pairing; progress
+is saved in the browser, so it can be done in several sittings. It
+outputs a plain `filename -> SKU` list to feed the command below.
+
 ## Assigning a photo to an item
 
 ```bash
@@ -30,32 +44,15 @@ Add `--copy` to leave the original in the inbox.
 
 ## What's here
 
-22 unique images. All are square 2400×2400 except where noted.
+See **[INDEX.md](INDEX.md)** for the current file list with dimensions —
+it's generated, so it stays accurate as the inbox grows:
 
-| File | Dimensions | Notes |
-|---|---|---|
-| `IMG_0487-Photoroom.jpg` | 1800×2400 | portrait, not square |
-| `IMG_0491-Photoroom.jpg` | 1800×2400 | portrait, not square |
-| `IMG_0541-Photoroom.jpg` | 2400×2400 | |
-| `IMG_0753-Photoroom.jpg` | 2400×2400 | |
-| `IMG_0757-Photoroom.jpg` | 2400×2400 | |
-| `IMG_0773-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2047-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2055-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2061-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2067-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2103-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2107-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2109-Photoroom.jpg` | 2400×2400 | measurement shot (ruler) |
-| `IMG_2752-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2753-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2761-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2770-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2783-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2787-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2794-Photoroom.jpg` | 2400×2400 | |
-| `IMG_2798-Photoroom.jpg` | 2400×2400 | |
-| `IMG_4094-Photoroom.jpeg` | 1600×1600 | care-tag detail shot |
+```bash
+npx tsx lib/build-inbox-index.ts
+```
+
+Anything flagged **not square** wants a crop before assignment: the
+storefront's product grid is 4:5 and marketplaces prefer square.
 
 **More still to come.** This is a partial pull of a larger Drive library.
 Every image is one connector call (the environment's proxy blocks direct
