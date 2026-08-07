@@ -30,7 +30,7 @@ Add `--copy` to leave the original in the inbox.
 
 ## What's here
 
-23 unique images. All are square 2400×2400 except where noted.
+22 unique images. All are square 2400×2400 except where noted.
 
 | File | Dimensions | Notes |
 |---|---|---|
@@ -56,7 +56,6 @@ Add `--copy` to leave the original in the inbox.
 | `IMG_2794-Photoroom.jpg` | 2400×2400 | |
 | `IMG_2798-Photoroom.jpg` | 2400×2400 | |
 | `IMG_4094-Photoroom.jpeg` | 1600×1600 | care-tag detail shot |
-| `IMG_5104-Photoroom.jpeg` | 2400×2400 | |
 
 **More still to come.** This is a partial pull of a larger Drive library.
 Every image is one connector call (the environment's proxy blocks direct
