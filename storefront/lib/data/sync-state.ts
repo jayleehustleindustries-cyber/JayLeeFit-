@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface SyncLog {
   timestamp: string;
-  source: 'sheets' | 'drive' | 'ebay';
+  source: 'sheets' | 'drive' | 'ebay' | 'staleness';
   status: 'success' | 'error' | 'pending';
   recordsProcessed: number;
   recordsSkipped: number;

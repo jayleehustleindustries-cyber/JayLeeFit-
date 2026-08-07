@@ -4,9 +4,22 @@ interface CSVRow {
   [key: string]: string | number | undefined;
 }
 
+/** Ladder pricing keyed by SKU, from `lib/staleness/engine`. */
+export type StalePriceMap = Map<
+  string,
+  { price: number; tier: string; tierLabel: string; days: number }
+>;
+
+/**
+ * When a stale map is supplied, `Price` carries the ladder's marked-down
+ * target and `OriginalPrice` preserves the sheet's figure. Vendoo maps its
+ * price field to `Price`, so a markdown decided here reaches every connected
+ * marketplace on the next sync without any marketplace credentials of our own.
+ */
 export function inventoryToCSV(
   items: InventoryItem[],
-  includeImages: boolean = false
+  includeImages: boolean = false,
+  staleMap?: StalePriceMap
 ): string {
   const headers = [
     'SKU',
@@ -21,24 +34,33 @@ export function inventoryToCSV(
     'Status',
     'DaysInInventory',
     'Notes',
+    ...(staleMap ? ['OriginalPrice', 'StaleTier'] : []),
     ...(includeImages ? ['ImageURL'] : []),
   ];
 
-  const rows: CSVRow[] = items.map(item => ({
-    SKU: item.sku,
-    Brand: item.brand,
-    Gender: item.gender,
-    Garment: item.garment,
-    Condition: item.condition,
-    Price: item.price,
-    ListedPrice: item.listedPrice,
-    eBayURL: item.ebayUrl || '',
-    PoshmarkURL: item.poshmarkUrl || '',
-    Status: item.status,
-    DaysInInventory: item.daysInInventory || 0,
-    Notes: item.notes,
-    ...(includeImages && { ImageURL: '' }), // Will be populated from image mapper
-  }));
+  const rows: CSVRow[] = items.map(item => {
+    const stale = staleMap?.get(item.sku);
+
+    return {
+      SKU: item.sku,
+      Brand: item.brand,
+      Gender: item.gender,
+      Garment: item.garment,
+      Condition: item.condition,
+      Price: stale ? stale.price : item.price,
+      ListedPrice: item.listedPrice,
+      eBayURL: item.ebayUrl || '',
+      PoshmarkURL: item.poshmarkUrl || '',
+      Status: item.status,
+      DaysInInventory: item.daysInInventory || 0,
+      Notes: item.notes,
+      ...(staleMap && {
+        OriginalPrice: item.price,
+        StaleTier: stale ? stale.tierLabel : 'Fresh',
+      }),
+      ...(includeImages && { ImageURL: '' }), // Will be populated from image mapper
+    };
+  });
 
   // Build CSV with proper escaping
   const csvContent = [
