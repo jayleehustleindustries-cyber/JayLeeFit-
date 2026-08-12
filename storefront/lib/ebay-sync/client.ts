@@ -4,11 +4,11 @@
  * should only happen after a sandbox dry run looks right, same
  * "preview before you spend/publish" rule used elsewhere in this repo.
  *
- * Untested against eBay's live API (no credentials exist yet — see
- * ../../../root/.claude/plans for the prerequisite). Endpoint shapes
- * follow eBay's documented REST conventions; verify against
- * developer.ebay.com once real credentials are available, before the
- * first real run.
+ * Untested against eBay's live API — no credentials exist yet (see
+ * README.md for the developer-portal setup steps, which only the
+ * account owner can complete). Endpoint shapes follow eBay's documented
+ * REST conventions; verify against developer.ebay.com once real
+ * credentials are available, before the first real run.
  *
  * Required env vars:
  *   EBAY_APP_ID       — Client ID from the eBay Developer Program
