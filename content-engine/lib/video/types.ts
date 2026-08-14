@@ -34,6 +34,57 @@ export type Idea = {
   pillar: Pillar;
 };
 
+/**
+ * "core" = present in the original locked identity description
+ * (JLF-20260629-001's reference manifest and clip prompts). "extended" =
+ * introduced by later jobs (JLF-20260804-001, JLF-20260811-001) that
+ * referenced the identity only by handle rather than by written
+ * description — kept in the approved set per explicit sign-off, but
+ * tagged so QA can weight core vs. extended differently if a real
+ * generation ever drifts specifically on one of the newer scenes.
+ */
+export type ApprovedEnvironment = {
+  id: string;
+  label: string;
+  description: string;
+  status: "core" | "extended";
+};
+
+export type ReferenceImageRole =
+  | "hero_identity"
+  | "backup"
+  | "texture"
+  | "profile"
+  | "motion"
+  | "full_body"
+  | "wardrobe";
+
+/**
+ * Structured, auditable identity spec — meant to be diffable against the
+ * real Drive-side reference manifest (JLF-20260629-001's
+ * REF_MANIFEST), not to be injected into a prompt directly. See
+ * avatar-identity.ts's flattenNegativeConstraints()/applyAvatarLock()
+ * for the actual string-injection mechanism.
+ */
+export type AvatarIdentitySpec = {
+  id: string;
+  label: string;
+  /** This identity is built from a real person's actual reference photos, not a fictional character. */
+  isRealPersonLikeness: true;
+  likenessApprovalStatus: "approved" | "pending" | "revoked";
+  face: string;
+  hair: string;
+  build: string;
+  expression: string;
+  wardrobeCore: string;
+  approvedEnvironments: ApprovedEnvironment[];
+  referenceImageManifest: { role: ReferenceImageRole; note: string }[];
+  negativeConstraints: Record<string, string[]>;
+  /** Non-canonical identifiers seen in the live Drive system that refer to this same locked identity — documented for traceability, never injected into prompts. */
+  aliases: string[];
+  sourceNotes: string;
+};
+
 /** Stage 1 output — pure, free, no generation calls. */
 export type VideoPromptJob = {
   ideaId: string;

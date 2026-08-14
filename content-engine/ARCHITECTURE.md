@@ -120,8 +120,16 @@ any arbitrary limit.
   of the four pillars in §3, not generic fitness-influencer copy; (2)
   hook lands in the first line/first 2 seconds of the script; (3) every
   `Assets` row for this item has `Status=Approved`, not `Rejected` or
-  still `Generated`; (4) no placeholder/lorem text anywhere in Script.
-- Writes: advances `Status` to `Scheduled` only if all four pass;
+  still `Generated`; (4) no placeholder/lorem text anywhere in Script;
+  (5) for any `Assets` row generated from a `HookFormat` with
+  `requiresConsistentCharacter: true`, subject face/build/wardrobe
+  matches `lib/video/avatar-identity.ts`'s `JAYLEEFIT_AVATAR` spec, the
+  environment is one of its `approvedEnvironments`, and none of its
+  `negativeConstraints` are visibly violated (extra limbs, warped
+  hands, logo drift, invented clothing text, fabricated claims); (6)
+  the crew role/agent that generated an `Assets` row may not itself
+  mark that row `Approved` — a separate QA pass must set it.
+- Writes: advances `Status` to `Scheduled` only if all six pass;
   otherwise sends it back to `Assets In Progress` with the specific
   failing item noted in `Notes`.
 - Never: approves on partial completion — a missing crew asset is a

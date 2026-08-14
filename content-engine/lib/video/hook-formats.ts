@@ -4,15 +4,19 @@ import type { HookFormat } from "./types";
  * Four seed formats. The first three were handed over verbatim earlier in
  * this project's design conversation; the fourth was reverse-engineered
  * from a real reference clip the user provided (a Gemini/Veo-generated
- * video of the same on-screen persona — backwards cap, chain necklace,
- * "Everyday Hustle Co." shirt — moving through a gym, a rooftop skyline at
- * dusk, and back to the gym, all in front of the same
- * "DISCIPLINE FOCUS CONSISTENCY SUCCESS" wall graphic that also appears in
- * a real reference photo already in this account's Drive). That clip's
- * whole point is that the same identity holds across completely different
- * generated environments — that's the capability this fourth format names
- * directly, since it's a real requirement Kling 3.0 (or any backend) needs
+ * video of the same on-screen persona moving through a gym, a rooftop
+ * skyline at dusk, and back to the gym). That clip's whole point is that
+ * the same identity holds across completely different generated
+ * environments — that's the capability this fourth format names
+ * directly, since it's a real requirement any generation backend needs
  * to support well, not just a nice-to-have.
+ *
+ * Persona/wardrobe/environment specifics are deliberately NOT hardcoded
+ * into any prompt string below — they're injected by prompt-builder.ts
+ * via avatar-identity.ts's applyAvatarLock(), gated on
+ * requiresConsistentCharacter. That's the single source of truth for
+ * what the on-screen persona looks like; do not reintroduce identity
+ * details here.
  */
 export const HOOK_FORMATS: HookFormat[] = [
   {
@@ -33,6 +37,7 @@ export const HOOK_FORMATS: HookFormat[] = [
     pillar: "Motivation/Mindset",
     why:
       "Calling out the viewer's own excuse in the first frame — no intro, no logo, no warm-up — is the highest-retention opener in the mindset/motivation niche because it removes the two seconds where people usually swipe past.",
+    // Persona/wardrobe locked in avatar-identity.ts — do not add cap/chain/outfit details here.
     prompt:
       "Vertical 9:16, 12-15 seconds. Cold open: subject looks directly into camera, no intro, states a blunt line calling out a common excuse (\"You said you'd start Monday — it's Thursday\"). Cut to gritty gym B-roll (chalk, plates loading, treadmill grind) synced to a rising beat, on-screen kinetic text reinforcing \"DISCIPLINE > MOTIVATION.\" Close back on subject's face for a direct final line to camera. High contrast, slightly desaturated grade, handheld-but-controlled camera movement.",
     aspectRatio: "9:16",
@@ -57,8 +62,10 @@ export const HOOK_FORMATS: HookFormat[] = [
     pillar: "Personal Brand/Hustle",
     why:
       "Reverse-engineered from a real reference clip: the same on-screen persona holding across completely different generated environments (gym, rooftop skyline at dusk, gym again) is what makes a generated video read as 'a real person's brand' rather than generic stock AI footage — the identity, not any single scene, is the asset.",
+    // Persona/wardrobe/environment specifics locked in avatar-identity.ts
+    // (approvedEnvironments) — do not hardcode them here.
     prompt:
-      "Vertical 9:16, 10 seconds. Same subject across three quick scenes: (1) direct-to-camera in a moody industrial gym, backwards cap, chain necklace, plain black t-shirt with a small chest wordmark, motivational wall text visible in soft focus behind (\"DISCIPLINE / FOCUS / CONSISTENCY / SUCCESS\"), (2) cut to the same subject on a rooftop at dusk with a dense city skyline behind, warm sunset light, same outfit and identity clearly preserved, (3) hard cut back to the gym for a final direct line to camera. Cinematic, slightly desaturated color grade, subtle camera drift rather than static shots.",
+      "Vertical 9:16, 10 seconds. Same subject across three quick scenes: (1) direct-to-camera in the approved gym environment, (2) cut to the approved rooftop-at-dusk environment, same identity clearly preserved, (3) hard cut back to the gym for a final direct line to camera. Cinematic, slightly desaturated color grade, subtle camera drift rather than static shots.",
     aspectRatio: "9:16",
     durationSeconds: 10,
     requiresConsistentCharacter: true,
