@@ -46,6 +46,48 @@ interface StalePreview {
   error?: string;
 }
 
+interface OpsAlert {
+  id: string;
+  severity: 'info' | 'warning' | 'critical';
+  category: string;
+  message: string;
+  items?: string[];
+  actionable: boolean;
+  suggestedAction?: string;
+}
+
+interface Pipeline {
+  name: string;
+  status: 'operational' | 'degraded' | 'down' | 'unconfigured';
+  lastRun: string | null;
+  detail: string;
+}
+
+interface OpsHealth {
+  generatedAt: string;
+  overallGrade: 'green' | 'yellow' | 'red';
+  metrics: {
+    totalItems: number;
+    activeItems: number;
+    soldItems: number;
+    avgDaysInInventory: number;
+    avgListedPrice: number;
+    totalListedValue: number;
+    totalLadderValue: number;
+    potentialRecovery: number;
+    completenessScore: number;
+    tierBreakdown: Array<{
+      tier: string;
+      label: string;
+      count: number;
+      totalValue: number;
+      avgDays: number;
+    }>;
+  };
+  pipelines: Pipeline[];
+  alerts: OpsAlert[];
+}
+
 const TIER_COLORS: Record<string, string> = {
   fresh: '#10b981',
   tier_30: '#d4af37',
@@ -69,10 +111,13 @@ export default function Dashboard() {
   const [driveSyncing, setDriveSyncing] = useState(false);
   const [stale, setStale] = useState<StalePreview | null>(null);
   const [staleLoading, setStaleLoading] = useState(true);
+  const [ops, setOps] = useState<OpsHealth | null>(null);
+  const [opsLoading, setOpsLoading] = useState(true);
 
   useEffect(() => {
     fetchState();
     fetchStale();
+    fetchOps();
     const interval = setInterval(fetchState, 5000); // Poll every 5s
     return () => clearInterval(interval);
   }, []);
@@ -85,6 +130,18 @@ export default function Dashboard() {
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch sync state:', error);
+    }
+  }
+
+  async function fetchOps() {
+    setOpsLoading(true);
+    try {
+      const res = await fetch('/api/ops/health?compact=true');
+      setOps(await res.json());
+    } catch (error) {
+      console.error('Failed to fetch ops health:', error);
+    } finally {
+      setOpsLoading(false);
     }
   }
 
@@ -244,6 +301,196 @@ export default function Dashboard() {
         >
           {driveSyncing ? 'Syncing Images...' : 'Sync Images (Drive)'}
         </button>
+      </div>
+
+      {/* Operations Health */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            marginBottom: '0.25rem',
+          }}
+        >
+          <h2 style={{ fontSize: '1.25rem' }}>Operations Health</h2>
+          <button
+            onClick={fetchOps}
+            disabled={opsLoading}
+            style={{
+              background: 'none',
+              border: '1px solid #333',
+              color: '#999',
+              padding: '0.35rem 0.75rem',
+              borderRadius: '0.375rem',
+              fontSize: '0.8125rem',
+              cursor: opsLoading ? 'not-allowed' : 'pointer',
+            }}
+          >
+            {opsLoading ? 'Loading...' : 'Refresh'}
+          </button>
+        </div>
+
+        {ops && (
+          <>
+            {/* Overall grade + key metrics */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                gap: '0.75rem',
+                marginBottom: '1.25rem',
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: '#1a1a1a',
+                  padding: '1rem',
+                  borderRadius: '0.5rem',
+                  borderLeft: `3px solid ${ops.overallGrade === 'green' ? '#10b981' : ops.overallGrade === 'yellow' ? '#f59e0b' : '#ef4444'}`,
+                }}
+              >
+                <p style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  Overall
+                </p>
+                <p
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                    color: ops.overallGrade === 'green' ? '#10b981' : ops.overallGrade === 'yellow' ? '#f59e0b' : '#ef4444',
+                  }}
+                >
+                  {ops.overallGrade.toUpperCase()}
+                </p>
+              </div>
+              <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '0.5rem' }}>
+                <p style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  Completeness
+                </p>
+                <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                  {ops.metrics.completenessScore}/100
+                </p>
+              </div>
+              <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '0.5rem' }}>
+                <p style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  Active / Total
+                </p>
+                <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                  {ops.metrics.activeItems} / {ops.metrics.totalItems}
+                </p>
+              </div>
+              <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '0.5rem' }}>
+                <p style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  Listed Value
+                </p>
+                <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                  ${ops.metrics.totalListedValue.toFixed(0)}
+                </p>
+              </div>
+              <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '0.5rem' }}>
+                <p style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  Ladder Value
+                </p>
+                <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                  ${ops.metrics.totalLadderValue.toFixed(0)}
+                </p>
+              </div>
+              <div style={{ backgroundColor: '#1a1a1a', padding: '1rem', borderRadius: '0.5rem' }}>
+                <p style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  Avg Days
+                </p>
+                <p style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                  {ops.metrics.avgDaysInInventory}d
+                </p>
+              </div>
+            </div>
+
+            {/* Pipeline statuses */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <p style={{ color: '#999', fontSize: '0.8125rem', marginBottom: '0.5rem' }}>
+                Pipeline Status
+              </p>
+              {ops.pipelines.map(p => (
+                <div
+                  key={p.name}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.4rem 0',
+                    borderBottom: '1px solid #1a1a1a',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      backgroundColor:
+                        p.status === 'operational'
+                          ? '#10b981'
+                          : p.status === 'degraded'
+                            ? '#f59e0b'
+                            : p.status === 'unconfigured'
+                              ? '#666'
+                              : '#ef4444',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ fontWeight: 500, minWidth: '180px' }}>{p.name}</span>
+                  <span style={{ color: '#999', fontSize: '0.8125rem' }}>{p.detail}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Alerts */}
+            {ops.alerts.length > 0 && (
+              <div>
+                <p style={{ color: '#999', fontSize: '0.8125rem', marginBottom: '0.5rem' }}>
+                  Alerts ({ops.alerts.length})
+                </p>
+                {ops.alerts.map(alert => (
+                  <div
+                    key={alert.id}
+                    style={{
+                      padding: '0.75rem 1rem',
+                      marginBottom: '0.5rem',
+                      backgroundColor: '#1a1a1a',
+                      borderLeft: `3px solid ${alert.severity === 'critical' ? '#ef4444' : alert.severity === 'warning' ? '#f59e0b' : '#3b82f6'}`,
+                      borderRadius: '0.375rem',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <span
+                        style={{
+                          color:
+                            alert.severity === 'critical'
+                              ? '#ef4444'
+                              : alert.severity === 'warning'
+                                ? '#f59e0b'
+                                : '#3b82f6',
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {alert.severity}
+                      </span>
+                      <span>{alert.message}</span>
+                    </div>
+                    {alert.suggestedAction && (
+                      <p style={{ color: '#999', fontSize: '0.8125rem', marginTop: '0.25rem' }}>
+                        {alert.suggestedAction}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Stale Inventory Ladder */}
