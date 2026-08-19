@@ -153,6 +153,22 @@ export const JAYLEEFIT_AVATAR: AvatarIdentitySpec = {
     },
   ],
   negativeConstraints: MASTER_NEGATIVE_CONSTRAINTS,
+  generator: {
+    provider: "higgsfield",
+    model: "soul_cast",
+    mode: "one-off",
+    rationale:
+      "Confirmed via models_explore(action:'recommend') — 'Consistent cinematic character identity', text-only, the model this Higgsfield workspace itself recommends for this exact use case. Stronger than the original seedance_2_5 guess (that's a general video model whose 'multimodal reference consistency' claim is about held reference images, not text-only identity). " +
+      "Higgsfield is the only real generative image/video backend reachable from this Claude Code session at all — see AVATAR-README.md for what was checked (Adobe for Creativity edits/assembles but doesn't generate people from scratch; HyperFrames-by-HeyGen's generation tools are disabled for this client; Canva/Figma are templated graphics; no Google Flow/Vertex/Veo, Runway, Luma, Pika, or direct-Kling MCP tool exists in this environment). " +
+      "Stronger next step, not yet started: train a reusable Higgsfield Soul from the real 8-photo Soul_Training_Set reference manifest (show_characters action:'train') — one trained soulId, referenced everywhere, instead of a fresh one-off generation each time.",
+  },
+  voice: {
+    provider: "elevenlabs",
+    voiceId: undefined,
+    modelId: "eleven_multilingual_v2",
+    rationale:
+      "Locked-voice mechanism mirrors the visual identity lock. voiceId intentionally undefined — the user has an existing ElevenLabs voice_id to supply; do not generate any real narration audio until it's set here. Never fall back to a random/default voice for real JayLeeFit content once this field exists.",
+  },
   aliases: ["@jayleehustle.industries"],
   sourceNotes:
     "Consolidated 2026 from: JLF-20260629-001 Clip 1-3 Negative_Constraints (three disagreeing lists, merged here), " +
@@ -187,4 +203,19 @@ export function applyAvatarLock(
     `Environment must be one of: ${spec.approvedEnvironments.map((e) => e.description).join(" — or — ")}.`;
   const negativeLine = `Avoid: ${flattenNegativeConstraints(spec)}.`;
   return [prompt, lookLine, negativeLine].join(" ");
+}
+
+/**
+ * Guard before any real ElevenLabs text_to_speech call for this identity.
+ * A missing voiceId means the lock hasn't been configured yet — fail loud
+ * rather than silently generating with a random/default voice for real
+ * JayLeeFit content.
+ */
+export function assertVoiceReady(spec: AvatarIdentitySpec = JAYLEEFIT_AVATAR): string {
+  if (!spec.voice.voiceId) {
+    throw new Error(
+      `${spec.label}: voice.voiceId is not set. Do not generate narration with a default/random voice — set the real ElevenLabs voiceId in avatar-identity.ts first.`
+    );
+  }
+  return spec.voice.voiceId;
 }

@@ -60,6 +60,36 @@ export type ReferenceImageRole =
   | "wardrobe";
 
 /**
+ * Which image/video backend a given generation should use, and why. Kept
+ * as a small enum + rationale rather than one hardcoded string so the
+ * choice is documented, not assumed — see avatar-identity.ts's
+ * GENERATOR_CHOICE for the actual current pick.
+ */
+export type GeneratorChoice = {
+  /** Higgsfield model id, e.g. "soul_cast" for one-off text-only character identity, or "soul_2"+a trained Soul id for a reusable trained character. */
+  provider: "higgsfield";
+  model: string;
+  /** "trained-soul" once the real reference photos are trained into a reusable Higgsfield Soul; "one-off" (soul_cast) until then. */
+  mode: "one-off" | "trained-soul";
+  /** Higgsfield Soul id once trained — unset while mode is "one-off". */
+  soulId?: string;
+  rationale: string;
+};
+
+/**
+ * Locked narration voice for this identity — same "one identity, never
+ * drifts" principle as the visual side. voiceId is required before any
+ * real text_to_speech call; a spec with voiceId undefined is a
+ * documented placeholder, not something to generate audio with.
+ */
+export type VoiceLock = {
+  provider: "elevenlabs";
+  voiceId?: string;
+  modelId: string;
+  rationale: string;
+};
+
+/**
  * Structured, auditable identity spec — meant to be diffable against the
  * real Drive-side reference manifest (JLF-20260629-001's
  * REF_MANIFEST), not to be injected into a prompt directly. See
@@ -80,6 +110,8 @@ export type AvatarIdentitySpec = {
   approvedEnvironments: ApprovedEnvironment[];
   referenceImageManifest: { role: ReferenceImageRole; note: string }[];
   negativeConstraints: Record<string, string[]>;
+  generator: GeneratorChoice;
+  voice: VoiceLock;
   /** Non-canonical identifiers seen in the live Drive system that refer to this same locked identity — documented for traceability, never injected into prompts. */
   aliases: string[];
   sourceNotes: string;
