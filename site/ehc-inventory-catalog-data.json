@@ -1,0 +1,508 @@
+{
+  "catalog": "EHC inventory staging catalog",
+  "public_listing_note": "Draft inventory only; not ready for public sale.",
+  "items": [
+    {
+      "id": "0180",
+      "sku": null,
+      "name": "St. John's Bay charcoal quarter-zip fleece pullover",
+      "brand": "St. John's Bay",
+      "category": "Adult Quarter-Zip Fleece Pullover",
+      "size": "L",
+      "color": "Charcoal gray / black",
+      "pattern": "Solid",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "St. John's Bay embroidered chest branding and size L neck label are visible. Front, back, embroidery, label, and measurement photos supplied.",
+      "main_image": {
+        "source_filename": "IMG_5068-Photoroom.jpg",
+        "source_drive_file_id": "1kRhBdDV6FP25iLhQRZAkGaiHfYFnV-JS",
+        "square_filename": "IMG_5068-Photoroom_square.jpg",
+        "square_drive_file_id": "1BPrkztv_ffDqA4awQzhVINOaw0mrVOot",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1BPrkztv_ffDqA4awQzhVINOaw0mrVOot&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1BPrkztv_ffDqA4awQzhVINOaw0mrVOot/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0180_IMG_5068-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1NTQlYhxh3Y7J-AL0DsINWj1GLaJ9zpl2",
+        "1kRhBdDV6FP25iLhQRZAkGaiHfYFnV-JS",
+        "1MODuAiaBltzD4QOLzkclxVFHLXyDnJ9v",
+        "1Vzj7ueHFx4pSaqYQykp22aWqADm8t26j",
+        "1vdz71zaq9N7AUAKjdMviDZfqM9dGwLNv",
+        "1AvfuLuvFSYi3_9IxnxPRBpT2LvkqC3dR",
+        "1BeG9qDCQKOhJORCPr4Oeb8mBuTkf1rWA"
+      ],
+      "all_square_file_ids": [
+        "1XGiXwctUBZtLZxuKCJCFdawNP4VZBHW4",
+        "1BPrkztv_ffDqA4awQzhVINOaw0mrVOot",
+        "1uMdXn_Cg9QQB7oF1uXQ08wctotvNC-Nj",
+        "1CF_hluiWW4u8w_eB7BJL9Vs0pYPlzKp2",
+        "1KngByDE2ujxHPrE-SSYLq3Y1hYg_q1um",
+        "1QxK4Rj-NUjgYv9dpQFInYMtbMZOSBfe8",
+        "1ayZ3aXBkbejhLDq97K52REL0FFRTS0G2"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0181",
+      "sku": null,
+      "name": "Daniel Cremieux Classics taupe cable-knit crewneck sweater",
+      "brand": "Daniel Cremieux",
+      "category": "Adult Long-Sleeve Cable-Knit Crewneck Sweater",
+      "size": "XL",
+      "color": "Taupe / brown",
+      "pattern": "Cable knit",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Daniel Cremieux Classics label confirms size XL; made in Hong Kong is visible. Front, back, label, care-tag, and measurement photos supplied.",
+      "main_image": {
+        "source_filename": "IMG_5075-Photoroom.jpg",
+        "source_drive_file_id": "17bD2Hg6aSNK494_4DaYe7gg7PyoHdnjg",
+        "square_filename": "IMG_5075-Photoroom_square.jpg",
+        "square_drive_file_id": "1KckZy8BiVzHBzWoQzDX8dWzA_rDr5Jvi",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1KckZy8BiVzHBzWoQzDX8dWzA_rDr5Jvi&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1KckZy8BiVzHBzWoQzDX8dWzA_rDr5Jvi/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0181_IMG_5075-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1D8tbKgravTs5ad15w-pDmQj3oj0mhSNR",
+        "17bD2Hg6aSNK494_4DaYe7gg7PyoHdnjg",
+        "1KdIX4Ju4YFTWNZ3aXyJyepMrnz-BtdL_",
+        "1slph8RkXQUCPkZXFGE3gQZ6e2univSAW",
+        "1rj14rufw1UyfZs_Ov6FQtnI9WefTHEyN",
+        "15qufbBQo8cNYyGXefUv8Yjhmo0F4ZFHN",
+        "1LGCh7dJe8Ha7JrZp5nE5oKw7cg_sZUuL",
+        "1kOQmR1N0kLEAVKzHUvlaFEhJPccNkWiW",
+        "10pIfQgFTBzB9TyKqLqLwCJDk8tPWYdw1",
+        "1JeFDDco5t6rj0Q1Hc26A0eOefND6G4h_",
+        "1hySkI6zs5WWZBVh5zTs9Blgw4gxmHlSA"
+      ],
+      "all_square_file_ids": [
+        "114CtbURzYM51P9bQqU_cLex-_ak6WO8i",
+        "1KckZy8BiVzHBzWoQzDX8dWzA_rDr5Jvi",
+        "1JJRq5J-QJVc2WoYN2d8DQdmz0KoslG6H",
+        "1XiizIJwQJee8heNPwclalGYG1lUTNECS",
+        "16fMOF0_jaCfmCcMB9fU-J0TBdc54r_1p",
+        "1CXeP4Pk-CHHU_ugl8JmqlWgYQVTAbIoZ",
+        "1RC2uefGjJESOQyKIH10imH9yxXhiJ1lv",
+        "16dDCHaMHji1hPEyC9weovP7l3U7QEkSm",
+        "1zKIkJ2IyzDgetS5iALfRXcGgcAo74_ob",
+        "1KlsQQdN_wtCpRkAYDCwW1LIlpNjR684B",
+        "1Vo0AkuVn00HnJW18EzXdExQiy8BKVv_4"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0182",
+      "sku": null,
+      "name": "Levi's dark gray five-pocket jeans",
+      "brand": "Levi's",
+      "category": "Adult Five-Pocket Jeans",
+      "size": "Unknown \u2014 size not visible in supplied images",
+      "color": "Dark gray / black",
+      "pattern": "Solid denim",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Levi's rear patch and red tab are visible. Front, rear, pocket, hem, patch, and measurement photos supplied. Do not infer waist, inseam, or model.",
+      "main_image": {
+        "source_filename": "IMG_5085-Photoroom.jpg",
+        "source_drive_file_id": "1g-j7O9U26ybBOy_Cnnf89iKuCRq472mz",
+        "square_filename": "IMG_5085-Photoroom_square.jpg",
+        "square_drive_file_id": "1DxMDjhNuZwBLOC4qUzk6L8KJSD-lCQ_v",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1DxMDjhNuZwBLOC4qUzk6L8KJSD-lCQ_v&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1DxMDjhNuZwBLOC4qUzk6L8KJSD-lCQ_v/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0182_IMG_5085-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1g-j7O9U26ybBOy_Cnnf89iKuCRq472mz",
+        "1F9YgrdNni6NtRYedLsfH77UmwLULA8sv",
+        "1ekaXMSZgLirS0hpUXfs1wSTEmsIP8pS8",
+        "1sDuQASXT4yNhV2QnS3mLv8Pts4aQcfTy",
+        "1c_zkE-Wullbe0pMmpKAWRRV7uN4RtxL4",
+        "1yJzRA2RLomoAfM7lmjbgJl18AiTBRKy_",
+        "1Yy3y-RrIzCvCUUWyATNM_zD2JP0sz08-",
+        "1SX9I5tTvQT-051BLrKFooQavRHYxo_x5",
+        "18iOpnpICUgI6Fqix2ivmOuwrN8STz2Mf"
+      ],
+      "all_square_file_ids": [
+        "1DxMDjhNuZwBLOC4qUzk6L8KJSD-lCQ_v",
+        "17TZQhqzoD555qdHBMi75yRRyiGF-4tvX",
+        "157QjWaSt3vwH0Nyasz4MYRaCP83Bb-6l",
+        "1FJMrcwsSK6nxREEJMAkyScEYrjMf5JCy",
+        "1KvCfh1h_acCmKl2et7OjYPdSF-V2g_OR",
+        "1Z95GdUm0QLBsg9GwE44xTciORc7fu2Q0",
+        "1_584daL0I-AAEyFXe2UhVc47qFxUn-zN",
+        "1byu62Va-nO2JkFfgbXpSY25v2-UgYYFP",
+        "1itgjSbH3Yvd_gQYTE-TLZ7YvMclN-CfJ"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0183",
+      "sku": null,
+      "name": "Eddie Bauer black performance pants",
+      "brand": "Eddie Bauer",
+      "category": "Adult Performance Pants / Joggers",
+      "size": "Unknown \u2014 size not visible in supplied images",
+      "color": "Black",
+      "pattern": "Solid",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Eddie Bauer inner label is visible. Full garment, inner label, and measurement photos supplied. Do not infer size or exact style.",
+      "main_image": {
+        "source_filename": "IMG_5095-Photoroom.jpg",
+        "source_drive_file_id": "12knJWvhMuU-WNnu1TrA8XQRKPPHkUZUI",
+        "square_filename": "IMG_5095-Photoroom_square.jpg",
+        "square_drive_file_id": "1wPdtqudnPkTqrkWRGw3U-CflQl_MRhj6",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1wPdtqudnPkTqrkWRGw3U-CflQl_MRhj6&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1wPdtqudnPkTqrkWRGw3U-CflQl_MRhj6/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0183_IMG_5095-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "12knJWvhMuU-WNnu1TrA8XQRKPPHkUZUI",
+        "1GU7YffETso0A-rgEOSqa4_WirSrDaiO4",
+        "1Cj3xIEeNVgrGyXUA6hMLtGu469bRRGBW",
+        "12JiPFWe-VFWP2_JDaFbGaOiDcRIo6m3M",
+        "1lOcrbeEacUbuCbp9DNWRviMRvR1yiCAJ",
+        "1mwNyp3dsbouUX6shXP5KVuBvX86PAE68"
+      ],
+      "all_square_file_ids": [
+        "1wPdtqudnPkTqrkWRGw3U-CflQl_MRhj6",
+        "1b8tT4fG-vQqTIxfNa03gX3P2PFoqHkTy",
+        "1Bousqzdt4h7AdP46J-l3T_pew6JAsyXK",
+        "1MqEeGP_fz3_7xSe0kP8FGBiXTeCyyEY8",
+        "1tGTj_d9-PQ9Ipo1AS61oVgeSa_9nT201",
+        "1uygXuvBYXLTz2lnFWznHcqKnnoHX5rc6"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0184",
+      "sku": null,
+      "name": "Under Armour navy long-sleeve performance top",
+      "brand": "Under Armour",
+      "category": "Adult Long-Sleeve Performance Top",
+      "size": "L",
+      "color": "Navy blue",
+      "pattern": "Solid",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Under Armour inner label confirms L/G (Large). The top has zippered chest storage and measurement photos supplied.",
+      "main_image": {
+        "source_filename": "IMG_5102-Photoroom.jpg",
+        "source_drive_file_id": "1H0mCP40Qsfde6ihy2NdLlKcpyKwyzkE5",
+        "square_filename": "IMG_5102-Photoroom_square.jpg",
+        "square_drive_file_id": "1EO9uxByYgBzKWq-QI4Mu8zhc8j2b6BbS",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1EO9uxByYgBzKWq-QI4Mu8zhc8j2b6BbS&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1EO9uxByYgBzKWq-QI4Mu8zhc8j2b6BbS/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0184_IMG_5102-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1H0mCP40Qsfde6ihy2NdLlKcpyKwyzkE5",
+        "1cn9yf7TyNQzKLT-RIqw6ztg0AV9B2SE0",
+        "1YzAFvkV67tPeUJd5w0V1mvbZ9QP_x6wn",
+        "1_bVsz6H4k1u0-3oEsfDMe0jMss9kaFlq",
+        "1O_cePhNEBEujOYS_ToLZVqtGygl7B16i",
+        "1PsGIInBGjDxaCYKxAksCxnlABt7Uck3z",
+        "1nR6seEJAC8sqyIbTdmpiTcNdrvwUva_L",
+        "1aRHwA_3R1TwwpqxA_oeh85MTif4ua6HX",
+        "1d7OYqrLLjli4MRT2w5sWeTjt7tD32pqb"
+      ],
+      "all_square_file_ids": [
+        "1EO9uxByYgBzKWq-QI4Mu8zhc8j2b6BbS",
+        "1LL_dMO-dJ_t1eQYgro9gWsNDlDoYbEI5",
+        "1h-vLccZBuWSDA2G3ZoJTqVCgu3YXMVqO",
+        "1pxJpXu5bYh6X-Fw1VFVESFHreJJMl-6l",
+        "1HlCeHO7ya1PQCaFr6BRm3dcKgUyZI4GG",
+        "1r2Dk8inUCB7TBfN90PacJPGWGjGqHaQm",
+        "15RnptPWbYzD8I9kU7JswNYR8Ww5gfwPj",
+        "1W6PVWRspLqQnIjAWTG3M6FVNPTuE395K",
+        "13FDICfoZ1mquohP5T6OBkWI5L2CE3gjB"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0185",
+      "sku": null,
+      "name": "Black long-sleeve raglan performance top",
+      "brand": "Unknown \u2014 no reliable brand visible",
+      "category": "Adult Long-Sleeve Raglan Performance Top",
+      "size": "Unknown \u2014 size not visible in supplied images",
+      "color": "Black",
+      "pattern": "Solid",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Front and back photos supplied. No reliable brand or size label is visible; do not infer missing metadata.",
+      "main_image": {
+        "source_filename": "IMG_5111-Photoroom.jpg",
+        "source_drive_file_id": "1CEF1t14Jmoj53WwP_s84Lpwf_zwXv3a9",
+        "square_filename": "IMG_5111-Photoroom_square.jpg",
+        "square_drive_file_id": "1qbnErVwwS7nPIadIRoF9o9hcx29Q8cjl",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1qbnErVwwS7nPIadIRoF9o9hcx29Q8cjl&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1qbnErVwwS7nPIadIRoF9o9hcx29Q8cjl/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0185_IMG_5111-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1CEF1t14Jmoj53WwP_s84Lpwf_zwXv3a9",
+        "1eddVusfvxQYiSlEGXuwOJyB8ycMRK2oe"
+      ],
+      "all_square_file_ids": [
+        "1qbnErVwwS7nPIadIRoF9o9hcx29Q8cjl",
+        "1wNdPECmkGnBJHYbNwlLS8FV7LMV2dw4l"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0186",
+      "sku": null,
+      "name": "Polo Ralph Lauren gray-and-white striped quarter-zip pullover",
+      "brand": "Polo Ralph Lauren",
+      "category": "Adult Quarter-Zip Pullover",
+      "size": "L",
+      "color": "Gray / white",
+      "pattern": "Horizontal stripe",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Polo Ralph Lauren label confirms size L. Small embroidered polo-player logo, front, back, label, hardware, and measurement photos supplied.",
+      "main_image": {
+        "source_filename": "IMG_5115-Photoroom.jpg",
+        "source_drive_file_id": "1AFrpeUFZCTvUa5EtLhpnCXlyf3dtxT89",
+        "square_filename": "IMG_5115-Photoroom_square.jpg",
+        "square_drive_file_id": "1XsC0rh-I9iSPR5Fv6XUBUOkON_mDnyzb",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1XsC0rh-I9iSPR5Fv6XUBUOkON_mDnyzb&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1XsC0rh-I9iSPR5Fv6XUBUOkON_mDnyzb/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0186_IMG_5115-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "12-3jfXYWU9-zSf8Dph9nc-1BwwcL6FCn",
+        "1_jReA2-ifUCz5C0_PpZ18WF3KEBV0FSv",
+        "1AFrpeUFZCTvUa5EtLhpnCXlyf3dtxT89",
+        "1ztqNCzr-C-5PUtRYArPRRLwdk2Q3ZQZy",
+        "1Jgp-1WoMttUQT0yb6xFIDC-DQ59mn4O0",
+        "1Np_NePrUEoCGQY5Gv5jb0OEu7b3FpBRk",
+        "1CZoNdEhRtxRol88L4DCIjA6cn_gTc0dA"
+      ],
+      "all_square_file_ids": [
+        "1U_XlvjrhcHZfLr-YkJI-UvzCf-y-rnol",
+        "1YhYIc8JZl1UVwwIE0KQyoSWRw5W5sohn",
+        "1XsC0rh-I9iSPR5Fv6XUBUOkON_mDnyzb",
+        "1wiB_3rxc6Kej2k0oEHOejTEFLeryUWfh",
+        "1wESDw8O8eZwS9sfKchM-bQ_PkZkE8pet",
+        "1hfytD9R0Ck_6QPgpumdVRSmKo0Qo-fYK",
+        "1kigsdgYteUrDYmen0K_KUoSjpV7Vv5th"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0187",
+      "sku": null,
+      "name": "Colosseum Arkansas Razorbacks red-and-white quarter-zip athletic pullover",
+      "brand": "Colosseum",
+      "category": "Adult Quarter-Zip Athletic Pullover",
+      "size": "L",
+      "color": "Cardinal red / white",
+      "pattern": "Colorblock",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Colosseum label confirms size L. Arkansas Razorbacks chest logo and Arkansas back wordmark are visible; front, back, label, and measurement photos supplied.",
+      "main_image": {
+        "source_filename": "IMG_5121-Photoroom.jpg",
+        "source_drive_file_id": "1Jb9gqbRsc9ixZNwVCKDVaR8SKqCbPUCL",
+        "square_filename": "IMG_5121-Photoroom_square.jpg",
+        "square_drive_file_id": "1pfJ2LGTv31SOGDZ3-snLJaqwJariqJEo",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1pfJ2LGTv31SOGDZ3-snLJaqwJariqJEo&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1pfJ2LGTv31SOGDZ3-snLJaqwJariqJEo/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0187_IMG_5121-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1CB_7mRtxkjHxNLctINHIBADj4HPHooqg",
+        "1Jb9gqbRsc9ixZNwVCKDVaR8SKqCbPUCL",
+        "1GzEGvxHLjIQQlDpKhElAVGYev0JVOp0H",
+        "1xOOC3mn4RcGHcQo0vCc3JV5CNam8PG-T",
+        "1_Fa_OCtQW8gMq7fgs7HZ-bdqlbGDtxrB",
+        "1ImP9Tn5q1qNGFdYN4P0Sj_RGeF8PGgbC",
+        "11u9pNEbQUkKC_EBYlLFDOxyk6IGNKt-o",
+        "1FkFJSFp2PPsrdKyOXccLl1snOjqRurhF",
+        "1Rf4-chiwfhCBn2A7-zjU3E2l_wU13N8_"
+      ],
+      "all_square_file_ids": [
+        "1Dulht6tt4Vdp7piaUvk2WCzvdzU8oCjX",
+        "1pfJ2LGTv31SOGDZ3-snLJaqwJariqJEo",
+        "1siDpbqTPmBVk4vDmOnfoV5Orqj2TVmmg",
+        "1hp2X9ZeYAlSq8OK8bZZmmVjZ-UNqiMoc",
+        "1D19e3GzgXRFxhq528c8ctrWPTxNdLInE",
+        "1qOd2WMGOnUxQ5L5NBzZv0g2Kpmp_BZxD",
+        "1zDbfbu7zNDI1V4sJeyZJA_P8-FF8Do_5",
+        "1O1-9lVhsLWoOPg6L-80_N6nD8XGkUhge",
+        "1vpep1K-ORq-IAem92G3RrN9A895k0KTQ"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0188",
+      "sku": null,
+      "name": "adidas black-and-pink soccer cleats",
+      "brand": "adidas",
+      "category": "Soccer Cleats",
+      "size": "UK 5 / EU 38",
+      "color": "Black / pink",
+      "pattern": "Striped branding",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "adidas branding, upper views, sole plates, and shoe-label images supplied. The label supports UK 5 / EU 38; do not infer the exact US conversion or model.",
+      "main_image": {
+        "source_filename": "IMG_5130-Photoroom.jpg",
+        "source_drive_file_id": "148Mgfd66JDDPLSsDiobErqsGOskH1_01",
+        "square_filename": "IMG_5130-Photoroom_square.jpg",
+        "square_drive_file_id": "1Bp1uDC2xU3Powt02SNQSY_9mGIllMakP",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1Bp1uDC2xU3Powt02SNQSY_9mGIllMakP&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1Bp1uDC2xU3Powt02SNQSY_9mGIllMakP/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0188_IMG_5130-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "18CR8w5Ef3imYLE2gncnNodQwwakbLKDp",
+        "148Mgfd66JDDPLSsDiobErqsGOskH1_01",
+        "1y9GZdzRnk8_FVKLhhOFntkrW8ipKf_y9",
+        "1ncO47cthpHYyZOdQt7M7lCBSvV-nd1PY",
+        "1-iEGnGzh3CIB2fpvboQ0oBfKXjjrGF4p",
+        "1ukcLmgmpQ5cYWPhqJsDJKuuzlDcFeQcf",
+        "142z5P0ElsFvHBz0RzIlaC8dltsI1Amea"
+      ],
+      "all_square_file_ids": [
+        "1lE528JVp2IrsB_9LKH71erwQQauVM-oc",
+        "1Bp1uDC2xU3Powt02SNQSY_9mGIllMakP",
+        "1hiahzf-rbFiXFNY6qDNB3iTNngYRgldc",
+        "1aeN2hiNLIx21OGTTimnLrOZp2B49P3gl",
+        "1fQEBvpxXEeiDBXYzs8pAIUc_DQFCB_r7",
+        "1kBFrdNy6Lrrvu180P5HMcK_hc6QfnOYE",
+        "1jBt2LAfzhvKW_CHpOm4gB0BoRIy2UuD9"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0189",
+      "sku": null,
+      "name": "Hurley off-white long-sleeve graphic sun shirt",
+      "brand": "Hurley",
+      "category": "Youth Long-Sleeve Sun / Performance Shirt",
+      "size": "Youth XL (14/16)",
+      "color": "Off-white / aqua",
+      "pattern": "Graphic print",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Hurley neck print confirms youth XL (14/16). Front, back, inside print, and measurement photos supplied.",
+      "main_image": {
+        "source_filename": "IMG_5136-Photoroom.jpg",
+        "source_drive_file_id": "1M48KSHyqeGfrrNxxKW-eU57CQG3v7v6h",
+        "square_filename": "IMG_5136-Photoroom_square.jpg",
+        "square_drive_file_id": "1gvezcL_rAZgBilGxG4cL7OzAkzmP8ZAJ",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1gvezcL_rAZgBilGxG4cL7OzAkzmP8ZAJ&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1gvezcL_rAZgBilGxG4cL7OzAkzmP8ZAJ/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0189_IMG_5136-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1M48KSHyqeGfrrNxxKW-eU57CQG3v7v6h",
+        "1-mR0oC9zP67FhTq4khwXFowYVCMnV78n",
+        "1Jua9kKK-sEgkdlyDHaSAXUuoxT4Adqfo",
+        "1chTiExj84T2T0qLiZ-dZv3hZko8DWvvu",
+        "1Vug3YWWOzo1R9xsPkwruq6L1EkcZA15O"
+      ],
+      "all_square_file_ids": [
+        "1gvezcL_rAZgBilGxG4cL7OzAkzmP8ZAJ",
+        "1APVb8rl3uYlNxm1DBKMpQQddlXls5T2B",
+        "1M7fM40rT4ohIhazRn1IDNlUdeCLSVh4l",
+        "1o07PZG-9qIeaheZdN8-WCHQUVyJMU9fQ",
+        "1DHJdN_qCqkXto8e2xQpVEW9qRHs1rGXt"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0190",
+      "sku": null,
+      "name": "Black performance shorts with gray liner and neon accents",
+      "brand": "Unknown \u2014 no reliable brand visible",
+      "category": "Adult Performance Shorts",
+      "size": "Unknown \u2014 size not visible in supplied images",
+      "color": "Black / gray / neon yellow-green",
+      "pattern": "Colorblock",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "Full garment, liner, detail, and measurement photos supplied. A small circular mark is visible, but no reliable brand or size label is available.",
+      "main_image": {
+        "source_filename": "IMG_5141-Photoroom.jpg",
+        "source_drive_file_id": "1B70-tXjMZeP_o2DitdV1HtGFvl4gTHYL",
+        "square_filename": "IMG_5141-Photoroom_square.jpg",
+        "square_drive_file_id": "1yYPibxoYO60ibvMfZZtodpTWP4K5ulfH",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1yYPibxoYO60ibvMfZZtodpTWP4K5ulfH&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1yYPibxoYO60ibvMfZZtodpTWP4K5ulfH/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0190_IMG_5141-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1B70-tXjMZeP_o2DitdV1HtGFvl4gTHYL",
+        "1ED8AkVVSHB68yz6YFG51QdwbFwnTtiIg",
+        "1IjR_LO0RzQCZYoPjyCmGVRlOHvA0rGt8",
+        "1abfTLSebA0FWZS3o1gR1zxoFURbiF6cH",
+        "1SBCCqpO1-07l9Zgi-E0iQn4tTeTpszuq",
+        "12pIN8UcIzO_uoiaLf5eExbeEA6JK_Bwg"
+      ],
+      "all_square_file_ids": [
+        "1yYPibxoYO60ibvMfZZtodpTWP4K5ulfH",
+        "1_j4HtC-xIQ7ZOuW-f1q1ix_zWXl0l6uj",
+        "1Eq86pYQrRnPBak9PKnNI3osY2cmmVYrX",
+        "1t1rXHgq40cGHg4m4tj-nX0AaM1CWf5Kr",
+        "1c4cn7XdoDaRv0XI5wUzIv1TVeP-NMcaL",
+        "1mXlv88XI8rHcOeec5vV9EcrVPr7X9zUl"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    },
+    {
+      "id": "0191",
+      "sku": null,
+      "name": "UGG black shearling-lined slipper shoes",
+      "brand": "UGG",
+      "category": "Shearling-Lined Slipper Shoes",
+      "size": "Unknown \u2014 size not visible in supplied images",
+      "color": "Black",
+      "pattern": "Solid",
+      "status": "Inventory intake \u2014 listing details pending",
+      "price": null,
+      "description": "UGG branding is visible on the footbeds. Multiple upper, sole, and interior photos supplied. Do not infer size or exact model.",
+      "main_image": {
+        "source_filename": "IMG_5147-Photoroom.jpg",
+        "source_drive_file_id": "1PMLiSWYwi1mRMpe0YPBYmISvdHlKQQZJ",
+        "square_filename": "IMG_5147-Photoroom_square.jpg",
+        "square_drive_file_id": "1v2osLAsy9tLtHOabK4GZRBf9SaNhSnq9",
+        "square_preview_url": "https://drive.google.com/thumbnail?id=1v2osLAsy9tLtHOabK4GZRBf9SaNhSnq9&sz=w1000",
+        "square_view_url": "https://drive.google.com/file/d/1v2osLAsy9tLtHOabK4GZRBf9SaNhSnq9/view?usp=drivesdk",
+        "website_image_path": "assets/ehc-inventory-5067-5151/item_0191_IMG_5147-Photoroom_square.jpg"
+      },
+      "all_source_file_ids": [
+        "1PMLiSWYwi1mRMpe0YPBYmISvdHlKQQZJ",
+        "1Sy7iHYhvfABIAY2xrZsA_3N_7D7Mrtwl",
+        "1B24StviBFIwtmJ8Mes1bGBtyRTqH2gQh",
+        "1Fz9jCRcd6xFBqKfyudneHk9sfnSLeVM_",
+        "1GaB5k3FP2t80p0ESGIUad6E8eMahzQNV"
+      ],
+      "all_square_file_ids": [
+        "1v2osLAsy9tLtHOabK4GZRBf9SaNhSnq9",
+        "1_RW2IpOA0pM2Oz2N2i5B3bN7SV506ZkC",
+        "1ORfWBNUBwbPNae2-CEB6z1SZUvjbFs_P",
+        "1lIrgtzlJMK8iy5JpDTTy8PbxgcEUiR9x",
+        "17Wsxqbrrf31iwTUYCu-fKudGgC0Mx6wp"
+      ],
+      "public_listing_ready": false,
+      "website_note": "Staged for catalog display only. Price, permanent SKU, storage location, and final condition review are pending."
+    }
+  ]
+}
