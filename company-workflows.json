@@ -1,0 +1,58 @@
+{
+  "workflow_version": "1.0",
+  "rule": "Every intake batch must be assigned to exactly one company before any upload, record creation, image generation, or social-media draft is prepared.",
+  "companies": {
+    "magicdeals_wholesale_outlet": {
+      "display_name": "Magicdeals Wholesale Outlet",
+      "purpose": "Resale inventory and listing operations.",
+      "drive_asset_folder": {
+        "id": "1i0iepaWtxeM-AtND6O0o282b-KZcUtDC",
+        "url": "https://drive.google.com/drive/folders/1i0iepaWtxeM-AtND6O0o282b-KZcUtDC"
+      },
+      "legacy_import_folder": {
+        "id": "1aXWegHl4I8I5VzIhbDfpX3-ftVGJJ1aO",
+        "name": "EHC inventory import folder",
+        "rule": "Retain existing file IDs as legacy Magicdeals assets; do not move or overwrite them."
+      },
+      "airtable": {
+        "base_id": "appRxuE8F529tN7oY",
+        "table_id": "tblXhvLIzTxgyLCIb",
+        "table_name": "Inventory"
+      },
+      "catalog_file": "site/magicdeals-inventory-catalog-data.json",
+      "instagram_account": "@magicdeals_wholesale_outlet",
+      "avatar_modeling": "Use only after a product-faithful image is approved; preserve original listing images as the item-condition source of truth."
+    },
+    "jayleefit": {
+      "display_name": "JayLeeFit",
+      "purpose": "Fitness-brand merchandise, apparel, and content operations.",
+      "drive_asset_folder": {
+        "id": "1e8BchK8r-N1Yp6hvPxWxoZlMIQi1CgVJ",
+        "url": "https://drive.google.com/drive/folders/1e8BchK8r-N1Yp6hvPxWxoZlMIQi1CgVJ"
+      },
+      "airtable": {
+        "base_id": "appAec74Ux8EQrA27",
+        "table_id": "tblFyxQnKkOjeHdmk",
+        "table_name": "Inventory"
+      },
+      "catalog_file": "site/jayleefit-inventory-catalog-data.json",
+      "instagram_account": "@j_lee_is_me",
+      "avatar_modeling": "Use the authorized Google avatar reference for modeled product visuals, with a consistent clean studio background."
+    }
+  },
+  "shared_intake_stages": [
+    "Assign company",
+    "Group and identify images",
+    "Upload to the assigned company folder",
+    "Record Drive file IDs in the assigned company database",
+    "Update the assigned company catalog file",
+    "Create modeled visuals only when requested",
+    "Draft the assigned company Instagram post",
+    "Require explicit approval immediately before publishing"
+  ],
+  "non_negotiable_separation_rules": [
+    "Never write a Magicdeals asset, file ID, catalog entry, or caption into JayLeeFit data locations.",
+    "Never write a JayLeeFit asset, file ID, catalog entry, or caption into Magicdeals data locations.",
+    "Posts are staged under the assigned Instagram account and never published without user confirmation."
+  ]
+}

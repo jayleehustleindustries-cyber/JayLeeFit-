@@ -1,0 +1,7 @@
+{
+  "catalog": "JayLeeFit inventory and content staging catalog",
+  "company": "JayLeeFit",
+  "public_listing_note": "Draft inventory only; not ready for public sale or social publication.",
+  "workflow_rule": "Use only for JayLeeFit-assigned inventory. Every item must preserve its source image file IDs and the JayLeeFit Drive folder location.",
+  "items": []
+}
