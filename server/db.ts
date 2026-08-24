@@ -135,7 +135,10 @@ export async function createAiPlan(data: {
   planOutput?: string;
 }) {
   const db = await getDb();
-  if (!db) throw new Error("Database not available");
+  if (!db) {
+    console.warn("[Database] AI plan was generated but not persisted: database not available");
+    return undefined;
+  }
   await db.insert(aiPlans).values(data);
   const all = await db.select().from(aiPlans);
   return all[all.length - 1];

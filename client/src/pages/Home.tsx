@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import ReactMarkdown from "react-markdown";
+import { ProgramArchitect } from "@/components/ProgramArchitect";
 
-// ── Asset URLs (uploaded to Manus static storage) ───────────────────────────
+// ── Versioned campaign assets served with the application ──────────────────
 const ASSETS = {
-  coachPortrait: "/manus-storage/coach_jay_portrait_78730a40.png",
-  galleryOperatorFocus: "/manus-storage/gallery_operator_focus_e8c593d0.png",
-  galleryAbsoluteFocus: "/manus-storage/gallery_absolute_focus_65c19569.png",
-  galleryTheVisionary: "/manus-storage/gallery_the_visionary_3c91f81d.png",
+  coachPortrait: "/images/coach-jay-mao.jpg",
+  galleryOperatorFocus: "/images/operator-focus.jpg",
+  galleryAbsoluteFocus: "/images/absolute-focus.jpg",
+  galleryTheVisionary: "/images/the-visionary.jpg",
 };
 
 // ── Training split data ──────────────────────────────────────────────────────
@@ -102,7 +103,7 @@ function Nav({ activeSection }: { activeSection: string }) {
     { label: "APPLY", href: "#apply" },
     { label: "INVESTMENT", href: "#investment" },
     { label: "SAMPLE SPLIT", href: "#sample-split" },
-    { label: "AI ENGINE", href: "#ai-engine" },
+    { label: "PROGRAM ARCHITECT", href: "#ai-engine" },
     { label: "COACH JAY", href: "#coach-jay" },
     { label: "PROOF", href: "#proof" },
     { label: "GALLERY", href: "#gallery" },
@@ -125,7 +126,7 @@ function Nav({ activeSection }: { activeSection: string }) {
           </a>
         </div>
         {/* Mobile hamburger */}
-        <button className="lg:hidden text-white p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+        <button className="lg:hidden text-white p-3" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen} aria-controls="mobile-navigation">
           <div className="w-5 h-0.5 bg-white mb-1" />
           <div className="w-5 h-0.5 bg-white mb-1" />
           <div className="w-5 h-0.5 bg-white" />
@@ -133,7 +134,7 @@ function Nav({ activeSection }: { activeSection: string }) {
       </div>
       {/* Mobile overlay */}
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 top-14 bg-[#0A0A0B] z-40 flex flex-col items-center justify-center gap-6">
+        <div id="mobile-navigation" className="lg:hidden fixed inset-0 top-14 bg-[#0A0A0B] z-40 flex flex-col items-center justify-center gap-6">
           {links.map(l => (
             <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
               className="font-['JetBrains_Mono'] text-lg tracking-widest text-white/80 hover:text-red-500 transition-colors">
@@ -170,6 +171,8 @@ function Section({ id, index, title, children, className = "" }: {
 
 // ── 4-Phase Application Form ─────────────────────────────────────────────────
 function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, string>) => void }) {
+  const capabilities = trpc.site.capabilities.useQuery();
+  const intakeAvailable = capabilities.data?.applicationIntake === true;
   const [phase, setPhase] = useState(1);
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
@@ -187,6 +190,7 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
   const phase2Mut = trpc.application.submitPhase2.useMutation();
   const phase3Mut = trpc.application.submitPhase3.useMutation();
   const phase4Mut = trpc.application.submitPhase4.useMutation();
+  const applicationError = phase1Mut.error ?? phase2Mut.error ?? phase3Mut.error ?? phase4Mut.error;
 
   const inputCls = "w-full bg-white/5 border border-white/20 text-white font-['JetBrains_Mono'] text-sm px-3 py-2 focus:outline-none focus:border-red-500 transition-colors placeholder:text-white/30";
   const labelCls = "block font-['JetBrains_Mono'] text-xs tracking-widest text-white/60 mb-1";
@@ -219,7 +223,7 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
       <div className="text-center py-16">
         <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-4">// APPLICATION RECEIVED</div>
         <div className="font-['Bebas_Neue'] text-4xl text-white mb-4">QUALIFICATION COMPLETE</div>
-        <p className="font-['JetBrains_Mono'] text-sm text-white/60 mb-8">Coach Jay reviews every application within 48 hours. Investment packages are now unlocked.</p>
+        <p className="font-['JetBrains_Mono'] text-sm text-white/60 mb-8">Your application is queued for Coach Jay's review. Investment packages are now unlocked.</p>
         <a href="#investment" className="inline-block px-6 py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors">
           VIEW INVESTMENT PACKAGES →
         </a>
@@ -236,8 +240,16 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
         ))}
       </div>
       <div className="font-['JetBrains_Mono'] text-xs text-white/40 tracking-widest mb-6">
-        PHASE {phase} OF 4 · ALL APPLICATIONS REVIEWED BY COACH JAY WITHIN 48 HOURS.
+        PHASE {phase} OF 4 · APPLICATIONS ARE REVIEWED BY COACH JAY.
       </div>
+      {!capabilities.isPending && !intakeAvailable && (
+        <div className="mb-6 border border-amber-400/40 bg-amber-400/5 p-4 font-['JetBrains_Mono'] text-xs text-amber-200">
+          ONLINE APPLICATIONS ARE TEMPORARILY PAUSED. No information entered below will be submitted until secure intake storage is connected.
+        </div>
+      )}
+      {applicationError && (
+        <p className="mb-5 font-['JetBrains_Mono'] text-xs text-red-400">SUBMISSION ERROR: {applicationError.message}</p>
+      )}
 
       {/* Phase 1 */}
       {phase === 1 && (
@@ -268,7 +280,7 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
               value={p1.location} onChange={e => setP1({...p1, location: e.target.value})} required />
             <p className="font-['JetBrains_Mono'] text-xs text-white/30 mt-1">City, state, timezone. Check-ins and Zoom calls are scheduled around it.</p>
           </div>
-          <button onClick={handlePhase1} disabled={phase1Mut.isPending}
+          <button onClick={handlePhase1} disabled={phase1Mut.isPending || !intakeAvailable}
             className="w-full py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors disabled:opacity-50">
             {phase1Mut.isPending ? "PROCESSING..." : "NEXT PHASE →"}
           </button>
@@ -309,7 +321,7 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
             <input type="text" className={inputCls} placeholder="Height, weight, body fat % (estimates fine)"
               value={p2.currentStats} onChange={e => setP2({...p2, currentStats: e.target.value})} />
           </div>
-          <button onClick={handlePhase2} disabled={phase2Mut.isPending}
+          <button onClick={handlePhase2} disabled={phase2Mut.isPending || !intakeAvailable}
             className="w-full py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors disabled:opacity-50">
             {phase2Mut.isPending ? "PROCESSING..." : "NEXT PHASE →"}
           </button>
@@ -359,7 +371,7 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
             </div>
             <p className="font-['JetBrains_Mono'] text-xs text-white/30 mt-1">The Accountability Loop only works if you feed it. 'No' does not disqualify you, but say it now.</p>
           </div>
-          <button onClick={handlePhase3} disabled={phase3Mut.isPending}
+          <button onClick={handlePhase3} disabled={phase3Mut.isPending || !intakeAvailable}
             className="w-full py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors disabled:opacity-50">
             {phase3Mut.isPending ? "PROCESSING..." : "NEXT PHASE →"}
           </button>
@@ -393,12 +405,9 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
           <label className="flex items-start gap-3 cursor-pointer">
             <input type="checkbox" checked={p4.reviewAgreement} onChange={e => setP4({...p4, reviewAgreement: e.target.checked})}
               className="mt-0.5 accent-red-600" />
-            <span className="font-['JetBrains_Mono'] text-xs text-white/70">I understand Coach Jay personally reviews every application and responds within 48 hours.</span>
+            <span className="font-['JetBrains_Mono'] text-xs text-white/70">I understand this application will be reviewed and submission does not guarantee acceptance.</span>
           </label>
-          {phase4Mut.error && (
-            <p className="font-['JetBrains_Mono'] text-xs text-red-400">{phase4Mut.error.message}</p>
-          )}
-          <button onClick={handlePhase4} disabled={phase4Mut.isPending}
+          <button onClick={handlePhase4} disabled={phase4Mut.isPending || !intakeAvailable}
             className="w-full py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors disabled:opacity-50">
             {phase4Mut.isPending ? "PROCESSING..." : "COMPLETE QUALIFICATION →"}
           </button>
@@ -410,6 +419,8 @@ function ApplyForm({ onQualified }: { onQualified: (pricing: Record<string, stri
 
 // ── AI Engine component ──────────────────────────────────────────────────────
 function AIEngine() {
+  const capabilities = trpc.site.capabilities.useQuery();
+  const aiAvailable = capabilities.data?.aiBlueprints === true;
   const [diagnostic, setDiagnostic] = useState({ objective: "", operator: "", commitment: "" });
   const [routeResult, setRouteResult] = useState<{ tier: string; rationale: string } | null>(null);
   const [form, setForm] = useState({ name: "", goals: "", fitnessLevel: "Intermediate", availability: "", focusArea: "", limitations: "" });
@@ -479,9 +490,14 @@ function AIEngine() {
 
         {/* Deep Blueprint form */}
         {showBlueprint && (
-          <div className="border border-white/10 p-6">
+          <div className="border border-white/10 p-6 min-w-0">
             <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-1">DEEP BLUEPRINT // AI POWERED ENGINE</div>
             <div className="font-['Bebas_Neue'] text-2xl text-white mb-4">GENERATE YOUR BLUEPRINT</div>
+            {!capabilities.isPending && !aiAvailable && (
+              <div className="mb-4 border border-amber-400/40 bg-amber-400/5 p-3 font-['JetBrains_Mono'] text-xs text-amber-200">
+                LIVE AI BLUEPRINTS ARE TEMPORARILY OFFLINE. The rapid diagnostic remains available.
+              </div>
+            )}
             <div className="space-y-4">
               <div>
                 <label className="block font-['JetBrains_Mono'] text-xs tracking-widest text-white/60 mb-1">NAME (OPTIONAL)</label>
@@ -519,7 +535,7 @@ function AIEngine() {
                   value={form.limitations} onChange={e => setForm({...form, limitations: e.target.value})} />
               </div>
               <button onClick={() => generateMut.mutate({ ...form, fitnessLevel: form.fitnessLevel as "Beginner"|"Intermediate"|"Advanced", name: form.name || undefined, focusArea: form.focusArea || undefined, limitations: form.limitations || undefined })}
-                disabled={generateMut.isPending || !form.goals || !form.availability}
+                disabled={generateMut.isPending || !aiAvailable || !form.goals || !form.availability}
                 className="w-full py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors disabled:opacity-50">
                 {generateMut.isPending ? "GENERATING..." : "GENERATE AI PLAN →"}
               </button>
@@ -553,6 +569,8 @@ function AIEngine() {
 
 // ── Main Home page ───────────────────────────────────────────────────────────
 export default function Home() {
+  const capabilities = trpc.site.capabilities.useQuery();
+  const paymentReportingAvailable = capabilities.data?.paymentReporting === true;
   const [activeSection, setActiveSection] = useState("hero");
   const [qualified, setQualified] = useState(false);
   const [pricing, setPricing] = useState<Record<string, string>>({});
@@ -581,6 +599,15 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!lightboxImg) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setLightboxImg(null);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [lightboxImg]);
+
   function handleQualified(p: Record<string, string>) {
     setQualified(true);
     setPricing(p);
@@ -593,7 +620,9 @@ export default function Home() {
 
   return (
     <div className="bg-[#0A0A0B] text-white min-h-screen">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <Nav activeSection={activeSection} />
+      <main id="main-content">
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section id="hero" className="min-h-screen flex flex-col justify-center pt-14 relative overflow-hidden">
@@ -610,17 +639,17 @@ export default function Home() {
           </div>
           <div className="w-24 h-px bg-red-600 mb-6" />
           <p className="font-['JetBrains_Mono'] text-sm text-white/70 max-w-2xl leading-relaxed mb-3">
-            JayLee Hustle Industries utilizes the proprietary MAO (Massive Action Orientation) Framework—an elite triad of physical conditioning, neural optimization, and strict accountability engineered exclusively for high-output founders and career professionals.
+            JayLee Hustle Industries uses the MAO (Massive Action Orientation) Framework—a practical system combining physical conditioning, focused habits, and accountability for busy founders and career professionals.
           </p>
           <p className="font-['JetBrains_Mono'] text-sm text-white/70 max-w-2xl leading-relaxed mb-10">
-            Adaptation is the game. 12-week specialized programs for your body's purpose: athletic performance, fat loss, functional strength, metabolic efficiency. AI engine. Human coach. By application only.
+            Adaptation is the game. Build a private starting blueprint now, then apply for human coaching and individualized review.
           </p>
           <div className="flex flex-wrap gap-4">
             <a href="#apply" className="px-8 py-4 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors active:scale-[0.97]">
               APPLY FOR A PACKAGE
             </a>
             <a href="#ai-engine" className="px-8 py-4 border border-white/30 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:border-white/60 transition-colors active:scale-[0.97]">
-              RUN AI POWERED ENGINE
+              BUILD MY STARTING PLAN
             </a>
           </div>
           <div className="mt-16 font-['JetBrains_Mono'] text-xs text-white/20 tracking-widest animate-bounce">↓ SCROLL</div>
@@ -635,7 +664,7 @@ export default function Home() {
             { code: "G/00", term: "FOUNDER — MEET COACH JAY", def: "Founder of JayLee Hustle Industries. Author of the MAO Framework. Coach to the Operators on this platform — every protocol on this site comes from his system, not a textbook. Coach Jay built the MAO Framework in the field — not in a classroom. Every Operator on the roster is coached against the same standard he holds himself to. Adaptation is the game." },
             { code: "G/01", term: "OPERATOR", def: "A high-output founder, executive, or career professional whose physical conditioning is the lever that compounds every other system in their life. We do not coach hobbyists. We coach Operators." },
             { code: "G/02", term: "MAO (MASSIVE ACTION ORIENTATION)", def: "The proprietary JayLee framework: a triad of physical conditioning, neural optimization, and strict accountability. Every protocol is engineered to compound across all three planes simultaneously — not in isolation." },
-            { code: "G/03", term: "SWARM ECOSYSTEM", def: "The 12-agent intelligence layer that surrounds every Operator on the roster: Strategist, Fitness Architect, Telegram Coach, Email Worker, Audit Logger, Notification Router, and the rest of the swarm. Always-on, always learning, never off-shift." },
+            { code: "G/03", term: "SWARM ECOSYSTEM", def: "The MAO operating model that connects programming, check-ins, communication, and evidence review around each Operator. Automation is introduced only where the supporting systems are configured and supervised." },
           ].map(g => (
             <div key={g.code} className="border border-white/10 p-6 hover:border-white/20 transition-colors">
               <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-2">{g.code}</div>
@@ -680,7 +709,7 @@ export default function Home() {
             </p>
             <div className="border border-red-600/30 p-5 mb-8 bg-red-600/5">
               <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-2">VELVET ROPE // PROTOCOL</div>
-              <p className="font-['JetBrains_Mono'] text-xs text-white/60 leading-relaxed">No discount codes. No "buy now" buttons. Pricing is revealed by application only. Coach Jay personally reviews every transcript. Qualified operators get a 24h reply.</p>
+              <p className="font-['JetBrains_Mono'] text-xs text-white/60 leading-relaxed">No discount codes. No "buy now" buttons. Pricing is revealed by application only. Coach Jay reviews completed applications and sends next steps to qualified operators.</p>
             </div>
             <div className="font-['JetBrains_Mono'] text-xs text-white/30 space-y-1">
               <div>4-PHASE STRICT QUALIFICATION</div>
@@ -711,19 +740,19 @@ export default function Home() {
             {
               code: "INV/01", title: "FOUNDATION", badge: null, priceKey: "FOUNDATION_PRICE",
               desc: "Entry tier for committed operators. Weekly programming restructures + monthly Zoom call with Coach Jay. Custom 12-week recomposition block with ongoing adjustments.",
-              features: ["Custom 12-week recomposition block","Weekly programming restructures","Monthly Zoom call with Coach Jay","Nutrition guardrails + macro plan","Async messaging Mon–Fri","AI Powered Engine retunes after week 4 + 8"],
+              features: ["Custom 12-week recomposition block","Weekly programming restructures","Monthly Zoom call with Coach Jay","Nutrition guardrails + macro plan","Scheduled messaging Mon–Fri","Program review after week 4 + 8"],
               cta: "APPLY FOR FOUNDATION"
             },
             {
               code: "INV/02", title: "RECOMP", badge: "FLAGSHIP", priceKey: "RECOMP_PRICE",
               desc: "The flagship transformation. Weekly programming restructures + weekly Zoom calls with Coach Jay. Full body recomposition, form audits, direct line to Coach Jay. Built for the prospect who is done starting over.",
-              features: ["Everything in FOUNDATION","Weekly programming restructures","Weekly Zoom call with Coach Jay","Weekly 1:1 form audit","Custom recovery + sleep protocol","Direct text access (12hr response)","Full body recomposition focus"],
+              features: ["Everything in FOUNDATION","Weekly programming restructures","Weekly Zoom call with Coach Jay","Weekly 1:1 form audit","Custom recovery + sleep protocol","Direct messaging with an agreed response window","Full body recomposition focus"],
               cta: "APPLY FOR RECOMP"
             },
             {
               code: "INV/03", title: "LEGACY", badge: null, priceKey: "LEGACY_PRICE",
               desc: "Premium tier for high-performing operators. Twice-weekly programming restructures + Zoom calls. Full body recomposition, intensive coaching, direct line to Coach Jay. By application only.",
-              features: ["Everything in RECOMP","Twice-weekly programming restructures","Twice-weekly Zoom calls with Coach Jay","Intensive form audits + video review","Priority on every channel (4hr response)","Custom recovery + sleep protocol","Direct text access (24/7)","Quarterly in-person intensive*"],
+              features: ["Everything in RECOMP","Twice-weekly programming restructures","Twice-weekly Zoom calls with Coach Jay","Intensive form audits + video review","Priority messaging during agreed support hours","Custom recovery + sleep protocol","Direct text access with boundaries confirmed before start"],
               cta: "APPLY FOR LEGACY"
             },
           ].map(tier => (
@@ -751,7 +780,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <p className="font-['JetBrains_Mono'] text-[10px] text-white/30 mt-6">* IN-PERSON INTENSIVES SUBJECT TO COACH AVAILABILITY AND SCHEDULING. ALL PACKAGES BY APPLICATION VIA THE MAO INTAKE AGENT.</p>
+        <p className="font-['JetBrains_Mono'] text-[10px] text-white/30 mt-6">* IN-PERSON INTENSIVES SUBJECT TO COACH AVAILABILITY AND SCHEDULING. ALL PACKAGES BY APPLICATION VIA THE MAO INTAKE.</p>
       </Section>
 
       {/* ── SAMPLE SPLIT ─────────────────────────────────────────────────── */}
@@ -801,22 +830,22 @@ export default function Home() {
       </Section>
 
       {/* ── AI ENGINE ────────────────────────────────────────────────────── */}
-      <Section id="ai-engine" index="05 /" title="MAO ENGINE" className="border-t border-white/5">
-        <AIEngine />
+      <Section id="ai-engine" index="05 /" title="PROGRAM ARCHITECT" className="border-t border-white/5">
+        <ProgramArchitect />
       </Section>
 
       {/* ── COMMAND CENTER ───────────────────────────────────────────────── */}
       <Section id="command-center" index="06 /" title="MAO COMMAND CENTER" className="border-t border-white/5">
         <p className="font-['JetBrains_Mono'] text-sm text-white/60 max-w-2xl mb-2">
-          Every Operator on the roster gets a private dashboard. Real biomarkers. Real audits. Real comm channels. No vague 'wellness' copy. This is the accountability infrastructure most coaching programs only promise.
+          Every admitted Operator gets a private dashboard for biomarkers, audits, and direct communication. No vague 'wellness' copy. This is the accountability infrastructure behind the MAO coaching process.
         </p>
-        <p className="font-['JetBrains_Mono'] text-xs text-white/30 tracking-widest mb-8">BELOW: A REDACTED VIEW OF THE COMMAND CENTER SURFACE. REAL NUMBERS SHOWN AFTER ADMISSION.</p>
+        <p className="font-['JetBrains_Mono'] text-xs text-white/30 tracking-widest mb-8">BELOW: AN ILLUSTRATIVE COMMAND CENTER PREVIEW. SAMPLE NUMBERS SHOWN FOR DEMONSTRATION.</p>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {[
-            { code: "D/01", stat: "96%", label: "DAILY COMPLIANCE", sub: "WORKOUTS LOGGED THIS WEEK", desc: "Every set, every meal, every recovery window — timestamped and auto-reviewed by the Audit Logger every 24 hours." },
-            { code: "D/02", stat: "BF 13.4%", label: "BIOMARKER TRACKING", sub: "DOWN FROM 18.2% IN 9 WEEKS", desc: "DEXA, InBody, HRV, sleep latency, fasted glucose. Your raw data is the source of truth — not the scale, not the mirror." },
-            { code: "D/03", stat: "24/7", label: "COMM CHANNELS", sub: "TELEGRAM • EMAIL • VOICE", desc: "Direct line to Coach Jay — not a VA, not a chatbot. Audio-message form audits within 12 hours, max." },
-            { code: "D/04", stat: "MON 06:00", label: "WEEKLY AUDIT", sub: "STRATEGIST AGENT RE-PRESCRIBES", desc: "The Swarm reviews your last 7 days, identifies the bottleneck, and adapts your block. Zero stagnation. No copy-paste programs." },
+            { code: "D/01", stat: "96%", label: "DAILY COMPLIANCE", sub: "ILLUSTRATIVE WEEK", desc: "A sample view of how training, nutrition, and recovery adherence can be reviewed during coaching." },
+            { code: "D/02", stat: "BF 13.4%", label: "BIOMARKER TRACKING", sub: "ILLUSTRATIVE TREND", desc: "A sample view of how body-composition and recovery metrics can be organized over time. Results vary by individual." },
+            { code: "D/03", stat: "DIRECT", label: "COMM CHANNELS", sub: "CHANNELS SET DURING ONBOARDING", desc: "Coaching communication is handled directly. Channel availability and response expectations are confirmed before a client starts." },
+            { code: "D/04", stat: "WEEKLY", label: "COACHING AUDIT", sub: "PLAN REVIEW + ADJUSTMENT", desc: "The weekly review identifies bottlenecks and informs the next programming adjustment. No copy-paste programs." },
           ].map(d => (
             <div key={d.code} className="border border-white/10 p-5">
               <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-2">{d.code}</div>
@@ -829,7 +858,7 @@ export default function Home() {
         </div>
         <div className="border border-white/10 p-6">
           <div className="font-['JetBrains_Mono'] text-xs text-white/30 tracking-widest mb-3">ACCOUNTABILITY LOOP ·· MATERIALIZED</div>
-          <p className="font-['JetBrains_Mono'] text-sm text-white/60 leading-relaxed">The Command Center is the physical manifestation of the Accountability Loop. Every metric is logged by the Operator, audited by the Swarm, and re-prescribed by the Strategist Agent every Monday at 06:00 CDT. No theatre. No spreadsheets. Just the numbers, and the work that produced them.</p>
+          <p className="font-['JetBrains_Mono'] text-sm text-white/60 leading-relaxed">The Command Center supports the Accountability Loop: the Operator logs the work, the coaching system organizes the review, and the next plan is adjusted from the available evidence. The preview above uses illustrative data and does not represent a client result.</p>
         </div>
       </Section>
 
@@ -839,7 +868,7 @@ export default function Home() {
           <div>
             <img src={ASSETS.coachPortrait} alt="Coach Jay — Jordan Lee" className="w-full max-w-sm object-cover" />
             <div className="font-['JetBrains_Mono'] text-[10px] text-white/30 tracking-widest mt-3">
-              CERTIFIED PERSONAL TRAINER · HOT SPRINGS, ARKANSAS · JAYLEE FIT — JLH INDUSTRIES LLC
+              FOUNDER & COACH · HOT SPRINGS, ARKANSAS · JAYLEE FIT — JLH INDUSTRIES LLC
             </div>
           </div>
           <div>
@@ -847,7 +876,7 @@ export default function Home() {
               JAYLEE FIT IS NOT A GYM. IT IS AN OPERATING SYSTEM FOR YOUR BODY.
             </div>
             <p className="font-['JetBrains_Mono'] text-sm text-white/70 leading-relaxed mb-4">
-              Jordan Lee — "Coach Jay" — is a certified personal trainer and the founder of JayLee Fit (JayLee Hustle Industries LLC), based in Hot Springs, Arkansas. He built his coaching practice on one belief: real results come from realistic systems, not extreme programs that fall apart in week two. MAO — the Master Orchestrator — is his coaching engine for operators who refuse soft programming and softer accountability.
+              Jordan Lee — "Coach Jay" — is the founder of JayLee Fit (JayLee Hustle Industries LLC), based in Hot Springs, Arkansas. He built his coaching approach on one belief: sustainable progress comes from realistic systems, not extreme programs that fall apart in week two. MAO is his operating framework for consistent training and accountability.
             </p>
             <p className="font-['JetBrains_Mono'] text-sm text-white/70 leading-relaxed mb-8">
               Jordan coaches founders, athletes, and busy dads specifically because he understands the life — the early mornings, the packed schedules, the guilt of putting yourself last. His approach strips away the noise and builds programs that actually fit your week, your equipment, and your energy. Home-based training. No gym required. Real accountability.
@@ -855,7 +884,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-6 mb-8">
               {[
                 { label: "SPECIALIZATIONS", items: ["Athletic performance","Fat loss","Functional strength","Metabolic efficiency","GLP-1 adaptation","Wearable data integration","12-week specialization programs"] },
-                { label: "CREDENTIALS", items: ["NASM Certified Personal Trainer","Nutrition Certification","Advanced Programming","AI-Powered Coaching","15+ years coaching experience"] },
+                { label: "COACHING APPROACH", items: ["Progressive programming","Nutrition guardrails","Human review","Habit accountability","Plans built around real schedules"] },
                 { label: "MISSION", items: ["Build disciplined, capable bodies and operators through programmed recomposition and a relentless accountability loop."] },
                 { label: "METHOD", items: ["Hustle First","Recomp over Vanity","Consistency over Intensity","Accountability Loop","Repeat for 12 weeks"] },
               ].map(b => (
@@ -904,18 +933,18 @@ export default function Home() {
             { src: ASSETS.galleryAbsoluteFocus, caption: "ABSOLUTE FOCUS" },
             { src: ASSETS.galleryTheVisionary, caption: "THE VISIONARY" },
           ].map(img => (
-            <div key={img.caption} className="relative group cursor-pointer overflow-hidden aspect-[4/5]"
+            <button key={img.caption} type="button" aria-label={`Open ${img.caption} image`} className="relative group cursor-pointer overflow-hidden aspect-[4/5] text-left"
               onClick={() => setLightboxImg(img.src)}>
               <img src={img.src} alt={img.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
               <div className="absolute bottom-4 left-4 font-['JetBrains_Mono'] text-xs text-white tracking-widest">{img.caption}</div>
-            </div>
+            </button>
           ))}
         </div>
         {lightboxImg && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
-            <img src={lightboxImg} alt="Gallery" className="max-h-[90vh] max-w-full object-contain" />
-            <button className="absolute top-4 right-4 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:text-red-400">CLOSE ✕</button>
+          <div role="dialog" aria-modal="true" aria-label="Expanded gallery image" className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
+            <img src={lightboxImg} alt="Expanded JayLee Fit gallery" className="max-h-[90vh] max-w-full object-contain" onClick={event => event.stopPropagation()} />
+            <button type="button" autoFocus onClick={() => setLightboxImg(null)} className="absolute top-4 right-4 min-h-11 px-4 text-white bg-black/70 font-['JetBrains_Mono'] text-xs tracking-widest hover:text-red-400">CLOSE ✕</button>
           </div>
         )}
       </Section>
@@ -926,15 +955,15 @@ export default function Home() {
           For already-onboarded clients only. Once Coach Jay has approved your application and issued an Order ID, settle your invoice via PayPal below.
         </p>
         <div className="border border-red-600/30 p-4 bg-red-600/5 mb-8 inline-block">
-          <span className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest">NEW HERE? RUN THE INTAKE AGENT ABOVE. MAO DOES NOT SELL OFF THE SHELF.</span>
+          <span className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest">NEW HERE? RUN THE INTAKE ABOVE. MAO DOES NOT SELL OFF THE SHELF.</span>
         </div>
         <div className="grid lg:grid-cols-2 gap-10">
           {/* PayPal panel */}
-          <div className="border border-white/10 p-6">
+          <div className="border border-white/10 p-6 min-w-0">
             <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-3">PAYPAL</div>
             <p className="font-['JetBrains_Mono'] text-xs text-white/60 mb-4">Send to the JayLee Hustle Industries PayPal handle:</p>
-            <div className="flex items-center gap-3 bg-white/5 border border-white/20 px-4 py-3 mb-4">
-              <span className="font-['JetBrains_Mono'] text-sm text-white flex-1">magicdeals.wholesale@gmail.com</span>
+            <div className="flex items-center gap-3 bg-white/5 border border-white/20 px-4 py-3 mb-4 min-w-0">
+              <span className="font-['JetBrains_Mono'] text-sm text-white flex-1 min-w-0 break-all">magicdeals.wholesale@gmail.com</span>
               <button onClick={() => navigator.clipboard.writeText("magicdeals.wholesale@gmail.com")}
                 className="font-['JetBrains_Mono'] text-[10px] text-white/40 hover:text-white tracking-widest transition-colors">COPY</button>
             </div>
@@ -944,15 +973,15 @@ export default function Home() {
             </a>
           </div>
           {/* Self-report form */}
-          <div className="border border-white/10 p-6">
+          <div className="border border-white/10 p-6 min-w-0">
             <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-1">PAYMENT // SELF-REPORT</div>
             <div className="font-['Bebas_Neue'] text-2xl text-white mb-2">ALREADY SENT PAYMENT?</div>
-            <p className="font-['JetBrains_Mono'] text-xs text-white/50 mb-6">Drop your details and your PayPal Transaction ID so MAO finance can run automatic verification. Coach Jay gets pinged immediately.</p>
+            <p className="font-['JetBrains_Mono'] text-xs text-white/50 mb-6">Submit your details and PayPal Transaction ID for manual review. A payment report is not confirmation; access begins only after the transaction is verified.</p>
             {payDone ? (
               <div className="text-center py-8">
                 <div className="font-['JetBrains_Mono'] text-xs text-red-500 tracking-widest mb-2">// RECEIVED</div>
                 <div className="font-['Bebas_Neue'] text-2xl text-white">PAYMENT REPORT RECEIVED</div>
-                <p className="font-['JetBrains_Mono'] text-xs text-white/50 mt-2">Verification in progress.</p>
+                <p className="font-['JetBrains_Mono'] text-xs text-white/50 mt-2">Awaiting manual review.</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -983,8 +1012,11 @@ export default function Home() {
                   <textarea className={`${inputCls} h-16 resize-none`} placeholder="Optional note"
                     value={payForm.note} onChange={e => setPayForm({...payForm, note: e.target.value})} />
                 </div>
+                {!capabilities.isPending && !paymentReportingAvailable && (
+                  <p className="font-['JetBrains_Mono'] text-xs text-amber-200">PAYMENT REPORTING IS TEMPORARILY PAUSED. Do not submit transaction details until secure storage is connected.</p>
+                )}
                 {payMut.error && <p className="font-['JetBrains_Mono'] text-xs text-red-400">{payMut.error.message}</p>}
-                <button onClick={() => payMut.mutate(payForm)} disabled={payMut.isPending || !payForm.name || !payForm.email || !payForm.amount || !payForm.orderId || !payForm.transactionId}
+                <button onClick={() => payMut.mutate(payForm)} disabled={payMut.isPending || !paymentReportingAvailable || !payForm.name || !payForm.email || !payForm.amount || !payForm.orderId || !payForm.transactionId}
                   className="w-full py-3 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors disabled:opacity-50">
                   {payMut.isPending ? "PROCESSING..." : "REPORT PAYMENT →"}
                 </button>
@@ -993,6 +1025,8 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      </main>
 
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-white/10 py-12">

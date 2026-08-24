@@ -50,6 +50,20 @@ describe("application.submitPhase1", () => {
   });
 });
 
+describe("site.capabilities", () => {
+  it("reports optional services without exposing secrets", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+    const result = await caller.site.capabilities();
+    expect(result).toEqual({
+      applicationIntake: Boolean(process.env.DATABASE_URL),
+      paymentReporting: Boolean(process.env.DATABASE_URL),
+      aiBlueprints: Boolean(process.env.BUILT_IN_FORGE_API_URL && process.env.BUILT_IN_FORGE_API_KEY),
+    });
+    expect(result).not.toHaveProperty("databaseUrl");
+    expect(result).not.toHaveProperty("forgeApiKey");
+  });
+});
+
 describe("application.submitPhase4", () => {
   it("returns pricing after all acknowledgments are checked", async () => {
     const caller = appRouter.createCaller(createPublicContext());

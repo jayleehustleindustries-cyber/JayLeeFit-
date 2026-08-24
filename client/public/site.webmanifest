@@ -1,0 +1,9 @@
+{
+  "name": "JayLee Fit — MAO Methodology",
+  "short_name": "JayLee Fit",
+  "description": "High-performance body recomposition and accountability coaching for founders and operators.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505"
+}

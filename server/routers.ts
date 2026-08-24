@@ -4,6 +4,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
+import { ENV } from "./_core/env";
 import {
   upsertApplication,
   getApplicationByEmail,
@@ -26,6 +27,13 @@ const MAO_SYSTEM_PROMPT = `You are the MAO Engine, the AI programming assistant 
 End with: "This is a sample blueprint. Your full MAO program is built after qualification. — MAO ENGINE". Keep it under 600 words. Never give medical advice; advise consulting a professional for injuries.`;
 
 export const appRouter = router({
+  site: router({
+    capabilities: publicProcedure.query(() => ({
+      applicationIntake: Boolean(process.env.DATABASE_URL),
+      paymentReporting: Boolean(process.env.DATABASE_URL),
+      aiBlueprints: Boolean(ENV.forgeApiUrl && ENV.forgeApiKey),
+    })),
+  }),
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
