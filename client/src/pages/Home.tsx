@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import ReactMarkdown from "react-markdown";
+import { ProgramArchitect } from "@/components/ProgramArchitect";
 
 // ── Versioned campaign assets served with the application ──────────────────
 const ASSETS = {
@@ -102,7 +103,7 @@ function Nav({ activeSection }: { activeSection: string }) {
     { label: "APPLY", href: "#apply" },
     { label: "INVESTMENT", href: "#investment" },
     { label: "SAMPLE SPLIT", href: "#sample-split" },
-    { label: "AI ENGINE", href: "#ai-engine" },
+    { label: "PROGRAM ARCHITECT", href: "#ai-engine" },
     { label: "COACH JAY", href: "#coach-jay" },
     { label: "PROOF", href: "#proof" },
     { label: "GALLERY", href: "#gallery" },
@@ -125,7 +126,7 @@ function Nav({ activeSection }: { activeSection: string }) {
           </a>
         </div>
         {/* Mobile hamburger */}
-        <button className="lg:hidden text-white p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+        <button className="lg:hidden text-white p-3" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen} aria-controls="mobile-navigation">
           <div className="w-5 h-0.5 bg-white mb-1" />
           <div className="w-5 h-0.5 bg-white mb-1" />
           <div className="w-5 h-0.5 bg-white" />
@@ -133,7 +134,7 @@ function Nav({ activeSection }: { activeSection: string }) {
       </div>
       {/* Mobile overlay */}
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 top-14 bg-[#0A0A0B] z-40 flex flex-col items-center justify-center gap-6">
+        <div id="mobile-navigation" className="lg:hidden fixed inset-0 top-14 bg-[#0A0A0B] z-40 flex flex-col items-center justify-center gap-6">
           {links.map(l => (
             <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
               className="font-['JetBrains_Mono'] text-lg tracking-widest text-white/80 hover:text-red-500 transition-colors">
@@ -598,6 +599,15 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!lightboxImg) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setLightboxImg(null);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [lightboxImg]);
+
   function handleQualified(p: Record<string, string>) {
     setQualified(true);
     setPricing(p);
@@ -610,7 +620,9 @@ export default function Home() {
 
   return (
     <div className="bg-[#0A0A0B] text-white min-h-screen">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <Nav activeSection={activeSection} />
+      <main id="main-content">
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section id="hero" className="min-h-screen flex flex-col justify-center pt-14 relative overflow-hidden">
@@ -627,17 +639,17 @@ export default function Home() {
           </div>
           <div className="w-24 h-px bg-red-600 mb-6" />
           <p className="font-['JetBrains_Mono'] text-sm text-white/70 max-w-2xl leading-relaxed mb-3">
-            JayLee Hustle Industries utilizes the proprietary MAO (Massive Action Orientation) Framework—an elite triad of physical conditioning, neural optimization, and strict accountability engineered exclusively for high-output founders and career professionals.
+            JayLee Hustle Industries uses the MAO (Massive Action Orientation) Framework—a practical system combining physical conditioning, focused habits, and accountability for busy founders and career professionals.
           </p>
           <p className="font-['JetBrains_Mono'] text-sm text-white/70 max-w-2xl leading-relaxed mb-10">
-            Adaptation is the game. 12-week specialized programs for your body's purpose: athletic performance, fat loss, functional strength, metabolic efficiency. AI engine. Human coach. By application only.
+            Adaptation is the game. Build a private starting blueprint now, then apply for human coaching and individualized review.
           </p>
           <div className="flex flex-wrap gap-4">
             <a href="#apply" className="px-8 py-4 bg-red-600 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:bg-red-500 transition-colors active:scale-[0.97]">
               APPLY FOR A PACKAGE
             </a>
             <a href="#ai-engine" className="px-8 py-4 border border-white/30 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:border-white/60 transition-colors active:scale-[0.97]">
-              RUN AI POWERED ENGINE
+              BUILD MY STARTING PLAN
             </a>
           </div>
           <div className="mt-16 font-['JetBrains_Mono'] text-xs text-white/20 tracking-widest animate-bounce">↓ SCROLL</div>
@@ -728,19 +740,19 @@ export default function Home() {
             {
               code: "INV/01", title: "FOUNDATION", badge: null, priceKey: "FOUNDATION_PRICE",
               desc: "Entry tier for committed operators. Weekly programming restructures + monthly Zoom call with Coach Jay. Custom 12-week recomposition block with ongoing adjustments.",
-              features: ["Custom 12-week recomposition block","Weekly programming restructures","Monthly Zoom call with Coach Jay","Nutrition guardrails + macro plan","Async messaging Mon–Fri","AI Powered Engine retunes after week 4 + 8"],
+              features: ["Custom 12-week recomposition block","Weekly programming restructures","Monthly Zoom call with Coach Jay","Nutrition guardrails + macro plan","Scheduled messaging Mon–Fri","Program review after week 4 + 8"],
               cta: "APPLY FOR FOUNDATION"
             },
             {
               code: "INV/02", title: "RECOMP", badge: "FLAGSHIP", priceKey: "RECOMP_PRICE",
               desc: "The flagship transformation. Weekly programming restructures + weekly Zoom calls with Coach Jay. Full body recomposition, form audits, direct line to Coach Jay. Built for the prospect who is done starting over.",
-              features: ["Everything in FOUNDATION","Weekly programming restructures","Weekly Zoom call with Coach Jay","Weekly 1:1 form audit","Custom recovery + sleep protocol","Direct text access (12hr response)","Full body recomposition focus"],
+              features: ["Everything in FOUNDATION","Weekly programming restructures","Weekly Zoom call with Coach Jay","Weekly 1:1 form audit","Custom recovery + sleep protocol","Direct messaging with an agreed response window","Full body recomposition focus"],
               cta: "APPLY FOR RECOMP"
             },
             {
               code: "INV/03", title: "LEGACY", badge: null, priceKey: "LEGACY_PRICE",
               desc: "Premium tier for high-performing operators. Twice-weekly programming restructures + Zoom calls. Full body recomposition, intensive coaching, direct line to Coach Jay. By application only.",
-              features: ["Everything in RECOMP","Twice-weekly programming restructures","Twice-weekly Zoom calls with Coach Jay","Intensive form audits + video review","Priority on every channel (4hr response)","Custom recovery + sleep protocol","Direct text access (24/7)","Quarterly in-person intensive*"],
+              features: ["Everything in RECOMP","Twice-weekly programming restructures","Twice-weekly Zoom calls with Coach Jay","Intensive form audits + video review","Priority messaging during agreed support hours","Custom recovery + sleep protocol","Direct text access with boundaries confirmed before start"],
               cta: "APPLY FOR LEGACY"
             },
           ].map(tier => (
@@ -818,8 +830,8 @@ export default function Home() {
       </Section>
 
       {/* ── AI ENGINE ────────────────────────────────────────────────────── */}
-      <Section id="ai-engine" index="05 /" title="MAO ENGINE" className="border-t border-white/5">
-        <AIEngine />
+      <Section id="ai-engine" index="05 /" title="PROGRAM ARCHITECT" className="border-t border-white/5">
+        <ProgramArchitect />
       </Section>
 
       {/* ── COMMAND CENTER ───────────────────────────────────────────────── */}
@@ -832,7 +844,7 @@ export default function Home() {
           {[
             { code: "D/01", stat: "96%", label: "DAILY COMPLIANCE", sub: "ILLUSTRATIVE WEEK", desc: "A sample view of how training, nutrition, and recovery adherence can be reviewed during coaching." },
             { code: "D/02", stat: "BF 13.4%", label: "BIOMARKER TRACKING", sub: "ILLUSTRATIVE TREND", desc: "A sample view of how body-composition and recovery metrics can be organized over time. Results vary by individual." },
-            { code: "D/03", stat: "24/7", label: "COMM CHANNELS", sub: "TELEGRAM • EMAIL • VOICE", desc: "Direct line to Coach Jay — not a VA, not a chatbot. Audio-message form audits within 12 hours, max." },
+            { code: "D/03", stat: "DIRECT", label: "COMM CHANNELS", sub: "CHANNELS SET DURING ONBOARDING", desc: "Coaching communication is handled directly. Channel availability and response expectations are confirmed before a client starts." },
             { code: "D/04", stat: "WEEKLY", label: "COACHING AUDIT", sub: "PLAN REVIEW + ADJUSTMENT", desc: "The weekly review identifies bottlenecks and informs the next programming adjustment. No copy-paste programs." },
           ].map(d => (
             <div key={d.code} className="border border-white/10 p-5">
@@ -856,7 +868,7 @@ export default function Home() {
           <div>
             <img src={ASSETS.coachPortrait} alt="Coach Jay — Jordan Lee" className="w-full max-w-sm object-cover" />
             <div className="font-['JetBrains_Mono'] text-[10px] text-white/30 tracking-widest mt-3">
-              CERTIFIED PERSONAL TRAINER · HOT SPRINGS, ARKANSAS · JAYLEE FIT — JLH INDUSTRIES LLC
+              FOUNDER & COACH · HOT SPRINGS, ARKANSAS · JAYLEE FIT — JLH INDUSTRIES LLC
             </div>
           </div>
           <div>
@@ -864,7 +876,7 @@ export default function Home() {
               JAYLEE FIT IS NOT A GYM. IT IS AN OPERATING SYSTEM FOR YOUR BODY.
             </div>
             <p className="font-['JetBrains_Mono'] text-sm text-white/70 leading-relaxed mb-4">
-              Jordan Lee — "Coach Jay" — is a certified personal trainer and the founder of JayLee Fit (JayLee Hustle Industries LLC), based in Hot Springs, Arkansas. He built his coaching practice on one belief: real results come from realistic systems, not extreme programs that fall apart in week two. MAO — the Master Orchestrator — is his coaching engine for operators who refuse soft programming and softer accountability.
+              Jordan Lee — "Coach Jay" — is the founder of JayLee Fit (JayLee Hustle Industries LLC), based in Hot Springs, Arkansas. He built his coaching approach on one belief: sustainable progress comes from realistic systems, not extreme programs that fall apart in week two. MAO is his operating framework for consistent training and accountability.
             </p>
             <p className="font-['JetBrains_Mono'] text-sm text-white/70 leading-relaxed mb-8">
               Jordan coaches founders, athletes, and busy dads specifically because he understands the life — the early mornings, the packed schedules, the guilt of putting yourself last. His approach strips away the noise and builds programs that actually fit your week, your equipment, and your energy. Home-based training. No gym required. Real accountability.
@@ -872,7 +884,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-6 mb-8">
               {[
                 { label: "SPECIALIZATIONS", items: ["Athletic performance","Fat loss","Functional strength","Metabolic efficiency","GLP-1 adaptation","Wearable data integration","12-week specialization programs"] },
-                { label: "CREDENTIALS", items: ["NASM Certified Personal Trainer","Nutrition Certification","Advanced Programming","AI-Powered Coaching","15+ years coaching experience"] },
+                { label: "COACHING APPROACH", items: ["Progressive programming","Nutrition guardrails","Human review","Habit accountability","Plans built around real schedules"] },
                 { label: "MISSION", items: ["Build disciplined, capable bodies and operators through programmed recomposition and a relentless accountability loop."] },
                 { label: "METHOD", items: ["Hustle First","Recomp over Vanity","Consistency over Intensity","Accountability Loop","Repeat for 12 weeks"] },
               ].map(b => (
@@ -921,18 +933,18 @@ export default function Home() {
             { src: ASSETS.galleryAbsoluteFocus, caption: "ABSOLUTE FOCUS" },
             { src: ASSETS.galleryTheVisionary, caption: "THE VISIONARY" },
           ].map(img => (
-            <div key={img.caption} className="relative group cursor-pointer overflow-hidden aspect-[4/5]"
+            <button key={img.caption} type="button" aria-label={`Open ${img.caption} image`} className="relative group cursor-pointer overflow-hidden aspect-[4/5] text-left"
               onClick={() => setLightboxImg(img.src)}>
               <img src={img.src} alt={img.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
               <div className="absolute bottom-4 left-4 font-['JetBrains_Mono'] text-xs text-white tracking-widest">{img.caption}</div>
-            </div>
+            </button>
           ))}
         </div>
         {lightboxImg && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
-            <img src={lightboxImg} alt="Gallery" className="max-h-[90vh] max-w-full object-contain" />
-            <button className="absolute top-4 right-4 text-white font-['JetBrains_Mono'] text-xs tracking-widest hover:text-red-400">CLOSE ✕</button>
+          <div role="dialog" aria-modal="true" aria-label="Expanded gallery image" className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
+            <img src={lightboxImg} alt="Expanded JayLee Fit gallery" className="max-h-[90vh] max-w-full object-contain" onClick={event => event.stopPropagation()} />
+            <button type="button" autoFocus onClick={() => setLightboxImg(null)} className="absolute top-4 right-4 min-h-11 px-4 text-white bg-black/70 font-['JetBrains_Mono'] text-xs tracking-widest hover:text-red-400">CLOSE ✕</button>
           </div>
         )}
       </Section>
@@ -1013,6 +1025,8 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      </main>
 
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-white/10 py-12">
