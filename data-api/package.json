@@ -1,0 +1,31 @@
+{
+  "name": "jayleefit-data-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint",
+    "sync:sheets": "node lib/sync/sheets-sync.js",
+    "sync:drive": "node lib/sync/drive-sync.js",
+    "sync:ebay": "node lib/sync/ebay-sync.js"
+  },
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.23.0",
+    "axios": "^1.6.0",
+    "google-auth-library": "^9.0.0",
+    "googleapis": "^118.0.0",
+    "stripe": "^14.0.0",
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  }
+}
