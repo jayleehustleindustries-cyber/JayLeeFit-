@@ -1,0 +1,95 @@
+{
+  "name": "EHC Inventory Log V2 → eBay draft sync",
+  "description": "Watches the 'EHC Inventory Log V2' Google Sheet for rows whose Listing Platforms include eBay and whose Inventory Status is not yet Listed, then creates/updates an eBay inventory item + offer for each SKU via the eBay Sell Inventory API. Import this blueprint into Make (Scenarios → Create a new scenario → ⋯ → Import Blueprint), then attach your own Google and eBay connections to the modules.",
+  "flow": [
+    {
+      "id": 1,
+      "module": "google-sheets:searchRows",
+      "version": 2,
+      "metadata": { "designer": { "x": 0, "y": 0 } },
+      "parameters": {},
+      "mapper": {
+        "spreadsheetId": "17JeIyMsos60gqsppplILJYnQVV1276V5KxODcDo-PuI",
+        "sheetName": "Sheet1",
+        "includesHeaders": true,
+        "filter": [
+          [
+            { "a": "Listing Platforms", "b": "eBay", "o": "text:contains" },
+            { "a": "Inventory Status", "b": "Listed", "o": "text:notequal" }
+          ]
+        ],
+        "limit": 250
+      },
+      "notes": "Attach your Google connection. If the tab isn't named Sheet1, pick it here."
+    },
+    {
+      "id": 2,
+      "module": "util:SetVariables",
+      "version": 1,
+      "metadata": { "designer": { "x": 300, "y": 0 } },
+      "mapper": {
+        "variables": [
+          { "name": "sku", "value": "{{1.`Permanent SKU`}}" },
+          { "name": "title", "value": "{{substring(replace(1.`Brand` + \" \" + 1.`Item Name` + \" Size \" + 1.`Size`; \"Not confirmed\"; \"\"); 0; 80)}}" },
+          { "name": "price", "value": "{{parseNumber(replace(1.`Realistic Sold Value`; \"$\"; \"\"))}}" },
+          { "name": "conditionId", "value": "{{if(contains(lower(1.`Condition`); \"new with tags\"); \"1000\"; \"3000\")}}" }
+        ],
+        "scope": "roundtrip"
+      },
+      "notes": "Normalizes the sheet's mixed price formats ($12.00 vs 13) and builds an 80-char eBay title."
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "metadata": { "designer": { "x": 600, "y": 0 } },
+      "mapper": {
+        "url": "https://api.ebay.com/sell/inventory/v1/inventory_item/{{2.sku}}",
+        "method": "PUT",
+        "headers": [
+          { "name": "Authorization", "value": "Bearer YOUR_EBAY_OAUTH_TOKEN_OR_USE_MAKE_EBAY_CONNECTION" },
+          { "name": "Content-Type", "value": "application/json" },
+          { "name": "Content-Language", "value": "en-US" }
+        ],
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "data": "{\"availability\":{\"shipToLocationAvailability\":{\"quantity\":1}},\"condition\":\"{{if(2.conditionId = \"1000\"; \"NEW\"; \"USED_EXCELLENT\")}}\",\"product\":{\"title\":\"{{2.title}}\",\"description\":\"{{1.`Condition`}} — {{1.`Color`}} — {{1.`Pattern`}}. SKU {{2.sku}}.\",\"aspects\":{\"Brand\":[\"{{ifempty(1.`Brand`; \"Unbranded\")}}\"],\"Size\":[\"{{1.`Size`}}\"],\"Color\":[\"{{1.`Color`}}\"],\"Department\":[\"{{1.`Department`}}\"]}}}",
+        "parseResponse": true
+      },
+      "notes": "createOrReplaceInventoryItem. Swap the Authorization header for a Make eBay connection or an OAuth2 HTTP connection with scope sell.inventory."
+    },
+    {
+      "id": 4,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "metadata": { "designer": { "x": 900, "y": 0 } },
+      "mapper": {
+        "url": "https://api.ebay.com/sell/inventory/v1/offer",
+        "method": "POST",
+        "headers": [
+          { "name": "Authorization", "value": "Bearer YOUR_EBAY_OAUTH_TOKEN_OR_USE_MAKE_EBAY_CONNECTION" },
+          { "name": "Content-Type", "value": "application/json" },
+          { "name": "Content-Language", "value": "en-US" }
+        ],
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "data": "{\"sku\":\"{{2.sku}}\",\"marketplaceId\":\"EBAY_US\",\"format\":\"FIXED_PRICE\",\"availableQuantity\":1,\"pricingSummary\":{\"price\":{\"value\":\"{{2.price}}\",\"currency\":\"USD\"}},\"merchantLocationKey\":\"YOUR_LOCATION_KEY\",\"listingPolicies\":{\"fulfillmentPolicyId\":\"YOUR_FULFILLMENT_POLICY\",\"paymentPolicyId\":\"YOUR_PAYMENT_POLICY\",\"returnPolicyId\":\"YOUR_RETURN_POLICY\"}}",
+        "parseResponse": true
+      },
+      "notes": "createOffer — offers stay unpublished (drafts) until a publishOffer call, so nothing goes live without photos. Fill in your business policy IDs from Seller Hub."
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false
+    },
+    "designer": { "orphans": [] }
+  }
+}
