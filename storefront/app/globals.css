@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a14;
+  --foreground: #ede6d8;
+
+  /* Old Light brand tokens */
+  --color-void: #0a0a14;
+  --color-panel: #15162c;
+  --color-gold: #c9a24e;
+  --color-goldsoft: #e0c384;
+  --color-umbra: #a894cf;
+  --color-chalk: #ede6d8;
+  --color-ash: #948fb0;
+  --color-ember: #b6633f;
+  --color-line: #2a2b45;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-void: var(--color-void);
+  --color-panel: var(--color-panel);
+  --color-gold: var(--color-gold);
+  --color-goldsoft: var(--color-goldsoft);
+  --color-umbra: var(--color-umbra);
+  --color-chalk: var(--color-chalk);
+  --color-ash: var(--color-ash);
+  --color-ember: var(--color-ember);
+  --color-line: var(--color-line);
+
+  --font-display: var(--font-cormorant);
+  --font-sans: var(--font-libre);
+  --font-mono: var(--font-space-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer utilities {
+  .text-stroke {
+    -webkit-text-stroke: 1px var(--color-chalk);
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  .halftone {
+    background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+    background-size: 6px 6px;
+  }
+
+  .marquee-track {
+    animation: marquee 22s linear infinite;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Moon-phase condition icon — a stylized disc, not a realistic render.
+   The dark overlay is clipped at a fixed inset per phase rather than
+   computed, since there are only four named grades to support. */
+.moon {
+  --moon-size: 1.6em;
+  display: inline-block;
+  width: var(--moon-size);
+  height: var(--moon-size);
+  border-radius: 50%;
+  background: var(--color-chalk);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(201, 162, 78, 0.35);
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-panel);
+}
+
+.moon.phase-full::after {
+  clip-path: inset(0 100% 0 0);
+}
+.moon.phase-gibbous::after {
+  clip-path: inset(0 0 0 78%);
+}
+.moon.phase-half::after {
+  clip-path: inset(0 0 0 50%);
+}
+.moon.phase-crescent::after {
+  clip-path: inset(0 0 0 22%);
+}
