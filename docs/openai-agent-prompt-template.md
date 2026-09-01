@@ -192,3 +192,42 @@ In the actual request, `tools` must be an array rather than a quoted string. The
 The calendar adapter must enforce the selected account and calendar ID, reject events outside the approved month, check conflicts before creation, prevent duplicate event IDs through idempotency, and avoid inviting attendees unless they are explicitly included in the approved preview. The task-sheet adapter must use an approved destination, avoid sharing links broadly by default, and include only the minimum context Marie needs.
 
 The agent should produce a task sheet as a reviewable artifact before delivery. A human should be able to edit task owners, dates, priorities, and descriptions before any calendar event or task assignment is created.
+
+
+## Shared image folder and EHC inventory viewing extension
+
+When the agent has access to the read-only tools in `openai-drive-ehc-view-function-schema.json`, append the following instructions to the system prompt:
+
+```text
+SHARED GOOGLE DRIVE IMAGE AND EHC INVENTORY VIEWING
+
+The company’s shared image assets must be located by an approved Google Drive folder ID, not by guessing folder names or searching the entire Drive. Use drive_list_folder_files with the exact folder ID supplied in the approved company context or by the user. Start with a bounded page size and image MIME types when the purpose is image import or review. Preserve each returned file ID, file name, MIME type, parent folder ID, web view link, and any available dimensions.
+
+For an item’s image import, match the item to its Permanent SKU or source record ID before presenting images. Use drive_get_file_metadata for individual files when a stable view link or dimensions are needed. Never move, rename, upload, share, download, or delete a Drive file through these viewing tools. Do not expose private file contents beyond what the current task requires. If the folder ID is missing, ambiguous, or belongs to a different business unit, stop and request clarification.
+
+The known Magicdeals shared image-folder reference from the current operating context is `1i0iepaWtxeM-AtND6O0o282b-KZcUtDC`. Treat this as a reference only and verify access and business-unit ownership before use. The legacy EHC import folder is read-only and must not be moved or overwritten. If the user supplies a different folder ID, use the user-supplied ID after checking that it is an approved company source.
+
+To view EHC inventory information through HubSpot, use hubspot_view_ehc_inventory for bounded read-only retrieval. Request only the properties needed for the user’s question, such as Permanent SKU, item name, brand, category, size, color, condition, cost of goods, pricing evidence, inventory status, listing platforms, listing URL, image folder URL, source system, source record ID, and last verified timestamp. Filter by Business Unit `EHC` when the user asks specifically for EHC inventory. Keep the source system and source record ID visible in the result so that each HubSpot record can be traced back to the EHC inventory database.
+
+Do not assume that a HubSpot inventory object exists or that the EHC inventory database has already been imported. First use hubspot_list_objects or the dedicated view tool and report whether records are present. If no HubSpot records are available, report that clearly and provide the source-system reference instead of fabricating a result. Do not create an import or synchronization proposal from a view request alone.
+
+For image import preparation, return a table with Permanent SKU, item name, source record ID, Drive folder ID, file ID, file name, view link, MIME type, and verification status. Flag unmatched, duplicate, missing, or cross-business-unit images for review. Do not automatically attach or copy files into HubSpot without a separate preview, approval, and approved execution step.
+```
+
+## Extended tools request
+
+The host should concatenate all three tool arrays into one `tools` array:
+
+```text
+openai-hubspot-supabase-function-schema.json
+openai-agenda-helper-function-schema.json
+openai-drive-ehc-view-function-schema.json
+```
+
+The host must enforce that Drive viewing is read-only, the folder ID is explicitly approved, the selected Google account is bound to the call, and the returned file count is bounded. It must also ensure that `hubspot_view_ehc_inventory` cannot perform writes and that every displayed record retains its source identifiers.
+
+## Recommended user request after context loading
+
+```text
+Start with read-only discovery. Verify the approved Google Workspace account, inspect the shared image folder by its exact folder ID, and check whether EHC inventory records are already available in HubSpot. Return matched image files and bounded EHC inventory results with source IDs and view links. Do not upload, attach, move, share, import, update, or delete anything, and do not create calendar events or tasks until I approve the complete preview.
+```

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jayleehustleindustries.com/schemas/openai-drive-ehc-view-tools.json",
+  "title": "Safe Google Drive Image and EHC Inventory View Tools",
+  "description": "Read-only tools for locating shared image files by Google Drive folder or file ID and viewing EHC inventory records through HubSpot.",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "drive_list_folder_files" },
+              "description": { "const": "Read-only: list image and metadata files in one approved Google Drive folder by folder ID. Never moves, renames, uploads, shares, or deletes files." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["folder_id", "page_size", "include_subfolders", "correlation_id"],
+                "properties": {
+                  "folder_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{10,200}$" },
+                  "page_size": { "type": "integer", "minimum": 1, "maximum": 200 },
+                  "include_subfolders": { "type": "boolean" },
+                  "mime_types": { "type": "array", "items": { "type": "string", "maxLength": 150 }, "maxItems": 20 },
+                  "name_contains": { "type": "string", "maxLength": 200 },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "drive_get_file_metadata" },
+              "description": { "const": "Read-only: retrieve metadata and a viewable link for one approved Google Drive file by file ID. Never downloads or changes the file unless a separate approved operation exists." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["file_id", "include_web_view_link", "include_image_dimensions", "correlation_id"],
+                "properties": {
+                  "file_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{10,200}$" },
+                  "include_web_view_link": { "type": "boolean" },
+                  "include_image_dimensions": { "type": "boolean" },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "hubspot_view_ehc_inventory" },
+              "description": { "const": "Read-only: retrieve a bounded view of EHC inventory records already available in HubSpot, filtered by Permanent SKU, status, platform, or business unit. Never creates, updates, archives, or imports records." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["object_type", "properties", "limit", "business_unit", "correlation_id"],
+                "properties": {
+                  "object_type": { "type": "string", "enum": ["inventory", "products", "listings", "deals"] },
+                  "properties": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "maxItems": 50 },
+                  "permanent_sku": { "type": "string", "maxLength": 200 },
+                  "inventory_status": { "type": "string", "maxLength": 100 },
+                  "listing_platform": { "type": "string", "enum": ["eBay", "Poshmark", "Facebook Marketplace", "Instagram", "TikTok", "Other"] },
+                  "business_unit": { "type": "string", "enum": ["Magicdeals Wholesale Outlet", "EHC", "JayLeeFit", "Unassigned"] },
+                  "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+                  "after": { "type": "string", "maxLength": 200 },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
