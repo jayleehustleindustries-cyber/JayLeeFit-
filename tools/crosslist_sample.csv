@@ -1,0 +1,2 @@
+sku,brand,title,size,condition,price,description,image_paths,category,color,flaws,hashtags
+JF-TEST-001,Nike,Air Max 90 sneakers,9,Excellent,85,"Clean pre-owned pair with light wear and strong tread.","/tmp/jf-test-001-1.jpg|/tmp/jf-test-001-2.jpg",sneakers,Black,"Minor crease at toe","nike sneakers streetwear"
