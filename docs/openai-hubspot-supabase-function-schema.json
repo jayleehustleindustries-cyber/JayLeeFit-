@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jayleehustleindustries.com/schemas/openai-hubspot-supabase-tools.json",
+  "title": "Safe HubSpot and Supabase Agent Tools",
+  "description": "OpenAI Chat Completions tools for read-only discovery, preview-first mutations, explicit human approval, and source traceability.",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "hubspot_list_objects" },
+              "description": { "const": "Read-only: list the HubSpot object types and available properties exposed to this agent. Never changes data." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["include_custom_objects"],
+                "properties": {
+                  "include_custom_objects": { "type": "boolean" },
+                  "business_unit": { "type": "string", "enum": ["Magicdeals Wholesale Outlet", "EHC", "JayLeeFit", "Unassigned"] }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "hubspot_search_records" },
+              "description": { "const": "Read-only: search HubSpot records using approved object, property, and filter fields. Never changes data." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["object_type", "query", "properties", "limit", "correlation_id"],
+                "properties": {
+                  "object_type": { "type": "string", "enum": ["contacts", "companies", "deals", "products", "tickets", "inventory", "listings"] },
+                  "query": { "type": "string", "maxLength": 500 },
+                  "properties": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "maxItems": 50 },
+                  "filters": { "type": "array", "maxItems": 20, "items": { "type": "object", "additionalProperties": false, "required": ["property", "operator", "value"], "properties": { "property": { "type": "string" }, "operator": { "type": "string", "enum": ["EQ", "NEQ", "LT", "LTE", "GT", "GTE", "CONTAINS_TOKEN", "IN", "NOT_HAS_PROPERTY", "HAS_PROPERTY"] }, "value": { "type": "string" } } } },
+                  "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+                  "after": { "type": "string", "maxLength": 200 },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "hubspot_get_record" },
+              "description": { "const": "Read-only: retrieve one HubSpot record and selected properties by object type and record ID. Never changes data." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["object_type", "record_id", "properties", "correlation_id"],
+                "properties": {
+                  "object_type": { "type": "string", "enum": ["contacts", "companies", "deals", "products", "tickets", "inventory", "listings"] },
+                  "record_id": { "type": "string", "minLength": 1, "maxLength": 100 },
+                  "properties": { "type": "array", "items": { "type": "string" }, "minItems": 1, "maxItems": 50 },
+                  "include_associations": { "type": "boolean" },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "hubspot_preview_mutation" },
+              "description": { "const": "Prepare but do not execute a HubSpot create, update, association, archive, or import operation. Returns a preview hash that must be approved before execution." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["operation", "object_type", "records", "source_system", "source_record_ids", "business_unit", "reason", "idempotency_key", "correlation_id"],
+                "properties": {
+                  "operation": { "type": "string", "enum": ["create", "update", "upsert", "associate", "archive", "import"] },
+                  "object_type": { "type": "string", "enum": ["contacts", "companies", "deals", "products", "tickets", "inventory", "listings"] },
+                  "records": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 25,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["source_record_id", "properties"],
+                      "properties": {
+                        "source_record_id": { "type": "string", "minLength": 1, "maxLength": 200 },
+                        "target_record_id": { "type": "string", "maxLength": 100 },
+                        "properties": {
+                          "type": "object",
+                          "additionalProperties": { "type": ["string", "number", "boolean", "null"] },
+                          "maxProperties": 100
+                        },
+                        "associations": {
+                          "type": "array",
+                          "maxItems": 20,
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": ["to_object_type", "to_record_id", "relationship"],
+                            "properties": {
+                              "to_object_type": { "type": "string", "enum": ["contacts", "companies", "deals", "products", "tickets", "inventory", "listings"] },
+                              "to_record_id": { "type": "string" },
+                              "relationship": { "type": "string", "maxLength": 100 }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "source_system": { "type": "string", "enum": ["notion", "airtable", "google_drive", "google_sheets", "supabase", "manual", "other"] },
+                  "source_record_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1, "maxItems": 25 },
+                  "source_urls": { "type": "array", "items": { "type": "string", "format": "uri" }, "maxItems": 25 },
+                  "business_unit": { "type": "string", "enum": ["Magicdeals Wholesale Outlet", "EHC", "JayLeeFit", "Unassigned"] },
+                  "reason": { "type": "string", "minLength": 10, "maxLength": 1000 },
+                  "idempotency_key": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,150}$" },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "supabase_inspect_schema" },
+              "description": { "const": "Read-only: inspect approved Supabase schemas, tables, columns, and relationships. Never changes data." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["schemas", "include_relationships", "correlation_id"],
+                "properties": {
+                  "schemas": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" }, "minItems": 1, "maxItems": 10 },
+                  "include_relationships": { "type": "boolean" },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "supabase_select_rows" },
+              "description": { "const": "Read-only: select a bounded page of rows from an approved Supabase table using allowlisted columns and parameterized filters. Never changes data." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["schema", "table", "columns", "limit", "correlation_id"],
+                "properties": {
+                  "schema": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" },
+                  "table": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" },
+                  "columns": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" }, "minItems": 1, "maxItems": 50 },
+                  "filters": { "type": "array", "maxItems": 20, "items": { "type": "object", "additionalProperties": false, "required": ["column", "operator", "value"], "properties": { "column": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" }, "operator": { "type": "string", "enum": ["eq", "neq", "lt", "lte", "gt", "gte", "like", "is_null", "in"] }, "value": {} } } },
+                  "order_by": { "type": "array", "maxItems": 5, "items": { "type": "object", "additionalProperties": false, "required": ["column", "direction"], "properties": { "column": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" }, "direction": { "type": "string", "enum": ["asc", "desc"] } } } },
+                  "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+                  "cursor": { "type": "string", "maxLength": 200 },
+                  "source_purpose": { "type": "string", "minLength": 5, "maxLength": 500 },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "supabase_preview_mutation" },
+              "description": { "const": "Prepare but do not execute a parameterized Supabase insert, update, upsert, or soft-archive operation. Returns a preview hash that must be approved before execution." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["operation", "schema", "table", "rows", "source_system", "source_record_ids", "business_unit", "reason", "idempotency_key", "correlation_id"],
+                "properties": {
+                  "operation": { "type": "string", "enum": ["insert", "update", "upsert", "soft_archive"] },
+                  "schema": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" },
+                  "table": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" },
+                  "rows": { "type": "array", "minItems": 1, "maxItems": 25, "items": { "type": "object", "additionalProperties": { "type": ["string", "number", "boolean", "null", "array", "object"] }, "maxProperties": 100 } },
+                  "match_columns": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,62}$" }, "maxItems": 10 },
+                  "source_system": { "type": "string", "enum": ["notion", "airtable", "google_drive", "google_sheets", "supabase", "manual", "other"] },
+                  "source_record_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1, "maxItems": 25 },
+                  "source_urls": { "type": "array", "items": { "type": "string", "format": "uri" }, "maxItems": 25 },
+                  "business_unit": { "type": "string", "enum": ["Magicdeals Wholesale Outlet", "EHC", "JayLeeFit", "Unassigned"] },
+                  "reason": { "type": "string", "minLength": 10, "maxLength": 1000 },
+                  "idempotency_key": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,150}$" },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "request_human_approval" },
+              "description": { "const": "Request explicit human approval for a proposed connector change, schema change, or data mutation. The host must issue and validate the approval token; the model cannot self-approve." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["approval_type", "target_system", "action_summary", "affected_record_count", "preview_hash", "risk_summary", "rollback_plan", "correlation_id"],
+                "properties": {
+                  "approval_type": { "type": "string", "enum": ["connect", "authorize", "schema_change", "create", "update", "upsert", "archive", "import", "workflow_enable"] },
+                  "target_system": { "type": "string", "enum": ["hubspot", "supabase"] },
+                  "action_summary": { "type": "string", "minLength": 20, "maxLength": 1500 },
+                  "affected_record_count": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+                  "preview_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{32,128}$" },
+                  "risk_summary": { "type": "string", "minLength": 10, "maxLength": 1000 },
+                  "rollback_plan": { "type": "string", "minLength": 10, "maxLength": 1000 },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "function"],
+        "properties": {
+          "type": { "const": "function" },
+          "function": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "description", "strict", "parameters"],
+            "properties": {
+              "name": { "const": "execute_approved_mutation" },
+              "description": { "const": "Execute exactly one previously previewed HubSpot or Supabase mutation. The host must reject missing, expired, mismatched, or self-generated approvals and must enforce idempotency." },
+              "strict": { "const": true },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["target_system", "preview_hash", "approval_token", "idempotency_key", "correlation_id"],
+                "properties": {
+                  "target_system": { "type": "string", "enum": ["hubspot", "supabase"] },
+                  "preview_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{32,128}$" },
+                  "approval_token": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{16,200}$" },
+                  "idempotency_key": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,150}$" },
+                  "correlation_id": { "type": "string", "pattern": "^[A-Za-z0-9._:-]{8,100}$" }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
