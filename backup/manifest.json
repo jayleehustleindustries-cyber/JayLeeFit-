@@ -1,0 +1,70 @@
+{
+  "backup_name": "jayleefit-unified-code-and-database-backup",
+  "snapshot_scope": {
+    "repository": "jayleehustleindustries-cyber/JayLeeFit-",
+    "branch": "claude/fitness-airtable-client-data-g1iot3",
+    "domains": ["fitness_coaching", "resale_operations"],
+    "purpose": "Code, schema, workflow documentation, and exported-data backup"
+  },
+  "included": {
+    "fitness_coaching": [
+      "README.md",
+      "airtable-schema.json",
+      "docs/agentic-operation-blueprint.md",
+      "docs/telegram-bot-n8n-guide.md",
+      "docs/software-design-extension-app.md",
+      "docs/marketing-sop.md",
+      "docs/brand-dna-and-content-mechanics.md",
+      "docs/engagement-dm-automation.md"
+    ],
+    "resale_operations": [
+      "site/ehc-inventory-catalog-data.json",
+      "site/jayleefit-inventory-catalog-data.json",
+      "site/magicdeals-inventory-catalog-data.json",
+      "site/magicdeals-inventory-records.csv",
+      "site/magicdeals-image-file-manifest.csv",
+      "tools/crosslist_prep.py",
+      "tools/test_crosslist_prep.py",
+      "resale-clip-system/"
+    ],
+    "shared_automation": [
+      "company-workflows.json",
+      "docs/openai-agenda-helper-function-schema.json",
+      "docs/openai-drive-ehc-view-function-schema.json",
+      "docs/openai-github-function-schema.json",
+      "docs/openai-hubspot-supabase-function-schema.json",
+      "docs/hubspot-agent-context.md",
+      "docs/hubspot-resale-agent-blueprint.md",
+      "tools/push_agent_context.py"
+    ]
+  },
+  "observed_export_counts": {
+    "ehc_catalog_items": 12,
+    "jayleefit_catalog_items": 0,
+    "magicdeals_catalog_items": 32,
+    "magicdeals_inventory_csv_rows_including_header": 33,
+    "magicdeals_image_manifest_rows_including_header": 257,
+    "airtable_schema_macro_inputs": 3,
+    "shared_intake_stages": 8,
+    "separation_rules": 3
+  },
+  "external_dependencies_not_embedded": [
+    "Airtable live records and credentials",
+    "Google Drive original media and permissions",
+    "HubSpot CRM records and credentials",
+    "Telegram or other messaging state",
+    "Instagram and marketplace account state",
+    "payment and checkout provider state",
+    "deployed application state",
+    "API keys, OAuth tokens, passwords, private keys, and .env files"
+  ],
+  "restore_requirements": [
+    "Fresh point-in-time exports from each live external system",
+    "Secure re-entry of credentials outside Git",
+    "Separate coaching and resale database targets",
+    "Non-production restore and permission verification",
+    "Production cutover only after test writes succeed"
+  ],
+  "secret_policy": "Credential values are excluded. Integration references and schemas may remain when they contain no secret value.",
+  "status": "documentation_added_locally_not_pushed"
+}
